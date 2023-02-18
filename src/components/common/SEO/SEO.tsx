@@ -70,7 +70,7 @@ const SEO: FC<Props> = ({
       <meta
         key="description"
         name="description"
-        content={description || config.description}
+        content={description ?? config.description}
       />
       <meta
         key="og:type"
