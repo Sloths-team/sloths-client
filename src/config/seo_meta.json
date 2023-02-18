@@ -1,0 +1,25 @@
+{
+  "title": "SLOTH PORTFOLIO | platform for lazy developers",
+  "titleTemplate": "%s - ACME Storefront",
+  "description": "Portfolio platform for developers to doodle",
+  "openGraph": {
+    "title": "SLOTH PORTFOLIO | platform for lazy developers",
+    "description": "Portfolio platform for developers to doodle",
+    "type": "website",
+    "url": "https://sloth.portfolio.com",
+    "site_name": "Sloth Portfoliio",
+    "images": [
+      {
+        "url": "/card.png",
+        "width": "800",
+        "height": "600",
+        "alt": "Sloth Portfoliio"
+      }
+    ]
+  },
+  "twitter": {
+    "handle": "@nextjs",
+    "site": "@nextjs",
+    "cardType": "summary_large_image"
+  }
+}
