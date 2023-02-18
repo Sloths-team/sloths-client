@@ -1,7 +1,7 @@
-import type { VFC } from 'react'
+import { FC } from 'react'
 import SEO from '../SEO'
 
-const Head: VFC = () => {
+const Head: FC = () => {
   return (
     <SEO>
       <meta
