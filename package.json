@@ -11,14 +11,21 @@
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "@react-spring/web": "^9.6.1",
+    "@types/body-scroll-lock": "^3.1.0",
     "@types/node": "18.14.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "body-scroll-lock": "^4.0.0-beta.0",
     "eslint": "^8.34.0",
     "eslint-config-next": "13.1.6",
+    "js-cookie": "^3.0.1",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-merge-refs": "^2.0.1",
+    "react-use-measure": "^2.1.1",
+    "tabbable": "^6.1.1",
     "typescript": "4.9.5"
   },
   "devDependencies": {
