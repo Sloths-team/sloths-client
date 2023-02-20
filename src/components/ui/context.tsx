@@ -10,6 +10,20 @@ export interface State {
   userAvatar: string
 }
 
+export type ContextValue = State & {
+  openSidebar: () => void
+  closeSidebar: () => void
+  toggleSidebar: () => void
+  closeSidebarIfPresent: () => void
+  openDropdown: () => void
+  closeDropdown: () => void
+  openModal: () => void
+  closeModal: () => void
+  setModalView: (value: MODAL_VIEWS) => void
+  setSidebarView: (view: SIDEBAR_VIEWS) => void
+  setUserAvatar: (view: string) => void
+}
+
 const initialState = {
   displaySidebar: false,
   displayDropdown: false,
@@ -202,7 +216,7 @@ export const UIProvider: FC<{ children?: ReactNode }> = (props) => {
   return <UIContext.Provider value={value} {...props} />
 }
 
-export const useUI = () => {
+export const useUI = (): ContextValue => {
   const context = React.useContext(UIContext)
   if (!context) {
     throw new Error(`useUI must be used within a UIProvider`)

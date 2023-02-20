@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect, useState, UIEvent } from 'react'
 import { SignUpView, ForgotPasswordView, LoginView } from '@components/auth'
 import { useUI } from '@components/ui/context'
 import Modal from '../Modal'
@@ -6,6 +6,7 @@ import Navbar from '../Navbar'
 import Footer from '../Footer'
 import { Sidebar } from '@components/ui'
 import type { Link as LinkProps } from '../UserNav/MenuSidebar'
+import { SessionProvider } from './context'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -69,12 +70,20 @@ const SidebarUI: FC<{ links: LinkProps[] }> = ({ links }) => {
 }
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
+  const navBarlinks = [{ name: 'test', slug: 'test' }].map((c) => ({
+    label: c.name,
+    href: `/search/${c.slug}`,
+  }))
+
   return (
-    <div>
-      <Navbar />
+    <div style={{ height: '1000px' }}>
+      <SessionProvider>
+        <Navbar links={navBarlinks} />
+      </SessionProvider>
       <main>{children}</main>
       <Footer />
       <ModalUI />
+      {/* <SidebarUI links={navBarlinks} /> */}
     </div>
   )
 }

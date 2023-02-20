@@ -6,8 +6,8 @@ interface Props {
   focusFirst?: boolean
 }
 const FocusTrap: FC<Props> = ({ children, focusFirst = false }) => {
-  const root = useRef() as RefObject<any>
-  const anchor = useRef() as RefObject<any>
+  const root: RefObject<any> = useRef()
+  const anchor: RefObject<any> = useRef()
 
   const returnFocus = () => {
     if (anchor) anchor.current.focus()
@@ -24,29 +24,31 @@ const FocusTrap: FC<Props> = ({ children, focusFirst = false }) => {
   }
 
   const selectFirstFocusableEl = () => {
-    let match = false
-    let start = 0
-    let end = 60
+    // let match = false
+    // let start = 0
+    // let end = 60
 
-    const intv = setInterval(() => {
-      if (!match !== start > end) {
-        match = !!tabbable(root.current).length
+    // const intv = setInterval(() => {
+    //   if (!match !== start > end) {
+    //     match = !!tabbable(root.current).length
 
-        if (match) {
-          tabbable(root.current)[0].focus()
-        }
+    //     if (match) {
+    //       tabbable(root.current)[0].focus()
+    //     }
 
-        start++
-      } else {
-        clearInterval(intv)
-      }
-    }, 100)
+    //     start++
+    //   } else {
+    //     clearInterval(intv)
+    //   }
+    // }, 100)
+    tabbable(root.current)[0]?.focus()
   }
 
   useEffect(() => {
-    setTimeout(trapFocus, 0)
+    trapFocus()
+    // setTimeout(trapFocus, 0)
 
-    return returnFocus
+    // return returnFocus
   }, [root, children])
 
   return (
