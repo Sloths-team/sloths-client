@@ -1,0 +1,17 @@
+.root {
+  background-color: #dfdfdf;
+  min-height: 100vh;
+}
+
+.container {
+  padding: 0 10px;
+}
+
+.main {
+  padding: 20px 40px;
+  max-width: 460px;
+  background-color: #fff;
+  margin: auto;
+  border-radius: 6px;
+  transform: translateY(100px);
+}
