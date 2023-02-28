@@ -10,7 +10,7 @@ import { mergeRefs } from 'react-merge-refs'
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string
   className?: string
-  variant: 'flat' | 'slim' | 'ghost' | 'naked'
+  variant?: 'flat' | 'slim' | 'ghost' | 'naked'
   active?: boolean
   type?: 'submit' | 'reset' | 'button'
   Component?: string | JSXElementConstructor<any>
@@ -37,7 +37,7 @@ const Button: FC<Props> = forwardRef((props, buttonRef) => {
   return (
     <Component
       aria-pressed={active}
-      data-variant={variant}
+      // data-variant={variant}
       ref={mergeRefs([ref, buttonRef])}
       className={className}
       disabled={disabled}
