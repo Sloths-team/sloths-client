@@ -1,7 +1,15 @@
-import React, { FC, ReactNode, useCallback, useMemo } from 'react'
+import React, {
+  FC,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useReducer,
+  createContext,
+  useContext,
+} from 'react'
 
 export interface State {
-  isLoggedIn: boolean
+  isUserLoggedIn: boolean
 }
 
 export type ContextValue = State & {
@@ -10,8 +18,8 @@ export type ContextValue = State & {
   useSignup: () => void
 }
 
-const initialState = {
-  isLoggedIn: false,
+const initialState: State = {
+  isUserLoggedIn: false,
 }
 
 type Action =
@@ -25,7 +33,7 @@ type Action =
       type: 'SIGNUP'
     }
 
-export const SessionContext = React.createContext<State | any>(initialState)
+export const SessionContext = createContext<State>(initialState)
 
 SessionContext.displayName = 'SessionContext'
 
@@ -34,32 +42,32 @@ function sessionReducer(state: State, action: Action) {
     case 'LOGIN': {
       return {
         ...state,
-        isLoggedIn: true,
+        isUserLoggedIn: true,
       }
     }
     case 'LOGOUT': {
       return {
         ...state,
-        isLoggedIn: false,
+        isUserLoggedIn: false,
       }
     }
     case 'SIGNUP': {
       return {
         ...state,
-        isLoggedIn: true,
+        isUserLoggedIn: true,
       }
     }
   }
 }
 
 export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
-  const [state, dispatch] = React.useReducer(sessionReducer, initialState)
+  const [state, dispatch] = useReducer(sessionReducer, initialState)
 
   const useLogin = useCallback(() => dispatch({ type: 'LOGIN' }), [dispatch])
   const useLogout = useCallback(() => dispatch({ type: 'LOGOUT' }), [dispatch])
   const useSignup = useCallback(() => dispatch({ type: 'SIGNUP' }), [dispatch])
 
-  const value = useMemo(
+  const value: ContextValue = useMemo(
     () => ({
       ...state,
       useLogin,
@@ -74,7 +82,7 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
 }
 
 export const useSession = (): ContextValue => {
-  const context = React.useContext(SessionContext)
+  const context = useContext(SessionContext)
   if (!context) {
     throw new Error(`useSession must be used within a SessionProvider`)
   }

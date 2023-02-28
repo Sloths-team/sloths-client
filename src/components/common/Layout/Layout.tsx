@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState, UIEvent } from 'react'
+import { FC, ReactNode } from 'react'
 import { SignUpView, ForgotPasswordView, LoginView } from '@components/auth'
 import { useUI } from '@components/ui/context'
 import Modal from '../Modal'
@@ -18,11 +18,11 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     FORGOT_VIEW: ForgotPasswordView,
   }
 
-  const Content = kindsOfModal[modalView]
+  const SelectedModalView = kindsOfModal[modalView]
 
   return (
     <Modal onClose={onCloseModal}>
-      <Content />
+      <SelectedModalView />
     </Modal>
   )
 }
@@ -40,19 +40,13 @@ const SidebarView: FC<{
   sidebarView: string
   onCloseSidebar: () => void
 }> = ({ sidebarView, onCloseSidebar }) => {
-  const kindsOfView: { [key: string]: FC } = {
-    //   CART_VIEW: CartSidebarView,
-    //   SHIPPING_VIEW: ShippingView,
-    //   PAYMENT_VIEW: PaymentMethodView,
-    //   CHECKOUT_VIEW: CheckoutSidebarView,
-    //   MOBILE_MENU_VIEW: () => <MenuSidebarView links={links} />,
-  }
+  const kindsOfView: { [key: string]: FC } = {}
 
-  const Content = kindsOfView[sidebarView]
+  const SelectedSidebarView = kindsOfView[sidebarView]
 
   return (
     <Sidebar onClose={onCloseSidebar}>
-      <Content />
+      <SelectedSidebarView />
     </Sidebar>
   )
 }
@@ -78,12 +72,12 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div style={{ height: '1000px' }}>
       <SessionProvider>
-        <Navbar links={navBarlinks} />
+        {/* <Navbar links={navBarlinks} /> */}
+        <main>{children}</main>
+        {/* <Footer /> */}
+        <ModalUI />
+        <SidebarUI links={navBarlinks} />
       </SessionProvider>
-      <main>{children}</main>
-      <Footer />
-      <ModalUI />
-      {/* <SidebarUI links={navBarlinks} /> */}
     </div>
   )
 }
