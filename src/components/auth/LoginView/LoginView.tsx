@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { TfiEmail, TfiLock } from 'react-icons/tfi'
 import { validateEmail, validatePassword } from '../SignUpView/SignUpView'
 import cn from 'clsx'
+import { VscGithubInverted } from 'react-icons/vsc'
 
 type Form = {
   email: string
@@ -60,7 +61,9 @@ const LoginView: FC = () => {
     <div className={s.root}>
       <div className={s.header}>
         <h1>로그인</h1>
-        <Link href="/signup" className={s.link}>회원가입으로 이동하기</Link>
+        <Link href="/signup" className={s.link}>
+          회원가입으로 이동하기
+        </Link>
       </div>
       <form onSubmit={handleSubmit(onLogin)}>
         <label className={s.input_container}>
@@ -110,12 +113,17 @@ const LoginView: FC = () => {
         </div>
       </form>
       <div>
-        <Link href="/forgot_password" className={s.link}>비밀번호 찾기</Link>
+        <Link href="/forgot_password" className={s.link}>
+          비밀번호 찾기
+        </Link>
       </div>
       <div className={s.socials}>
-        <span>다른 계정으로 로그인 하기</span>
-        <Button type="button">
-          <a href="/">Github</a>
+        <span>또는</span>
+        <Button type="button" className={s.github}>
+          <a href="/">
+            <VscGithubInverted />
+            깃헙 계정으로 로그인 하기
+          </a>
         </Button>
       </div>
     </div>

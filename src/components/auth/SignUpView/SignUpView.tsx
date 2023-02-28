@@ -8,7 +8,7 @@ import Button from '../../ui/Button'
 import Link from 'next/link'
 import { TfiFaceSmile, TfiEmail, TfiLock } from 'react-icons/tfi'
 import cn from 'clsx'
-
+import { VscGithubInverted } from 'react-icons/vsc'
 type Form = {
   name: string
   email: string
@@ -78,7 +78,7 @@ const SignupView: FC = () => {
   }
 
   useEffect(() => {
-    setDisabled(!isValid && !passwordConfirmed)
+    setDisabled(!isValid || !passwordConfirmed)
   }, [isValid, passwordConfirmed])
 
   useEffect(() => {
@@ -89,7 +89,9 @@ const SignupView: FC = () => {
     <div className={s.root}>
       <div className={s.header}>
         <h1>회원가입</h1>
-        <Link href="/login">로그인으로 이동하기</Link>
+        <Link href="/login" className={s.link}>
+          로그인으로 이동하기
+        </Link>
       </div>
       <form onSubmit={handleSubmit(onSignup)}>
         <label className={s.input_container}>
@@ -178,9 +180,12 @@ const SignupView: FC = () => {
         </div>
       </form>
       <div className={s.socials}>
-        <span>다른 계정으로 회원가입 하기</span>
-        <Button type="button">
-          <a href="/">Github</a>
+        <span>또는</span>
+        <Button type="button" className={s.github}>
+          <a href="/">
+            <VscGithubInverted />
+            깃헙 계정으로 회원가입 하기
+          </a>
         </Button>
       </div>
     </div>
