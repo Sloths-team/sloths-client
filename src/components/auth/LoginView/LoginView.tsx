@@ -13,6 +13,7 @@ import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
 import { useRouter } from 'next/router'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
+import { BASE_URL } from '@lib/queryClient'
 
 type Form = {
   email: string
@@ -131,7 +132,7 @@ const LoginView: FC = () => {
       <div className={s.socials}>
         <span>또는</span>
         <Button type="button" className={s.github}>
-          <a href="/">
+          <a href={`${BASE_URL}/api/auth/github`}>
             <VscGithubInverted />
             깃헙 계정으로 로그인 하기
           </a>
