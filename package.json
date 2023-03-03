@@ -29,6 +29,7 @@
     "react-hook-form": "^7.43.2",
     "react-icons": "^4.7.1",
     "react-merge-refs": "^2.0.1",
+    "react-query": "^3.39.3",
     "react-use-measure": "^2.1.1",
     "tabbable": "^6.1.1",
     "typescript": "4.9.5",
