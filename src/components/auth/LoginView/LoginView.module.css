@@ -45,6 +45,7 @@
   border: 1px solid #dfdfdf;
   position: relative;
   border-radius: 4px;
+  overflow: hidden;
 }
 
 .input_wrapper .icon {

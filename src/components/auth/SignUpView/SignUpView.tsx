@@ -10,6 +10,7 @@ import { TfiFaceSmile, TfiEmail, TfiLock } from 'react-icons/tfi'
 import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
+import { useRouter } from 'next/router'
 
 type Form = {
   name: string
@@ -71,11 +72,11 @@ const SignupView: FC = () => {
 
   const { name, email, password, passwordCheck } = watch()
   const [disabled, setDisabled] = useState(true)
-  const [loading, setLoading] = useState(false)
   const passwordConfirmed =
     !errors.password && !errors.passwordCheck && password === passwordCheck
 
   const signup = useSession().signup()
+  const router = useRouter()
 
   const onSignup = ({ name, email, password }: Form) => {
     signup.mutateAsync(
@@ -83,6 +84,7 @@ const SignupView: FC = () => {
       {
         onSuccess: (data) => {
           console.log(data)
+          router.push('/')
         },
       }
     )
@@ -149,9 +151,9 @@ const SignupView: FC = () => {
           <div className={s.input_wrapper}>
             <div
               className={cn(s.icon, {
-                [s.default]: !email.length,
-                [s.valid]: !!email && !errors.email,
-                [s.invalid]: email.length && errors.email,
+                [s.default]: !password.length,
+                [s.valid]: !!password && !errors.password,
+                [s.invalid]: password.length && errors.password,
               })}
             >
               <TfiLock />

@@ -11,6 +11,7 @@ import { validateEmail, validatePassword } from '../SignUpView/SignUpView'
 import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
+import { useRouter } from 'next/router'
 
 type Form = {
   email: string
@@ -46,6 +47,7 @@ const LoginView: FC = () => {
   const { email, password } = watch()
   const [disabled, setDisabled] = useState(true)
   const login = useSession().login()
+  const router = useRouter()
 
   const onLogin = ({ email, password }: Form) => {
     login.mutateAsync(
@@ -53,6 +55,7 @@ const LoginView: FC = () => {
       {
         onSuccess: (data) => {
           console.log(data)
+          router.push('/')
         },
       }
     )
