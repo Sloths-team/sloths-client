@@ -1,18 +1,18 @@
 import { useState, useEffect, useMemo } from 'react'
 
 const useLocalStorage = (key: string) => {
-  const [value, setValue] = useState()
-  const storage = JSON.stringify(value)
+  const [value, setValue] = useState('')
 
   const saveStorage = (value: string) => {
     localStorage.setItem(key, value)
   }
 
   useEffect(() => {
-    setValue(JSON.parse(localStorage.getItem(key) ?? ''))
+    const data = localStorage.getItem(key)
+    if (data) setValue(data)
   }, [value])
 
-  return { storage, saveStorage }
+  return { storage: value, saveStorage }
 }
 
 export default useLocalStorage
