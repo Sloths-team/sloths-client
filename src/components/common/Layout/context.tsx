@@ -75,7 +75,6 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
     LoginBody,
     unknown
   > => {
-    // dispatch({ type: 'LOGIN' })
     return loginApi()
   }, [dispatch])
 
@@ -85,7 +84,6 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
     SignUpBody,
     unknown
   > => {
-    // dispatch({ type: 'SIGNUP' })
     return signUpApi()
   }, [dispatch])
 

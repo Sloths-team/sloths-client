@@ -11,6 +11,7 @@ import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
 import { useRouter } from 'next/router'
+import useLocalStorage from '@lib/hooks/useLocalStorage'
 
 type Form = {
   name: string
@@ -77,13 +78,14 @@ const SignupView: FC = () => {
 
   const signup = useSession().signup()
   const router = useRouter()
+  const { saveStorage } = useLocalStorage('access_token')
 
   const onSignup = ({ name, email, password }: Form) => {
     signup.mutateAsync(
       { name, email, password },
       {
         onSuccess: (data) => {
-          console.log(data)
+          saveStorage(data.result)
           router.push('/')
         },
       }
