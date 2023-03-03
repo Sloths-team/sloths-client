@@ -51,16 +51,13 @@ const LoginView: FC = () => {
   const router = useRouter()
   const { saveStorage } = useLocalStorage('access_token')
 
-  const onLogin = ({ email, password }: Form) => {
-    login.mutateAsync(
-      { email, password },
-      {
-        onSuccess: (data) => {
-          saveStorage(data.result)
-          router.push('/')
-        },
-      }
-    )
+  const onLogin = (data: Form) => {
+    login.mutateAsync(data, {
+      onSuccess: (data) => {
+        saveStorage(data.result)
+        router.push('/')
+      },
+    })
   }
 
   useEffect(() => {

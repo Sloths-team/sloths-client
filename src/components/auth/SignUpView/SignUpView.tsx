@@ -80,16 +80,13 @@ const SignupView: FC = () => {
   const router = useRouter()
   const { saveStorage } = useLocalStorage('access_token')
 
-  const onSignup = ({ name, email, password }: Form) => {
-    signup.mutateAsync(
-      { name, email, password },
-      {
-        onSuccess: (data) => {
-          saveStorage(data.result)
-          router.push('/')
-        },
-      }
-    )
+  const onSignup = (data: Form) => {
+    signup.mutateAsync(data, {
+      onSuccess: (data) => {
+        saveStorage(data.result)
+        router.push('/')
+      },
+    })
   }
 
   useEffect(() => {

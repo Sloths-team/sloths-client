@@ -6,10 +6,12 @@ import React, {
   useReducer,
   createContext,
   useContext,
+  useEffect,
 } from 'react'
 import { LoginBody, SignUpBody } from '@lib/repo/auth'
 import { loginApi, signUpApi } from '../../../lib/apis/auth'
 import { UseMutationResult } from 'react-query'
+import useLocalStorage from '@lib/hooks/useLocalStorage'
 
 export type State = {
   isUserLoggedIn: boolean
@@ -27,6 +29,9 @@ const initialState: State = {
 
 type Action =
   | {
+      type: 'SET'
+    }
+  | {
       type: 'LOGIN'
     }
   | {
@@ -42,6 +47,12 @@ SessionContext.displayName = 'SessionContext'
 
 function sessionReducer(state: State, action: Action) {
   switch (action.type) {
+    case 'SET': {
+      return {
+        ...state,
+        isUserLoggedIn: true,
+      }
+    }
     case 'LOGIN': {
       return {
         ...state,
@@ -68,7 +79,7 @@ function sessionReducer(state: State, action: Action) {
 
 export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(sessionReducer, initialState)
-
+  const { storage } = useLocalStorage('acess_token')
   const login = useCallback((): UseMutationResult<
     any,
     unknown,
@@ -88,6 +99,7 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   }, [dispatch])
 
   const logout = useCallback(() => dispatch({ type: 'LOGOUT' }), [dispatch])
+  const set = useCallback(() => dispatch({ type: 'SET' }), [dispatch])
 
   const value: ContextValue = useMemo(
     () => ({
@@ -98,6 +110,10 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
     }),
     [state]
   )
+
+  useEffect(() => {
+    if (storage) set()
+  }, [storage])
 
   return <SessionContext.Provider value={value} {...props} />
 }
