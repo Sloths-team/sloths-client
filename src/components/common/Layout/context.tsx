@@ -79,7 +79,7 @@ function sessionReducer(state: State, action: Action) {
 
 export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(sessionReducer, initialState)
-  const { storage } = useLocalStorage('acess_token')
+  const { storage } = useLocalStorage('access_token')
   const login = useCallback((): UseMutationResult<
     any,
     unknown,
