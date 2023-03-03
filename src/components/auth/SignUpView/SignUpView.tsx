@@ -10,6 +10,7 @@ import { TfiFaceSmile, TfiEmail, TfiLock } from 'react-icons/tfi'
 import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
+
 type Form = {
   name: string
   email: string

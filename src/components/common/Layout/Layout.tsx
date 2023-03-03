@@ -71,13 +71,11 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <div style={{ height: '1000px' }}>
-      <SessionProvider>
-        {/* <Navbar links={navBarlinks} /> */}
-        <main>{children}</main>
-        {/* <Footer /> */}
-        <ModalUI />
-        <SidebarUI links={navBarlinks} />
-      </SessionProvider>
+      {/* <Navbar links={navBarlinks} /> */}
+      <main>{children}</main>
+      {/* <Footer /> */}
+      <ModalUI />
+      <SidebarUI links={navBarlinks} />
     </div>
   )
 }
