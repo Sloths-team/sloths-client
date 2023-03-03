@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 
 const useLocalStorage = (key: string) => {
-  const [_value, setValue] = useState()
-  const value = useMemo(() => localStorage.getItem(key), [])
+  const [value, setValue] = useState()
   const storage = JSON.stringify(value)
 
   const saveStorage = (value: string) => {
@@ -10,7 +9,7 @@ const useLocalStorage = (key: string) => {
   }
 
   useEffect(() => {
-    setValue(JSON.parse(value ?? ''))
+    setValue(JSON.parse(localStorage.getItem(key) ?? ''))
   }, [value])
 
   return { storage, saveStorage }
