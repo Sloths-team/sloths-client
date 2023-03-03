@@ -7,15 +7,17 @@ import React, {
   createContext,
   useContext,
 } from 'react'
+import { LoginBody, SignUpBody } from '@lib/repo/auth'
+import { loginApi, signUpApi } from '../../../lib/apis/auth'
 
-export interface State {
+export type State = {
   isUserLoggedIn: boolean
 }
 
 export type ContextValue = State & {
-  useLogin: () => void
+  useLogin: ({ email, password }: LoginBody) => void
+  useSignup: ({ name, email, password }: SignUpBody) => void
   useLogout: () => void
-  useSignup: () => void
 }
 
 const initialState: State = {
@@ -33,7 +35,7 @@ type Action =
       type: 'SIGNUP'
     }
 
-export const SessionContext = createContext<State>(initialState)
+export const SessionContext = createContext<ContextValue | null>(null)
 
 SessionContext.displayName = 'SessionContext'
 
@@ -45,17 +47,20 @@ function sessionReducer(state: State, action: Action) {
         isUserLoggedIn: true,
       }
     }
+    case 'SIGNUP': {
+      return {
+        ...state,
+        isUserLoggedIn: true,
+      }
+    }
     case 'LOGOUT': {
       return {
         ...state,
         isUserLoggedIn: false,
       }
     }
-    case 'SIGNUP': {
-      return {
-        ...state,
-        isUserLoggedIn: true,
-      }
+    default: {
+      return { ...state }
     }
   }
 }
@@ -63,9 +68,23 @@ function sessionReducer(state: State, action: Action) {
 export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(sessionReducer, initialState)
 
-  const useLogin = useCallback(() => dispatch({ type: 'LOGIN' }), [dispatch])
+  const useLogin = useCallback(
+    ({ email, password }: LoginBody) => {
+      dispatch({ type: 'LOGIN' })
+      return loginApi({ email, password })
+    },
+    [dispatch, loginApi]
+  )
+
+  const useSignup = useCallback(
+    ({ name, email, password }: SignUpBody) => {
+      dispatch({ type: 'SIGNUP' })
+      return signUpApi({ name, email, password })
+    },
+    [dispatch, signUpApi]
+  )
+
   const useLogout = useCallback(() => dispatch({ type: 'LOGOUT' }), [dispatch])
-  const useSignup = useCallback(() => dispatch({ type: 'SIGNUP' }), [dispatch])
 
   const value: ContextValue = useMemo(
     () => ({
@@ -74,18 +93,18 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
       useLogout,
       useSignup,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]
   )
 
   return <SessionContext.Provider value={value} {...props} />
 }
 
-export const useSession = (): ContextValue => {
+export const useSession = () => {
   const context = useContext(SessionContext)
   if (!context) {
     throw new Error(`useSession must be used within a SessionProvider`)
   }
+
   return context
 }
 

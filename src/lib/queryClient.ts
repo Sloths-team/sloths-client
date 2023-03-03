@@ -64,5 +64,7 @@ export const fetcher = async ({
 }
 
 export const QueryKeys = {
+  LOGIN: 'LOGIN',
+  SIGNUP: 'SIGNUP',
   ACCESS_TOKEN: 'ACCESS_TOKEN',
 }
