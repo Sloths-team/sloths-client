@@ -11,6 +11,8 @@ export const withLoggedIn = <P extends Props>(
     const { isUserLoggedIn } = useSession()
     const router = useRouter()
 
+    console.log(isUserLoggedIn)
+
     useEffect(() => {
       if (!isUserLoggedIn) {
         router.push('/login')
@@ -36,7 +38,7 @@ export const withNotLoggedIn = <P extends Props>(
 
     useEffect(() => {
       if (isUserLoggedIn) {
-        router.back()
+        router.push('/')
       }
     }, [isUserLoggedIn])
 
