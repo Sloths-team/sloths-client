@@ -45,8 +45,6 @@ export const fetcher = async ({
     },
   }
 
-  if (path) url += path
-
   if (params) {
     const searchParams = new URLSearchParams(params)
     url += '?' + searchParams.toString()
