@@ -45,10 +45,17 @@ const LoginView: FC = () => {
 
   const { email, password } = watch()
   const [disabled, setDisabled] = useState(true)
-  const { useLogin } = useSession()
+  const { login } = useSession()
 
   const onLogin = ({ email, password }: Form) => {
-    useLogin({ email, password })
+    login().mutateAsync(
+      { email, password },
+      {
+        onSuccess: (data) => {
+          console.log(data)
+        },
+      }
+    )
   }
 
   useEffect(() => {
@@ -75,7 +82,7 @@ const LoginView: FC = () => {
               className={cn(s.icon, {
                 [s.default]: !email.length,
                 [s.valid]: !!email && !errors.email,
-                [s.invalid]: errors.email,
+                [s.invalid]: email.length && errors.email,
               })}
             >
               <TfiEmail />
@@ -95,7 +102,7 @@ const LoginView: FC = () => {
               className={cn(s.icon, {
                 [s.default]: !password.length,
                 [s.valid]: !!password && !errors.password,
-                [s.invalid]: errors.password,
+                [s.invalid]: password.length && errors.password,
               })}
             >
               <TfiLock />

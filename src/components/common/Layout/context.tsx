@@ -9,15 +9,16 @@ import React, {
 } from 'react'
 import { LoginBody, SignUpBody } from '@lib/repo/auth'
 import { loginApi, signUpApi } from '../../../lib/apis/auth'
+import { UseMutationResult } from 'react-query'
 
 export type State = {
   isUserLoggedIn: boolean
 }
 
 export type ContextValue = State & {
-  useLogin: ({ email, password }: LoginBody) => void
-  useSignup: ({ name, email, password }: SignUpBody) => void
-  useLogout: () => void
+  login: () => UseMutationResult<any, unknown, LoginBody, unknown>
+  signup: () => UseMutationResult<any, unknown, SignUpBody, unknown>
+  logout: () => void
 }
 
 const initialState: State = {
@@ -68,30 +69,34 @@ function sessionReducer(state: State, action: Action) {
 export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(sessionReducer, initialState)
 
-  const useLogin = useCallback(
-    ({ email, password }: LoginBody) => {
-      dispatch({ type: 'LOGIN' })
-      return loginApi({ email, password })
-    },
-    [dispatch, loginApi]
-  )
+  const login = useCallback((): UseMutationResult<
+    any,
+    unknown,
+    LoginBody,
+    unknown
+  > => {
+    dispatch({ type: 'LOGIN' })
+    return loginApi()
+  }, [dispatch])
 
-  const useSignup = useCallback(
-    ({ name, email, password }: SignUpBody) => {
-      dispatch({ type: 'SIGNUP' })
-      return signUpApi({ name, email, password })
-    },
-    [dispatch, signUpApi]
-  )
+  const signup = useCallback((): UseMutationResult<
+    any,
+    unknown,
+    SignUpBody,
+    unknown
+  > => {
+    dispatch({ type: 'SIGNUP' })
+    return signUpApi()
+  }, [dispatch])
 
-  const useLogout = useCallback(() => dispatch({ type: 'LOGOUT' }), [dispatch])
+  const logout = useCallback(() => dispatch({ type: 'LOGOUT' }), [dispatch])
 
   const value: ContextValue = useMemo(
     () => ({
       ...state,
-      useLogin,
-      useLogout,
-      useSignup,
+      login,
+      logout,
+      signup,
     }),
     [state]
   )

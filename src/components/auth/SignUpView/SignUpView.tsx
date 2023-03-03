@@ -75,10 +75,17 @@ const SignupView: FC = () => {
   const passwordConfirmed =
     !errors.password && !errors.passwordCheck && password === passwordCheck
 
-  const { useSignup } = useSession()
+  const { signup } = useSession()
 
   const onSignup = ({ name, email, password }: Form) => {
-    useSignup({ name, email, password })
+    signup().mutateAsync(
+      { name, email, password },
+      {
+        onSuccess: (data) => {
+          console.log(data)
+        },
+      }
+    )
   }
 
   useEffect(() => {
@@ -105,7 +112,7 @@ const SignupView: FC = () => {
               className={cn(s.icon, {
                 [s.default]: !name.length,
                 [s.valid]: !!name && !errors.name,
-                [s.invalid]: errors.name,
+                [s.invalid]: name.length && errors.name,
               })}
             >
               <TfiFaceSmile />
@@ -124,7 +131,7 @@ const SignupView: FC = () => {
               className={cn(s.icon, {
                 [s.default]: !email.length,
                 [s.valid]: !!email && !errors.email,
-                [s.invalid]: errors.email,
+                [s.invalid]: email.length && errors.email,
               })}
             >
               <TfiEmail />
@@ -144,7 +151,7 @@ const SignupView: FC = () => {
               className={cn(s.icon, {
                 [s.default]: !email.length,
                 [s.valid]: !!email && !errors.email,
-                [s.invalid]: errors.email,
+                [s.invalid]: email.length && errors.email,
               })}
             >
               <TfiLock />
