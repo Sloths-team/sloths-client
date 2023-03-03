@@ -75,10 +75,10 @@ const SignupView: FC = () => {
   const passwordConfirmed =
     !errors.password && !errors.passwordCheck && password === passwordCheck
 
-  const { signup } = useSession()
+  const signup = useSession().signup()
 
   const onSignup = ({ name, email, password }: Form) => {
-    signup().mutateAsync(
+    signup.mutateAsync(
       { name, email, password },
       {
         onSuccess: (data) => {

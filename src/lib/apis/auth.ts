@@ -1,4 +1,4 @@
-import { login, LoginBody, signUp, SignUpBody } from '@lib/repo/auth'
+import { login, LoginBody, signUp, SignUpBody, logout } from '@lib/repo/auth'
 import { useMutation } from 'react-query'
 import { QueryKeys } from '../queryClient'
 
@@ -13,4 +13,8 @@ export const signUpApi = () => {
     [QueryKeys.SIGNUP],
     ({ name, email, password }: SignUpBody) => signUp({ name, email, password })
   )
+}
+
+export const logoutApi = () => {
+  return useMutation([QueryKeys.LOGOUT], () => logout())
 }

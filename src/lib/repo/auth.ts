@@ -26,3 +26,10 @@ export const signUp = async ({ name, email, password }: SignUpBody) => {
     body: { name, email, password },
   })
 }
+
+export const logout = async () => {
+  return await fetcher({
+    method: 'POST',
+    path: '/api/auth/logout',
+  })
+}

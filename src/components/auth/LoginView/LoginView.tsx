@@ -45,10 +45,10 @@ const LoginView: FC = () => {
 
   const { email, password } = watch()
   const [disabled, setDisabled] = useState(true)
-  const { login } = useSession()
+  const login = useSession().login()
 
   const onLogin = ({ email, password }: Form) => {
-    login().mutateAsync(
+    login.mutateAsync(
       { email, password },
       {
         onSuccess: (data) => {
