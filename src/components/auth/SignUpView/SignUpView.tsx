@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { TfiFaceSmile, TfiEmail, TfiLock } from 'react-icons/tfi'
 import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
+import { useSession } from '../../common/Layout/context'
 type Form = {
   name: string
   email: string
@@ -73,8 +74,10 @@ const SignupView: FC = () => {
   const passwordConfirmed =
     !errors.password && !errors.passwordCheck && password === passwordCheck
 
-  const onSignup = (data: Form) => {
-    console.log('>>>', data)
+  const { useSignup } = useSession()
+
+  const onSignup = ({ name, email, password }: Form) => {
+    useSignup({ name, email, password })
   }
 
   useEffect(() => {

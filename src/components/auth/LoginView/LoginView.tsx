@@ -10,6 +10,7 @@ import { TfiEmail, TfiLock } from 'react-icons/tfi'
 import { validateEmail, validatePassword } from '../SignUpView/SignUpView'
 import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
+import { useSession } from '../../common/Layout/context'
 
 type Form = {
   email: string
@@ -44,9 +45,10 @@ const LoginView: FC = () => {
 
   const { email, password } = watch()
   const [disabled, setDisabled] = useState(true)
+  const { useLogin } = useSession()
 
-  const onLogin = (data: Form) => {
-    console.log('>>', data)
+  const onLogin = ({ email, password }: Form) => {
+    useLogin({ email, password })
   }
 
   useEffect(() => {
