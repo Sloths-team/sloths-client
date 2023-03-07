@@ -13,6 +13,9 @@ import { useSession } from '../../common/Layout/context'
 import { useRouter } from 'next/router'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import { BASE_URL } from '@lib/queryClient'
+import cookie from 'js-cookie'
+
+console.log('cookie>> ', cookie.get('authorization'))
 
 type Form = {
   name: string

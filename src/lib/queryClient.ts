@@ -11,9 +11,9 @@ export const getClient = (() => {
           queries: {
             staleTime: Infinity,
             cacheTime: Infinity,
-            refetchOnMount: false,
-            refetchOnReconnect: false,
-            refetchOnWindowFocus: false,
+            // refetchOnMount: false,
+            // refetchOnReconnect: false,
+            // refetchOnWindowFocus: false,
           },
         },
       })

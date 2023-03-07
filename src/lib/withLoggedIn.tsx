@@ -11,8 +11,6 @@ export const withLoggedIn = <P extends Props>(
     const { isUserLoggedIn } = useSession()
     const router = useRouter()
 
-    console.log(isUserLoggedIn)
-
     useEffect(() => {
       if (!isUserLoggedIn) {
         router.push('/login')
