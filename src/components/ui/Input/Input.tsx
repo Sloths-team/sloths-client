@@ -26,7 +26,6 @@ const Input: FC<Props> = (props) => {
       render={({ field }) => (
         <input
           type={type}
-          autoComplete="off"
           autoCorrect="true"
           autoCapitalize="off"
           spellCheck="false"
