@@ -3,26 +3,27 @@ import { SignUpView, ForgotPasswordView, LoginView } from '@components/auth'
 import { useUI } from '@components/ui/context'
 import Modal from '../Modal'
 import Navbar from '../Navbar'
-import Footer from '../Footer'
 import { Sidebar } from '@components/ui'
 import type { Link as LinkProps } from '../UserNav/MenuSidebar'
-import { SessionProvider } from './context'
+import s from './Layout.module.css'
+import UserMenuView from '../UserNav/UserMenuView'
+import LogoutAnnounceView from '../UserNav/LogoutAnnounceView/LogoutAnnounceView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
   onCloseModal,
 }) => {
+  const { props } = useUI()
   const kindsOfModal: { [key: string]: FC } = {
-    LOGIN_VIEW: LoginView,
-    SIGNUP_VIEW: SignUpView,
-    FORGOT_VIEW: ForgotPasswordView,
+    USER_MENU_VIEW: UserMenuView,
+    LOGOUT_ANNOUNCE_VIEW: LogoutAnnounceView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]
 
   return (
     <Modal onClose={onCloseModal}>
-      <SelectedModalView />
+      <SelectedModalView {...props} />
     </Modal>
   )
 }
@@ -64,16 +65,18 @@ const SidebarUI: FC<{ links: LinkProps[] }> = ({ links }) => {
 }
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
-  const navBarlinks = [{ name: 'test', slug: 'test' }].map((c) => ({
+  const navBarlinks = [
+    { name: '메뉴 A', slug: 'menu_A' },
+    { name: '메뉴 B', slug: 'menu_B' },
+  ].map((c) => ({
     label: c.name,
     href: `/search/${c.slug}`,
   }))
 
   return (
     <div style={{ height: '1000px' }}>
-      {/* <Navbar links={navBarlinks} /> */}
-      <main>{children}</main>
-      {/* <Footer /> */}
+      <Navbar links={navBarlinks} />
+      <main className={s.main}>{children}</main>
       <ModalUI />
       <SidebarUI links={navBarlinks} />
     </div>

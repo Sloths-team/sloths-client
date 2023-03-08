@@ -13,6 +13,7 @@ import { loginApi, signUpApi } from '../../../lib/apis/auth'
 import { UseMutationResult } from 'react-query'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import { getCookie, deleteCookie } from '../../../lib/cookie'
+import { AUTH_TOKEN_KEY } from '../../../lib/constants'
 
 export type State = {
   isUserLoggedIn: boolean
@@ -80,7 +81,8 @@ function sessionReducer(state: State, action: Action) {
 
 export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(sessionReducer, initialState)
-  const { storage, saveStorage } = useLocalStorage('authorization')
+  const { storage, saveStorage, destroyStorage } =
+    useLocalStorage(AUTH_TOKEN_KEY)
   const login = useCallback((): UseMutationResult<
     any,
     unknown,
@@ -99,7 +101,10 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
     return signUpApi()
   }, [dispatch])
 
-  const logout = useCallback(() => dispatch({ type: 'LOGOUT' }), [dispatch])
+  const logout = useCallback(() => {
+    dispatch({ type: 'LOGOUT' })
+    destroyStorage()
+  }, [dispatch])
   const set = useCallback(() => dispatch({ type: 'SET' }), [dispatch])
 
   const value: ContextValue = useMemo(
@@ -116,11 +121,11 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
     if (storage) {
       set()
     } else if (document.cookie) {
-      const cookie = getCookie('authorization')
+      const cookie = getCookie(AUTH_TOKEN_KEY)
       saveStorage(cookie)
       set()
 
-      deleteCookie('authorization')
+      deleteCookie(AUTH_TOKEN_KEY)
     }
   }, [storage])
 
