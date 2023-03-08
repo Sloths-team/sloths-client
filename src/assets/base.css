@@ -32,6 +32,8 @@
   --accent-9: #000;
   --font-sans: -apple-system, system-ui, BlinkMacSystemFont, 'Helvetica Neue',
     'Helvetica', sans-serif;
+
+  --bg-blue: #1974e4;
 }
 
 [data-theme='dark'] {
@@ -120,4 +122,13 @@ body {
   img[loading='lazy'] {
     clip-path: inset(0.5px);
   }
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
