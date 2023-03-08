@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import { useSession } from '../Layout/context'
 import { useUI } from '@components/ui/context'
 import s from './UserNav.module.css'
 import { FaUserCircle } from 'react-icons/fa'

@@ -6,7 +6,7 @@ import Navbar from '../Navbar'
 import { Sidebar } from '@components/ui'
 import type { Link as LinkProps } from '../UserNav/MenuSidebar'
 import s from './Layout.module.css'
-import UserMenuView from '../UserNav/UserMenuView'
+import UserMenuView from '../UserNav/UserMenuView/UserMenuView'
 import LogoutAnnounceView from '../UserNav/LogoutAnnounceView/LogoutAnnounceView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({

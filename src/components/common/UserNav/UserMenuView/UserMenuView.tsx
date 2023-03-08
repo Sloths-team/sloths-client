@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import s from './UserNav.module.css'
-import { useSession } from '../Layout/context'
+import s from './UserMenuView.module.css'
+import { useSession } from '../../Layout/context'
 import { useRouter } from 'next/router'
 import { useUI } from '@components/ui/context'
 
@@ -11,7 +11,7 @@ const UserMenuView: FC<any> = (props) => {
   const router = useRouter()
 
   return (
-    <div className={s.user_menu_modal} {...inner}>
+    <div className={s.modal} {...inner}>
       <ul>
         {isUserLoggedIn && (
           <>

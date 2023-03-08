@@ -51,11 +51,7 @@ const FocusTrap: FC<Props> = ({ children, focusFirst = false }) => {
   //   // return returnFocus
   // }, [root, children])
 
-  return (
-    <div ref={root} tabIndex={-1}>
-      {children}
-    </div>
-  )
+  return <div ref={root}>{children}</div>
 }
 
 export default FocusTrap
