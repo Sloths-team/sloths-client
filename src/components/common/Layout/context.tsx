@@ -12,6 +12,7 @@ import { LoginBody, SignUpBody } from '@lib/repo/auth'
 import { loginApi, signUpApi } from '../../../lib/apis/auth'
 import { UseMutationResult } from 'react-query'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
+import { getCookie, deleteCookie } from '../../../lib/cookie'
 
 export type State = {
   isUserLoggedIn: boolean
@@ -79,7 +80,7 @@ function sessionReducer(state: State, action: Action) {
 
 export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(sessionReducer, initialState)
-  const { storage } = useLocalStorage('access_token')
+  const { storage, saveStorage } = useLocalStorage('authorization')
   const login = useCallback((): UseMutationResult<
     any,
     unknown,
@@ -112,7 +113,15 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   )
 
   useEffect(() => {
-    if (storage) set()
+    if (storage) {
+      set()
+    } else if (document.cookie) {
+      const cookie = getCookie('authorization')
+      saveStorage(cookie)
+      set()
+
+      deleteCookie('authorization')
+    }
   }, [storage])
 
   return <SessionContext.Provider value={value} {...props} />

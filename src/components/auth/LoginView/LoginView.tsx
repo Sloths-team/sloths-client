@@ -14,7 +14,6 @@ import { useSession } from '../../common/Layout/context'
 import { useRouter } from 'next/router'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import { BASE_URL } from '@lib/queryClient'
-import cookie from 'js-cookie'
 
 type Form = {
   email: string
@@ -61,8 +60,6 @@ const LoginView: FC = () => {
       },
     })
   }
-
-  console.log('cookie>> ', cookie.get('authorization'))
 
   useEffect(() => {
     setFocus('email')
