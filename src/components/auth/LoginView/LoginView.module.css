@@ -83,7 +83,7 @@
 }
 
 .root button[type='submit'] {
-  background-color: #1974e4;
+  background-color: var(--bg-blue);
   border: none;
   border-radius: 4px;
   font-weight: 700;
@@ -155,4 +155,42 @@
   justify-content: center;
   padding: 20px 0;
   font-size: 14px;
+}
+
+.email_confirm {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 12px;
+  background-color: #effef5;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.email_confirm p {
+  display: flex;
+  align-items: flex-start;
+  color: green;
+}
+
+.email_confirm__text {
+  max-width: 210px;
+}
+
+.email_confirm svg {
+  font-size: 16px;
+  margin-right: 4px;
+  margin-bottom: 1px;
+  color: #4ade80;
+}
+
+.email_confirm a {
+  font-weight: 700;
+  color: green;
+  text-decoration: none;
+}
+
+.email_confirm a:hover {
+  text-decoration: underline;
 }

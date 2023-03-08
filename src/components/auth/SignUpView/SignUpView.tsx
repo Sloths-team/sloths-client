@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState, useMemo } from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -10,9 +10,10 @@ import { TfiFaceSmile, TfiEmail, TfiLock } from 'react-icons/tfi'
 import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
-import { useRouter } from 'next/router'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
-import { BASE_URL } from '@lib/queryClient'
+import { BASE_URL } from '@lib/constants'
+import { AUTH_TOKEN_KEY } from '../../../lib/constants'
+import { RiCheckboxCircleFill } from 'react-icons/ri'
 
 type Form = {
   name: string
@@ -74,18 +75,16 @@ const SignupView: FC = () => {
 
   const { name, email, password, passwordCheck } = watch()
   const [disabled, setDisabled] = useState(true)
+  const [moveToEmailConfirm, setMoveToEmailConfirm] = useState(false)
   const passwordConfirmed =
     !errors.password && !errors.passwordCheck && password === passwordCheck
 
   const signup = useSession().signup()
-  const router = useRouter()
-  const { saveStorage } = useLocalStorage('access_token')
 
   const onSignup = (data: Form) => {
     signup.mutateAsync(data, {
-      onSuccess: (data) => {
-        saveStorage(data.result)
-        router.push('/')
+      onSuccess: () => {
+        setMoveToEmailConfirm(true)
       },
     })
   }
@@ -98,6 +97,20 @@ const SignupView: FC = () => {
     setFocus('name')
   }, [])
 
+  const [fullDomain, domainName] = useMemo(() => {
+    const fullMatch = email.match(/@(.+)$/)
+    const nameMatch = email.match(/@([^.]+)/)
+
+    if (fullMatch && nameMatch) {
+      const full = fullMatch[1]
+      const name = nameMatch[1]
+
+      return [full, name[0].toUpperCase() + name.slice(1)]
+    }
+
+    return []
+  }, [email])
+
   return (
     <div className={s.root}>
       <div className={s.header}>
@@ -106,6 +119,17 @@ const SignupView: FC = () => {
           로그인으로 이동하기
         </Link>
       </div>
+      {moveToEmailConfirm && (
+        <div className={s.email_confirm}>
+          <p>
+            <RiCheckboxCircleFill />
+            <span className={s.email_confirm__text}>
+              이메일로 전송된 링크로 인증을 완료해주세요.
+            </span>
+          </p>
+          <a href={`https://${fullDomain}`}>{domainName}로 이동하기 </a>
+        </div>
+      )}
       <form onSubmit={handleSubmit(onSignup)}>
         <label className={s.input_container}>
           <span className={s.label}>이름</span>
@@ -192,6 +216,7 @@ const SignupView: FC = () => {
           </Button>
         </div>
       </form>
+
       <div className={s.socials}>
         <span>또는</span>
         <Button type="button" className={s.github}>

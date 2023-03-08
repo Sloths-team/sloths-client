@@ -13,7 +13,8 @@ import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
 import { useRouter } from 'next/router'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
-import { BASE_URL } from '@lib/queryClient'
+import { BASE_URL } from '@lib/constants'
+import { AUTH_TOKEN_KEY } from '../../../lib/constants'
 
 type Form = {
   email: string
@@ -50,7 +51,7 @@ const LoginView: FC = () => {
   const [disabled, setDisabled] = useState(true)
   const login = useSession().login()
   const router = useRouter()
-  const { saveStorage } = useLocalStorage('access_token')
+  const { saveStorage } = useLocalStorage(AUTH_TOKEN_KEY)
 
   const onLogin = (data: Form) => {
     login.mutateAsync(data, {
