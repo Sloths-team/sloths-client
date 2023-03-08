@@ -1,0 +1,33 @@
+.modal {
+  width: 300px;
+  padding: 20px 30px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  background-color: #fff;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.content h1 {
+  font-size: 18px;
+  text-align: center;
+  padding: 15px 0;
+  margin-bottom: 20px;
+}
+
+.login {
+  background-color: var(--bg-blue);
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.login a {
+  display: block;
+  padding: 10px 20px;
+}

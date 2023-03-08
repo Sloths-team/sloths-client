@@ -1,0 +1,40 @@
+.root {
+  padding: 20px 30px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 68px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 24px;
+}
+
+.nav_items {
+  display: flex;
+  align-items: center;
+  margin-left: 40px;
+}
+
+.nav_item {
+  margin-right: 10px;
+}
+
+.nav_item a {
+  display: block;
+  padding: 5px;
+  text-decoration: none;
+  color: #000;
+  font-size: 18px;
+  font-weight: 600;
+}

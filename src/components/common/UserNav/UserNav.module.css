@@ -1,0 +1,37 @@
+.root {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.root svg {
+  font-size: 26px;
+  color: gray;
+}
+
+.user_menu_modal {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  width: 180px;
+  padding: 3px;
+}
+
+.user_menu_modal .item {
+  font-size: 14px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.user_menu_modal .item:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+.user_menu_modal .item:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}

@@ -1,12 +1,23 @@
 import { FC } from 'react'
 import { useSession } from '../Layout/context'
 import { useUI } from '@components/ui/context'
+import s from './UserNav.module.css'
+import { FaUserCircle } from 'react-icons/fa'
 
 const UserNav: FC = () => {
-  const { isUserLoggedIn } = useSession()
-  const { openModal, setModalView, closeModal } = useUI()
+  const { openModal, setModalView } = useUI()
 
-  return <div onClick={() => (isUserLoggedIn ? null : openModal())}>유저</div>
+  return (
+    <div
+      className={s.root}
+      onClick={() => {
+        setModalView('USER_MENU_VIEW')
+        openModal()
+      }}
+    >
+      <FaUserCircle />
+    </div>
+  )
 }
 
 export default UserNav
