@@ -1,5 +1,11 @@
-import React, { FC, ReactNode, useCallback, useMemo } from 'react'
-// import { ThemeProvider } from 'next-themes'
+import React, {
+  FC,
+  ReactNode,
+  useCallback,
+  useMemo,
+  createContext,
+  useReducer,
+} from 'react'
 
 export interface State {
   displaySidebar: boolean
@@ -8,6 +14,7 @@ export interface State {
   sidebarView: string
   modalView: string
   userAvatar: string
+  props: any
 }
 
 export type ContextValue = State & {
@@ -19,18 +26,44 @@ export type ContextValue = State & {
   closeDropdown: () => void
   openModal: () => void
   closeModal: () => void
-  setModalView: (value: MODAL_VIEWS) => void
-  setSidebarView: (view: SIDEBAR_VIEWS) => void
+  setModalView: (view: MODAL_VIEWS, props?: {}) => void
+  setSidebarView: (view: SIDEBAR_VIEWS, props?: {}) => void
   setUserAvatar: (view: string) => void
+}
+
+const MODAL_STYLE = {
+  USER_MENU_VIEW: {
+    outer: {},
+    inner: {
+      style: { position: 'absolute', top: '60px', right: '30px' },
+    },
+  },
+
+  LOGOUT_ANNOUNCE_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(0,0,0,0.7)' },
+    },
+    inner: {
+      style: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+  },
 }
 
 const initialState = {
   displaySidebar: false,
   displayDropdown: false,
   displayModal: false,
-  modalView: 'LOGIN_VIEW',
+  modalView: 'USER_MENU_VIEW',
   sidebarView: 'CART_VIEW',
   userAvatar: '',
+  props: {
+    ...MODAL_STYLE['USER_MENU_VIEW'],
+  },
 }
 
 type Action =
@@ -55,26 +88,23 @@ type Action =
   | {
       type: 'SET_MODAL_VIEW'
       view: MODAL_VIEWS
+      props: {}
     }
   | {
       type: 'SET_SIDEBAR_VIEW'
       view: SIDEBAR_VIEWS
+      props: {}
     }
   | {
       type: 'SET_USER_AVATAR'
       value: string
     }
 
-type MODAL_VIEWS =
-  | 'SIGNUP_VIEW'
-  | 'LOGIN_VIEW'
-  | 'FORGOT_VIEW'
-  | 'NEW_SHIPPING_ADDRESS'
-  | 'NEW_PAYMENT_METHOD'
+type MODAL_VIEWS = 'USER_MENU_VIEW' | 'LOGOUT_ANNOUNCE_VIEW'
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
 
-export const UIContext = React.createContext<State | any>(initialState)
+export const UIContext = createContext<State | any>(initialState)
 
 UIContext.displayName = 'UIContext'
 
@@ -121,12 +151,14 @@ function uiReducer(state: State, action: Action) {
       return {
         ...state,
         modalView: action.view,
+        props: { ...action.props, ...MODAL_STYLE[action.view] },
       }
     }
     case 'SET_SIDEBAR_VIEW': {
       return {
         ...state,
         sidebarView: action.view,
+        props: action.props,
       }
     }
     case 'SET_USER_AVATAR': {
@@ -139,7 +171,7 @@ function uiReducer(state: State, action: Action) {
 }
 
 export const UIProvider: FC<{ children?: ReactNode }> = (props) => {
-  const [state, dispatch] = React.useReducer(uiReducer, initialState)
+  const [state, dispatch] = useReducer(uiReducer, initialState)
 
   const openSidebar = useCallback(
     () => dispatch({ type: 'OPEN_SIDEBAR' }),
@@ -185,12 +217,14 @@ export const UIProvider: FC<{ children?: ReactNode }> = (props) => {
   )
 
   const setModalView = useCallback(
-    (view: MODAL_VIEWS) => dispatch({ type: 'SET_MODAL_VIEW', view }),
+    (view: MODAL_VIEWS, props: {} = {}) =>
+      dispatch({ type: 'SET_MODAL_VIEW', view, props }),
     [dispatch]
   )
 
   const setSidebarView = useCallback(
-    (view: SIDEBAR_VIEWS) => dispatch({ type: 'SET_SIDEBAR_VIEW', view }),
+    (view: SIDEBAR_VIEWS, props: {} = {}) =>
+      dispatch({ type: 'SET_SIDEBAR_VIEW', view, props }),
     [dispatch]
   )
 
