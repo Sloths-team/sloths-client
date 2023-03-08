@@ -8,12 +8,16 @@ import {
 } from 'react'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import FocusTrap from './FocusTrap'
+import s from './Modal.module.css'
+import { useUI } from '@components/ui/context'
+
 interface Props {
   className?: string
   children?: ReactNode
   onClose: () => void
 }
 const Modal: FC<Props> = ({ children, onClose }) => {
+  const { props } = useUI()
   const ref = useRef() as MutableRefObject<HTMLDivElement>
 
   const handleKey = useCallback((e: KeyboardEvent) => {
@@ -35,9 +39,8 @@ const Modal: FC<Props> = ({ children, onClose }) => {
   }, [handleKey])
 
   return (
-    <div>
-      <div ref={ref}>
-        <button onClick={() => onClose()}>x</button>
+    <div className={s.root} onClick={onClose} {...props.outer}>
+      <div ref={ref} onClick={(e) => e.stopPropagation()}>
         <FocusTrap focusFirst>{children}</FocusTrap>
       </div>
     </div>

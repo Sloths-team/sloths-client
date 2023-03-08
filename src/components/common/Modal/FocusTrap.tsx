@@ -44,12 +44,12 @@ const FocusTrap: FC<Props> = ({ children, focusFirst = false }) => {
     tabbable(root.current)[0]?.focus()
   }
 
-  useEffect(() => {
-    trapFocus()
-    // setTimeout(trapFocus, 0)
+  // useEffect(() => {
+  //   trapFocus()
+  //   // setTimeout(trapFocus, 0)
 
-    // return returnFocus
-  }, [root, children])
+  //   // return returnFocus
+  // }, [root, children])
 
   return (
     <div ref={root} tabIndex={-1}>
