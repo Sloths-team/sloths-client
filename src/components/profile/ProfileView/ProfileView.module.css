@@ -21,11 +21,11 @@
 }
 
 .form .left_section {
-  margin-right: 40px;
+  min-width: 360px;
 }
 
 .form .right_section {
-  min-width: 440px;
+  margin-left: 40px;
 }
 
 .input_container {
@@ -58,7 +58,7 @@
   display: block;
   min-width: 260px;
   min-height: 260px;
-  border-radius: 20px;
+  border-radius: 50%;
   background-color: lightgray;
 }
 

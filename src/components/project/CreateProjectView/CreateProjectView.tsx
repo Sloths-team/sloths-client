@@ -6,6 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import s from './CreateProjectView.module.css'
 import { useRouter } from 'next/router'
 import Textarea from '@components/ui/Textarea'
+import { useSession } from '../../common/Layout/context'
+import { MdNotificationImportant } from 'react-icons/md'
+import Link from 'next/link'
 
 type Form = {
   title: string
@@ -23,6 +26,8 @@ const CreateProjectView: FC = () => {
     repo_url: yup.string(),
     root: yup.number(),
   })
+
+  const { user } = useSession()
 
   const {
     control,
@@ -50,14 +55,19 @@ const CreateProjectView: FC = () => {
       </div>
       <form onSubmit={() => {}} className={s.form}>
         <div className={s.left_section}>
-          <div className={s.input_container}>
+          <label className={s.file_preview}>
+            <Input type="file" control={control} name="media_url" />
+          </label>
+        </div>
+        <div className={s.right_section}>
+          <label className={s.input_container}>
             <span className={s.label}>프로젝트명</span>
             <Input
               control={control}
               name="title"
               placeholder="열심히 만든 이번 프로젝트, 뭐라 불리면 좋을까요?"
             />
-          </div>
+          </label>
           <label className={s.input_container}>
             <span className={s.label}>설명</span>
             <Textarea
@@ -68,12 +78,15 @@ const CreateProjectView: FC = () => {
           </label>
           <label className={s.input_container}>
             <span className={s.label}>Github 레포명</span>
-            <Input type="email" control={control} name="repo_url" />
-          </label>
-        </div>
-        <div className={s.right_section}>
-          <label className={s.file_preview}>
-            <Input type="file" control={control} name="media_url" />
+            {user?.github_nickname ? (
+              <Input type="email" control={control} name="repo_url" />
+            ) : (
+              <button className={s.github}>
+                <MdNotificationImportant />
+                아직 깃헙 계정이 등록되어 있지 않습니다.{' '}
+                <Link href={`/${user?.nickname}`}>등록하러 가기</Link>
+              </button>
+            )}
           </label>
         </div>
       </form>

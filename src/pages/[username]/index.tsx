@@ -1,7 +1,8 @@
 import { Layout } from '@components/common'
+import ProfileView from '@components/profile/ProfileView'
 
 const Profile = () => {
-  return <div>프로필</div>
+  return <ProfileView />
 }
 
 Profile.Layout = Layout

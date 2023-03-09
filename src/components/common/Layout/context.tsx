@@ -14,9 +14,18 @@ import { UseMutationResult } from 'react-query'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import { getCookie, deleteCookie } from '../../../lib/cookie'
 import { AUTH_TOKEN_KEY } from '../../../lib/constants'
+import { getUserApi } from '../../../lib/apis/user'
+
+type User = {
+  id: number
+  email: string
+  nickname: string
+  github_nickname: string
+}
 
 export type State = {
   isUserLoggedIn: boolean
+  user: User | null
 }
 
 export type ContextValue = State & {
@@ -27,11 +36,13 @@ export type ContextValue = State & {
 
 const initialState: State = {
   isUserLoggedIn: false,
+  user: null,
 }
 
 type Action =
   | {
       type: 'SET'
+      user: User
     }
   | {
       type: 'LOGIN'
@@ -53,6 +64,7 @@ function sessionReducer(state: State, action: Action) {
       return {
         ...state,
         isUserLoggedIn: true,
+        user: action.user,
       }
     }
     case 'LOGIN': {
@@ -71,6 +83,7 @@ function sessionReducer(state: State, action: Action) {
       return {
         ...state,
         isUserLoggedIn: false,
+        user: null,
       }
     }
     default: {
@@ -83,6 +96,9 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(sessionReducer, initialState)
   const { storage, saveStorage, destroyStorage } =
     useLocalStorage(AUTH_TOKEN_KEY)
+
+  const { data } = getUserApi()
+
   const login = useCallback((): UseMutationResult<
     any,
     unknown,
@@ -105,7 +121,11 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
     dispatch({ type: 'LOGOUT' })
     destroyStorage()
   }, [dispatch])
-  const set = useCallback(() => dispatch({ type: 'SET' }), [dispatch])
+
+  const set = useCallback(
+    (user: User) => dispatch({ type: 'SET', user }),
+    [dispatch]
+  )
 
   const value: ContextValue = useMemo(
     () => ({
@@ -118,16 +138,19 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   )
 
   useEffect(() => {
-    if (storage) {
-      set()
-    } else if (document.cookie) {
+    if (document.cookie) {
       const cookie = getCookie(AUTH_TOKEN_KEY)
       saveStorage(cookie)
-      set()
-
       deleteCookie(AUTH_TOKEN_KEY)
     }
+
   }, [storage])
+
+  useEffect(() => {
+    if (data?.result) {
+      set(data.result[0])
+    }
+}, [data])
 
   return <SessionContext.Provider value={value} {...props} />
 }

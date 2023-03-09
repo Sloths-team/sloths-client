@@ -34,6 +34,7 @@
     'Helvetica', sans-serif;
 
   --bg-blue: #1974e4;
+  --bg-gray:#f0f2f6;
 }
 
 [data-theme='dark'] {

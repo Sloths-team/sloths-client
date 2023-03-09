@@ -1,6 +1,7 @@
 import { QueryClient } from 'react-query'
 import { AnyOBJ } from './types'
-import { BASE_URL, GITHUB_BASE_URL } from './constants'
+import { AUTH_TOKEN_KEY, BASE_URL, GITHUB_BASE_URL } from './constants'
+import useLocalStorage from './hooks/useLocalStorage'
 
 export const getClient = (() => {
   let client: QueryClient | null = null
@@ -23,26 +24,36 @@ export const getClient = (() => {
   }
 })()
 
+type Options = RequestInit & {
+  headers: HeadersInit & {
+    Authorization?: string
+  }
+}
+
 export const fetcher = async ({
   method,
   path,
   body,
   params,
+  token,
 }: {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
   path?: string
   body?: AnyOBJ
   params?: AnyOBJ
+  token?: string
 }) => {
   let url = `${BASE_URL}${path}`
 
-  const options: RequestInit = {
+  const options: Options = {
     method,
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': BASE_URL,
     },
   }
+
+  if (token) options.headers.Authorization = `Bearer ${token}`
 
   if (params) {
     const searchParams = new URLSearchParams(params)
@@ -57,6 +68,7 @@ export const fetcher = async ({
     return json
   } catch (error) {
     console.error(error)
+    return error
   }
 }
 
@@ -94,5 +106,6 @@ export const githubFetcher = async ({
     return json
   } catch (error) {
     console.error(error)
+    return error
   }
 }

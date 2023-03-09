@@ -1,6 +1,5 @@
 import { fetcher } from '@lib/queryClient'
-
-type ID = number | string
+import { ID } from '@lib/types'
 
 export const getAllProjects = async (portfolioId: ID) => {
   return await fetcher({
