@@ -40,6 +40,7 @@ const LoginView: FC = () => {
     handleSubmit,
     setFocus,
     watch,
+    setError,
     formState: { isValid, errors },
   } = useForm<Form>({
     resolver: yupResolver(schema),
@@ -56,6 +57,12 @@ const LoginView: FC = () => {
   const onLogin = (data: Form) => {
     login.mutateAsync(data, {
       onSuccess: (data) => {
+        if (!data.isSuccess) {
+          setError('email', { message: '이메일과 비밀번호를 확인해주세요.' })
+          setError('password', {})
+          setFocus('email')
+          return
+        }
         saveStorage(data.result)
         router.push('/')
       },
@@ -123,6 +130,9 @@ const LoginView: FC = () => {
           <Button type="submit" disabled={disabled}>
             로그인
           </Button>
+          {errors?.email?.message && (
+            <p className={s.error}>{errors?.email?.message}</p>
+          )}
         </div>
       </form>
       <div>

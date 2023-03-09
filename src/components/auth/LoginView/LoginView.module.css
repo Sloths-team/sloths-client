@@ -194,3 +194,10 @@
 .email_confirm a:hover {
   text-decoration: underline;
 }
+
+.error {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f5533d;
+  margin-top: 10px;
+}

@@ -66,6 +66,7 @@ const SignupView: FC = () => {
     handleSubmit,
     setFocus,
     watch,
+    setError,
     formState: { isValid, errors },
   } = useForm<Form>({
     resolver: yupResolver(schema),
@@ -78,24 +79,6 @@ const SignupView: FC = () => {
   const [moveToEmailConfirm, setMoveToEmailConfirm] = useState(false)
   const passwordConfirmed =
     !errors.password && !errors.passwordCheck && password === passwordCheck
-
-  const signup = useSession().signup()
-
-  const onSignup = (data: Form) => {
-    signup.mutateAsync(data, {
-      onSuccess: () => {
-        setMoveToEmailConfirm(true)
-      },
-    })
-  }
-
-  useEffect(() => {
-    setDisabled(!isValid || !passwordConfirmed)
-  }, [isValid, passwordConfirmed])
-
-  useEffect(() => {
-    setFocus('name')
-  }, [])
 
   const [fullDomain, domainName] = useMemo(() => {
     const fullMatch = email.match(/@(.+)$/)
@@ -110,6 +93,29 @@ const SignupView: FC = () => {
 
     return []
   }, [email])
+
+  const signup = useSession().signup()
+
+  const onSignup = (data: Form) => {
+    signup.mutateAsync(data, {
+      onSuccess: (data) => {
+        if (!data.isSuccess) {
+          setError('email', { message: '이미 사용중인 이메일입니다.' })
+          setFocus('email')
+          return
+        }
+        setMoveToEmailConfirm(true)
+      },
+    })
+  }
+
+  useEffect(() => {
+    setDisabled(!isValid || !passwordConfirmed)
+  }, [isValid, passwordConfirmed])
+
+  useEffect(() => {
+    setFocus('name')
+  }, [])
 
   return (
     <div className={s.root}>
@@ -214,6 +220,9 @@ const SignupView: FC = () => {
           <Button type="submit" disabled={disabled}>
             회원가입
           </Button>
+          {errors?.email?.message && (
+            <p className={s.error}>{errors?.email?.message}</p>
+          )}
         </div>
       </form>
 
