@@ -9,6 +9,8 @@
   left: 0;
   right: 0;
   height: 68px;
+  background-color: #fff;
+  z-index: 2000;
 }
 
 .left {

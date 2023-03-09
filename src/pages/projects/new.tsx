@@ -1,4 +1,4 @@
-import CreateProjectView from '@components/project/CreateProjectView'
+import { CreateProjectView } from '@components/project'
 import { Layout } from '@components/common'
 
 const CreateProject = () => {

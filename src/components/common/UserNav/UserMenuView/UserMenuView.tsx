@@ -22,16 +22,16 @@ const UserMenuView: FC<any> = (props) => {
                 closeModal()
               }}
             >
-              프로필
+              내 프로필
             </li>
             <li
               className={s.item}
               onClick={() => {
-                router.push('/projects/new')
+                router.push('/projects')
                 closeModal()
               }}
             >
-              프로젝트 기록하기
+              프로젝트 관리하기
             </li>
             <li
               className={s.item}

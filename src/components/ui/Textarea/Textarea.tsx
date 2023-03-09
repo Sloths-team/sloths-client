@@ -1,36 +1,26 @@
-import React, { FC, InputHTMLAttributes, ChangeEvent } from 'react'
+import React, { FC, TextareaHTMLAttributes, ChangeEvent } from 'react'
 import { Control, Controller } from 'react-hook-form'
 
-export type Props = InputHTMLAttributes<HTMLInputElement> & {
-  type?: 'email' | 'password' | 'number' | 'text' | 'file'
+export type Props = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   name: string
   control: Control<any>
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 const Input: FC<Props> = (props) => {
-  const {
-    id,
-    type = 'text',
-    value,
-    name,
-    control,
-    onChange = () => {},
-    ...rest
-  } = props
+  const { id, value, name, control, onChange = () => {}, ...rest } = props
 
   return (
     <Controller
       name={name}
       control={control}
       render={({ field }) => (
-        <input
-          type={type}
+        <textarea
           autoCorrect="true"
           autoCapitalize="off"
           spellCheck="false"
           {...field}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
             onChange(e)
             field.onChange(e.target.value)
           }}
