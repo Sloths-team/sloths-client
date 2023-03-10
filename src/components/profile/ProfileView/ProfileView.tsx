@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -9,96 +9,115 @@ import Textarea from '@components/ui/Textarea'
 import { useSession } from '../../common/Layout/context'
 import { GoMarkGithub } from 'react-icons/go'
 import Button from '@components/ui/Button'
+import { getUserApi } from '@lib/apis/user'
+import { SiNotion } from 'react-icons/si'
+import { SlNote } from 'react-icons/sl'
+import { HiOutlinePhone } from 'react-icons/hi'
 
 type Form = {
   email: string
-  // profile_url: string
+  profile_url: string
   nickname?: string
   github_nickname?: string
-  // blog_url?: string
-  // notion_email?: string
+  blog_url?: string
+  notion_email?: string
   bio?: string
-  // phone?: string
+  phone?: string
 }
 
 const ProfileView: FC = () => {
   const schema = yup.object({
     email: yup.string(),
-    // profile_url: yup.string(),
+    profile_url: yup.string(),
     nickname: yup.string(),
     github_nickname: yup.string(),
-    // blog_url: yup.string(),
-    // notion_email: yup.string(),
+    blog_url: yup.string(),
+    notion_email: yup.string(),
     bio: yup.string(),
-    // phone: yup.string(),
+    phone: yup.string(),
   })
 
   const defaultValues = {
     email: '',
-    // profile_url: '',
+    profile_url: '',
     nickname: '',
     github_nickname: '',
-    // blog_url: '',
-    // notion_email: '',
+    blog_url: '',
+    notion_email: '',
     bio: '',
-    // phone: '',
+    phone: '',
   } as const
 
-  const { user } = useSession()
-  const {
-    control,
-    setFocus,
-    watch,
-    setError,
-    formState: { isValid, errors },
-    setValue,
-  } = useForm<Form>({
+  const { data } = getUserApi()
+  const user = useMemo(() => {
+    const {
+      profileUrl: profile_url,
+      githubNickname: github_nickname,
+      blogUrl: blog_url,
+      notionEmail: notion_email,
+      bio,
+      phone,
+      regisToken,
+      ...rest
+    } = data?.result || {}
+
+    return {
+      profile_url: profile_url || '',
+      github_nickname: github_nickname || '',
+      blog_url: blog_url || '',
+      notion_email: notion_email || '',
+      bio: bio || '',
+      phone: phone || '',
+      ...rest,
+    }
+  }, [data?.result])
+
+  const { control, setFocus, watch, setValue, handleSubmit } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues,
   })
 
   const [disabled, setDisabled] = useState(false)
   const router = useRouter()
-  const buttonRef = useRef<HTMLButtonElement>(null)
+  const githubRef = useRef<HTMLButtonElement>(null)
   const values = watch()
-  const data = {
-    nickname: user?.nickname || '',
-    email: user?.email || '',
-    github_nickname: user?.github_nickname || '',
-  } as const
 
   useEffect(() => {
     if (user) {
-      Object.keys(data).forEach((key) =>
-        setValue(key as keyof typeof data, data[key as keyof typeof data])
+      Object.keys(user).forEach((key) =>
+        setValue(
+          key as keyof typeof defaultValues,
+          user[key as keyof typeof defaultValues]
+        )
       )
     }
   }, [user])
 
   useEffect(() => {
     const { target } = router.query
-    if (target === 'github' && buttonRef.current) {
-      buttonRef.current.focus()
+    if (target === 'github' && githubRef.current) {
+      githubRef.current.focus()
     } else {
       setFocus('nickname')
     }
   }, [])
 
   useEffect(() => {
-    const disabled = Object.keys(data).every(
-      (key) => values[key as keyof typeof data] === ''
-    )
+    if (user) {
+      const disabled = Object.keys(values).every(
+        (key) => values[key as keyof typeof defaultValues] === ''
+      )
 
-    console.log('<<<', disabled)
-    setDisabled(disabled)
-  }, [values, setDisabled])
+      setDisabled(disabled)
+    }
+  }, [setDisabled, user])
 
   return (
     <div className={s.root}>
       <div className={s.header}>
         <h1>내 프로필</h1>
       </div>
-      <form onSubmit={() => {}} className={s.form}>
+      <form onSubmit={handleSubmit(() => {})} className={s.form}>
         <div className={s.form_inner}>
           <div className={s.left_section}>
             <label className={s.input_container}>
@@ -122,7 +141,7 @@ const ProfileView: FC = () => {
               <button
                 type="button"
                 className={s.github}
-                ref={buttonRef}
+                ref={githubRef}
                 onClick={() => {}}
               >
                 <div className={s.icon}>
@@ -133,6 +152,33 @@ const ProfileView: FC = () => {
                   name="github_nickname"
                   placeholder="닉네임"
                 />
+              </button>
+            </label>
+            <label className={s.input_container}>
+              <span className={s.label}>블로그 주소</span>
+              <button type="button" className={s.github} onClick={() => {}}>
+                <div className={s.icon}>
+                  <SlNote />
+                </div>
+                <Input control={control} name="blog_url" />
+              </button>
+            </label>
+            <label className={s.input_container}>
+              <span className={s.label}>Notion 이메일</span>
+              <button type="button" className={s.github} onClick={() => {}}>
+                <div className={s.icon}>
+                  <SiNotion />
+                </div>
+                <Input control={control} name="notion_email" />
+              </button>
+            </label>
+            <label className={s.input_container}>
+              <span className={s.label}>전화번호</span>
+              <button type="button" className={s.github} onClick={() => {}}>
+                <div className={s.icon}>
+                  <HiOutlinePhone />
+                </div>
+                <Input control={control} name="phone" />
               </button>
             </label>
           </div>
