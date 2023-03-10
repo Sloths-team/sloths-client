@@ -80,6 +80,7 @@
 
 .input_wrapper input:focus {
   outline: none;
+  /* outline: 2px solid var(--bg-blue); */
 }
 
 .root button[type='submit'] {

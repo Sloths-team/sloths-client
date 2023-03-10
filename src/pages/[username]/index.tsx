@@ -1,5 +1,6 @@
 import { Layout } from '@components/common'
 import ProfileView from '@components/profile/ProfileView'
+import { withLoggedIn } from '@lib/withLoggedIn'
 
 const Profile = () => {
   return <ProfileView />
@@ -7,4 +8,4 @@ const Profile = () => {
 
 Profile.Layout = Layout
 
-export default Profile
+export default withLoggedIn(Profile)

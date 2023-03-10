@@ -14,7 +14,7 @@ import { UseMutationResult } from 'react-query'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import { getCookie, deleteCookie } from '../../../lib/cookie'
 import { AUTH_TOKEN_KEY } from '../../../lib/constants'
-import { getUserApi } from '../../../lib/apis/user'
+import { getLoggedInUserApi, getUserApi } from '../../../lib/apis/user'
 
 type User = {
   id: number
@@ -97,8 +97,9 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const { storage, saveStorage, destroyStorage } =
     useLocalStorage(AUTH_TOKEN_KEY)
 
-  const { data } = getUserApi()
+  const { data } = getLoggedInUserApi()
 
+  console.log(data)
   const login = useCallback((): UseMutationResult<
     any,
     unknown,
@@ -143,14 +144,19 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
       saveStorage(cookie)
       deleteCookie(AUTH_TOKEN_KEY)
     }
+  }, [])
 
-  }, [storage])
+  // useEffect(() => {
+  //   if (storage) set(data?.result)
+  // }, [storage])
 
   useEffect(() => {
     if (data?.result) {
-      set(data.result[0])
+      set(data.result)
     }
-}, [data])
+
+    if (storage) set(data?.result)
+  }, [data])
 
   return <SessionContext.Provider value={value} {...props} />
 }

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -7,36 +7,44 @@ import s from './ProfileView.module.css'
 import { useRouter } from 'next/router'
 import Textarea from '@components/ui/Textarea'
 import { useSession } from '../../common/Layout/context'
-import { MdNotificationImportant } from 'react-icons/md'
-import Link from 'next/link'
+import { GoMarkGithub } from 'react-icons/go'
+import Button from '@components/ui/Button'
 
 type Form = {
-  name: string
   email: string
-  profile_url: string
+  // profile_url: string
   nickname?: string
   github_nickname?: string
-  blog_url?: string
-  notion_email?: string
+  // blog_url?: string
+  // notion_email?: string
   bio?: string
-  phone?: string
+  // phone?: string
 }
 
 const ProfileView: FC = () => {
   const schema = yup.object({
-    name: yup.string(),
     email: yup.string(),
-    profile_url: yup.string(),
+    // profile_url: yup.string(),
     nickname: yup.string(),
     github_nickname: yup.string(),
-    blog_url: yup.string(),
-    notion_email: yup.string(),
+    // blog_url: yup.string(),
+    // notion_email: yup.string(),
     bio: yup.string(),
-    phone: yup.string(),
+    // phone: yup.string(),
   })
 
-  const { user } = useSession()
+  const defaultValues = {
+    email: '',
+    // profile_url: '',
+    nickname: '',
+    github_nickname: '',
+    // blog_url: '',
+    // notion_email: '',
+    bio: '',
+    // phone: '',
+  } as const
 
+  const { user } = useSession()
   const {
     control,
     setFocus,
@@ -46,35 +54,44 @@ const ProfileView: FC = () => {
     setValue,
   } = useForm<Form>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      name: '',
-      email: '',
-      profile_url: '',
-      nickname: '',
-      github_nickname: '',
-      blog_url: '',
-      notion_email: '',
-      bio: '',
-      phone: '',
-    },
+    defaultValues,
   })
 
-  const { name } = watch()
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    setFocus('name')
-  }, [])
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const values = watch()
+  const data = {
+    nickname: user?.nickname || '',
+    email: user?.email || '',
+    github_nickname: user?.github_nickname || '',
+  } as const
 
   useEffect(() => {
     if (user) {
-      const { nickname, email, github_nickname } = user
-      setValue('email', email)
-      setValue('nickname', nickname)
-      setValue('github_nickname', github_nickname)
+      Object.keys(data).forEach((key) =>
+        setValue(key as keyof typeof data, data[key as keyof typeof data])
+      )
     }
   }, [user])
+
+  useEffect(() => {
+    const { target } = router.query
+    if (target === 'github' && buttonRef.current) {
+      buttonRef.current.focus()
+    } else {
+      setFocus('nickname')
+    }
+  }, [])
+
+  useEffect(() => {
+    const disabled = Object.keys(data).every(
+      (key) => values[key as keyof typeof data] === ''
+    )
+
+    console.log('<<<', disabled)
+    setDisabled(disabled)
+  }, [values, setDisabled])
 
   return (
     <div className={s.root}>
@@ -82,41 +99,52 @@ const ProfileView: FC = () => {
         <h1>내 프로필</h1>
       </div>
       <form onSubmit={() => {}} className={s.form}>
-        <div className={s.left_section}>
-          <label className={s.input_container}>
-            <span className={s.label}>이름</span>
-            <Input control={control} name="name" />
-          </label>
-          <label className={s.input_container}>
-            <span className={s.label}>닉네임</span>
-            <Input control={control} name="nickname" />
-          </label>
-          <label className={s.input_container}>
-            <span className={s.label}>이메일</span>
-            <Input control={control} name="email" />
-          </label>
-          <label className={s.input_container}>
-            <span className={s.label}>소개</span>
-            <Textarea control={control} name="bio" />
-          </label>
-          <label className={s.input_container}>
-            <span className={s.label}>Github 레포명</span>
-            {user?.github_nickname ? (
-              <Input type="email" control={control} name="repo_url" />
-            ) : (
-              <button className={s.github}>
-                <MdNotificationImportant />
-                아직 깃헙 계정이 등록되어 있지 않습니다.{' '}
-                <Link href={`/${user?.nickname}`}>등록하러 가기</Link>
+        <div className={s.form_inner}>
+          <div className={s.left_section}>
+            <label className={s.input_container}>
+              <span className={s.label}>닉네임</span>
+              <Input control={control} name="nickname" />
+            </label>
+            <label className={s.input_container}>
+              <span className={s.label}>이메일</span>
+              <Input control={control} name="email" />
+            </label>
+            <label className={s.input_container}>
+              <span className={s.label}>소개</span>
+              <Textarea
+                control={control}
+                name="bio"
+                placeholder="자신을 소개해보세요."
+              />
+            </label>
+            <label className={s.input_container}>
+              <span className={s.label}>Github 계정</span>
+              <button
+                type="button"
+                className={s.github}
+                ref={buttonRef}
+                onClick={() => {}}
+              >
+                <div className={s.icon}>
+                  <GoMarkGithub />
+                </div>
+                <Input
+                  control={control}
+                  name="github_nickname"
+                  placeholder="닉네임"
+                />
               </button>
-            )}
-          </label>
+            </label>
+          </div>
+          <div className={s.right_section}>
+            <label className={s.file_preview}>
+              <Input type="file" control={control} name="media_url" />
+            </label>
+          </div>
         </div>
-        <div className={s.right_section}>
-          <label className={s.file_preview}>
-            <Input type="file" control={control} name="media_url" />
-          </label>
-        </div>
+        <Button className={s.save} disabled={disabled}>
+          저장하기
+        </Button>
       </form>
     </div>
   )

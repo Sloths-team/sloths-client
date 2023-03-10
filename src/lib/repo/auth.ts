@@ -1,17 +1,17 @@
 import { fetcher } from '@lib/queryClient'
 
 export type SignUpBody = {
-  name: string
+  nickname: string
   email: string
   password: string
 }
 export type LoginBody = Pick<SignUpBody, 'email' | 'password'>
 
-export const signUp = async ({ name, email, password }: SignUpBody) => {
+export const signUp = async ({ nickname, email, password }: SignUpBody) => {
   return await fetcher({
     method: 'POST',
     path: '/api/auth/signup',
-    body: { name, email, password },
+    body: { nickname, email, password },
   })
 }
 

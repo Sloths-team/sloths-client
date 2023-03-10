@@ -84,7 +84,15 @@ const CreateProjectView: FC = () => {
               <button className={s.github}>
                 <MdNotificationImportant />
                 아직 깃헙 계정이 등록되어 있지 않습니다.{' '}
-                <Link href={`/${user?.nickname}`}>등록하러 가기</Link>
+                <Link
+                  href={{
+                    pathname: `/${user?.nickname}`,
+                    query: { target: 'github' },
+                  }}
+                  as={`/${user?.nickname}`}
+                >
+                  등록하러 가기
+                </Link>
               </button>
             )}
           </label>

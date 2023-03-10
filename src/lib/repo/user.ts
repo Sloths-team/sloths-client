@@ -1,7 +1,12 @@
 import { fetcher } from '@lib/queryClient'
-import { ID } from '@lib/types'
-import useLocalStorage from '../hooks/useLocalStorage'
-import { AUTH_TOKEN_KEY } from '../constants'
+
+export const getLoggedInUser = async (token: string) => {
+  return await fetcher({
+    method: 'GET',
+    path: '/api/users/me',
+    token,
+  })
+}
 
 export const getUser = async (token: string) => {
   return await fetcher({
@@ -11,9 +16,10 @@ export const getUser = async (token: string) => {
   })
 }
 
-export const getUserById = async (userId: ID) => {
+export const getUserById = async (userId: I, token: string) => {
   return await fetcher({
     method: 'GET',
     path: `/api/users/${userId}`,
+    token,
   })
 }

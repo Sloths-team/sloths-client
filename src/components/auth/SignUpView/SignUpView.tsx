@@ -10,19 +10,18 @@ import { TfiFaceSmile, TfiEmail, TfiLock } from 'react-icons/tfi'
 import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
-import useLocalStorage from '@lib/hooks/useLocalStorage'
 import { BASE_URL } from '@lib/constants'
 import { AUTH_TOKEN_KEY } from '../../../lib/constants'
 import { RiCheckboxCircleFill } from 'react-icons/ri'
 
 type Form = {
-  name: string
+  nickname: string
   email: string
   password: string
   passwordCheck: string
 }
 
-export const validateName = (value: string = '') =>
+export const validateNickname = (value: string = '') =>
   /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{1,16}$/.test(value)
 
 export const validateEmail = (value: string = '') =>
@@ -35,12 +34,12 @@ export const validatePassword = (value: string = '') =>
 
 const SignupView: FC = () => {
   const schema = yup.object({
-    name: yup
+    nickname: yup
       .string()
       .test(
         'validation',
         '영어, 숫자, 한글 중 1자 이상 16자 이하',
-        validateName
+        validateNickname
       ),
     email: yup
       .string()
@@ -70,11 +69,11 @@ const SignupView: FC = () => {
     formState: { isValid, errors },
   } = useForm<Form>({
     resolver: yupResolver(schema),
-    defaultValues: { name: '', email: '', password: '', passwordCheck: '' },
+    defaultValues: { nickname: '', email: '', password: '', passwordCheck: '' },
     mode: 'onChange',
   })
 
-  const { name, email, password, passwordCheck } = watch()
+  const { nickname, email, password, passwordCheck } = watch()
   const [disabled, setDisabled] = useState(true)
   const [moveToEmailConfirm, setMoveToEmailConfirm] = useState(false)
   const passwordConfirmed =
@@ -114,7 +113,7 @@ const SignupView: FC = () => {
   }, [isValid, passwordConfirmed])
 
   useEffect(() => {
-    setFocus('name')
+    setFocus('nickname')
   }, [])
 
   return (
@@ -142,16 +141,16 @@ const SignupView: FC = () => {
           <div className={s.input_wrapper}>
             <div
               className={cn(s.icon, {
-                [s.default]: !name.length,
-                [s.valid]: !!name && !errors.name,
-                [s.invalid]: name.length && errors.name,
+                [s.default]: !nickname.length,
+                [s.valid]: !!nickname && !errors.nickname,
+                [s.invalid]: nickname.length && errors.nickname,
               })}
             >
               <TfiFaceSmile />
             </div>
             <Input
               control={control}
-              name="name"
+              name="nickname"
               placeholder="이름을 입력해 주세요"
             />
           </div>

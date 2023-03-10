@@ -5,6 +5,7 @@ export const QUERY_KEYS = {
   LOGOUT: 'LOGOUT',
   ACCESS_TOKEN: 'ACCESS_TOKEN',
   USER: 'USER',
+  LOGGEDIN_USER: 'LOGGEDIN_USER',
 } as const
 
 export const BASE_URL = 'http://localhost:8080'
