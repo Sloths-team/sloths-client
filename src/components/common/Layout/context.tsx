@@ -97,9 +97,8 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const { storage, saveStorage, destroyStorage } =
     useLocalStorage(AUTH_TOKEN_KEY)
 
-  const { data } = getLoggedInUserApi()
+  const { data } = getUserApi()
 
-  console.log(data)
   const login = useCallback((): UseMutationResult<
     any,
     unknown,
