@@ -11,6 +11,8 @@ import Link from 'next/link'
 import { FaCaretDown } from 'react-icons/fa'
 import { useUI } from '@components/ui/context'
 import { useProject } from '../context'
+import { GITHUB_HTML_URL } from '@lib/constants'
+import Button from '@components/ui/Button'
 
 type Form = {
   title: string
@@ -31,7 +33,7 @@ const CreateProjectView: FC = () => {
 
   const { user } = useSession()
 
-  const { control, setFocus, watch } = useForm<Form>({
+  const { control, setFocus, setValue, handleSubmit } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues: { title: '', description: '', media_url: '', repo_url: '' },
   })
@@ -39,16 +41,24 @@ const CreateProjectView: FC = () => {
   const { setModalView, openModal } = useUI()
   const { repo_url } = useProject()
 
+  const onSubmit = (data: Form) => {
+    console.log(data)
+  }
+
   useEffect(() => {
     setFocus('title')
   }, [])
+
+  useEffect(() => {
+    setValue('repo_url', `${GITHUB_HTML_URL}/${repo_url}`)
+  }, [user, repo_url])
 
   return (
     <div className={s.root}>
       <div className={s.header}>
         <h1>프로젝트 만들기</h1>
       </div>
-      <form onSubmit={() => {}} className={s.form}>
+      <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
         <div className={s.left_section}>
           <label className={s.file_preview}>
             <Input type="file" control={control} name="media_url" />
@@ -100,6 +110,11 @@ const CreateProjectView: FC = () => {
               </button>
             )}
           </label>
+          <div className={s.button_container}>
+            <Button type="submit" className={s.button}>
+              만들기
+            </Button>
+          </div>
         </div>
       </form>
     </div>

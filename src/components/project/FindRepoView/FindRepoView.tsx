@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
 import s from './FindRepoView.module.css'
 import { useRouter } from 'next/router'
 import { useUI } from '@components/ui/context'
@@ -23,7 +23,7 @@ const FindRepoView: FC<any> = (props) => {
     search: yup.string(),
   })
 
-  const { control, setFocus, watch, setValue, handleSubmit } = useForm<Form>({
+  const { control, setFocus } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues: { search: '' },
   })
@@ -35,13 +35,19 @@ const FindRepoView: FC<any> = (props) => {
   const [results, setResults] = useState<string[]>([])
   const handleResults = useCallback(
     (val: string) =>
-      setResults((res) => res.filter((item) => item.indexOf(val) > -1)),
+      setResults((res) =>
+        res.filter((item: any) => item.full_name.indexOf(val) > -1)
+      ),
     [setResults]
   )
 
   useEffect(() => {
     setFocus('search')
   }, [])
+
+  useEffect(() => {
+    setResults(data?.map((d: any) => d.f))
+  }, [data])
 
   return (
     <div className={s.modal} {...inner}>
@@ -56,7 +62,14 @@ const FindRepoView: FC<any> = (props) => {
           <span className={s.icon}>
             <CiSearch />
           </span>
-          <Input control={control} name="search" placeholder="찾기" />
+          <Input
+            control={control}
+            name="search"
+            placeholder="찾기"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleResults(e.target.value)
+            }
+          />
         </label>
         <div className={s.section}>
           <ul className={s.items}>
@@ -72,6 +85,7 @@ const FindRepoView: FC<any> = (props) => {
                 {repo.full_name}
               </li>
             ))}
+            {!data && '로딩중...'}
           </ul>
         </div>
       </div>

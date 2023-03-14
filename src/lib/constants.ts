@@ -9,5 +9,8 @@ export const QUERY_KEYS = {
   GITHUB: 'GITHUB',
 } as const
 
-export const BASE_URL = 'http://localhost:8080'
-export const GITHUB_BASE_URL = 'https://api.github.com'
+export const BASE_API_URL = 'http://localhost:8080'
+export const GITHUB_BASE_API_URL = 'https://api.github.com'
+export const GITHUB_HTML_URL = 'https://github.com'
+
+export const REPO_NAME = 'github_repo_name'

@@ -63,6 +63,7 @@
 .input_container textarea {
   font-family: inherit;
   resize: none;
+  min-height: 150px;
 }
 
 .file_preview {
@@ -106,4 +107,13 @@
 
 .github a:hover {
   text-decoration: underline;
+}
+
+.button_container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.button {
+  width: 100%;
 }

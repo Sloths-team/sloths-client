@@ -69,12 +69,12 @@ const MODAL_STYLE = {
 const initialState = {
   displaySidebar: false,
   displayDropdown: false,
-  displayModal: true,
-  modalView: 'FIND_REPO_VIEW',
+  displayModal: false,
+  modalView: 'USER_MENU_VIEW',
   sidebarView: 'CART_VIEW',
   userAvatar: '',
   props: {
-    ...MODAL_STYLE['FIND_REPO_VIEW'],
+    ...MODAL_STYLE['USER_MENU_VIEW'],
   },
 }
 

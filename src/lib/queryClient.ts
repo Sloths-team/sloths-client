@@ -1,7 +1,6 @@
 import { QueryClient } from 'react-query'
 import { AnyOBJ } from './types'
-import { AUTH_TOKEN_KEY, BASE_URL, GITHUB_BASE_URL } from './constants'
-import useLocalStorage from './hooks/useLocalStorage'
+import { BASE_API_URL, GITHUB_BASE_API_URL } from './constants'
 
 export const getClient = (() => {
   let client: QueryClient | null = null
@@ -43,13 +42,13 @@ export const fetcher = async ({
   params?: AnyOBJ
   token?: string
 }) => {
-  let url = `${BASE_URL}${path}`
+  let url = `${BASE_API_URL}${path}`
 
   const options: Options = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': BASE_URL,
+      'Access-Control-Allow-Origin': BASE_API_URL,
     },
   }
 
@@ -83,7 +82,7 @@ export const githubFetcher = async ({
   body?: AnyOBJ
   params?: AnyOBJ
 }) => {
-  let url = `${GITHUB_BASE_URL}${path}`
+  let url = `${GITHUB_BASE_API_URL}${path}`
 
   const options: RequestInit = {
     method,

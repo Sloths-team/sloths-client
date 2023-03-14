@@ -1,3 +1,5 @@
+import { REPO_NAME } from '@lib/constants'
+import useLocalStorage from '@lib/hooks/useLocalStorage'
 import React, {
   FC,
   ReactNode,
@@ -6,6 +8,7 @@ import React, {
   useReducer,
   createContext,
   useContext,
+  useEffect,
 } from 'react'
 
 export type State = {
@@ -46,9 +49,13 @@ function projectReducer(state: State, action: Action) {
 
 export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(projectReducer, initialState)
+  const { storage, saveStorage } = useLocalStorage(REPO_NAME)
 
   const setRepoUrl = useCallback(
-    (url: string) => dispatch({ type: 'SET', url }),
+    (url: string) => {
+      dispatch({ type: 'SET', url })
+      saveStorage(url)
+    },
     [dispatch]
   )
 
@@ -59,6 +66,12 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
     }),
     [state]
   )
+
+  useEffect(() => {
+    if (storage) {
+      setRepoUrl(storage)
+    }
+  }, [storage])
 
   return <ProjectContext.Provider value={value} {...props} />
 }

@@ -76,7 +76,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   }))
 
   return (
-    <div style={{ height: '1000px' }}>
+    <div>
       <Navbar links={navBarlinks} />
       <main className={s.main}>{children}</main>
       <ModalUI />

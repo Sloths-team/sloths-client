@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 
-const useLocalStorage = (key: string) => {
+const useLocalStorage = (
+  key: string,
+  defaultValue: string | undefined = ''
+) => {
   const [value, setValue] = useState('')
 
   const saveStorage = (value: string) => {
@@ -13,7 +16,7 @@ const useLocalStorage = (key: string) => {
 
   useEffect(() => {
     const data = localStorage.getItem(key)
-    if (data) setValue(data)
+    setValue(data || defaultValue)
   }, [saveStorage])
 
   return { storage: value, saveStorage, destroyStorage }

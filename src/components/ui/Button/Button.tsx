@@ -6,6 +6,7 @@ import {
   useRef,
 } from 'react'
 import { mergeRefs } from 'react-merge-refs'
+import s from './Button.module.css'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string
@@ -37,9 +38,8 @@ const Button: FC<Props> = forwardRef((props, buttonRef) => {
   return (
     <Component
       aria-pressed={active}
-      // data-variant={variant}
       ref={mergeRefs([ref, buttonRef])}
-      className={className}
+      className={`${s.root} ${className}`}
       disabled={disabled}
       style={{ width, ...style }}
       {...rest}
