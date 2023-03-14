@@ -12,9 +12,9 @@ export const withLoggedIn = <P extends Props>(
     const router = useRouter()
 
     useEffect(() => {
-      if (!isUserLoggedIn) {
-        router.push('/login')
-      }
+      // if (!isUserLoggedIn) {
+      //   router.push('/login')
+      // }
     }, [isUserLoggedIn])
 
     return <WrappedComponent {...props} />
