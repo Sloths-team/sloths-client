@@ -38,10 +38,22 @@ const MODAL_STYLE = {
       style: { position: 'absolute', top: '60px', right: '30px' },
     },
   },
-
   LOGOUT_ANNOUNCE_VIEW: {
     outer: {
       style: { backgroundColor: 'rgba(0,0,0,0.7)' },
+    },
+    inner: {
+      style: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+  },
+  FIND_REPO_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(255,255,255,0.7)' },
     },
     inner: {
       style: {
@@ -57,12 +69,12 @@ const MODAL_STYLE = {
 const initialState = {
   displaySidebar: false,
   displayDropdown: false,
-  displayModal: false,
-  modalView: 'USER_MENU_VIEW',
+  displayModal: true,
+  modalView: 'FIND_REPO_VIEW',
   sidebarView: 'CART_VIEW',
   userAvatar: '',
   props: {
-    ...MODAL_STYLE['USER_MENU_VIEW'],
+    ...MODAL_STYLE['FIND_REPO_VIEW'],
   },
 }
 
@@ -100,7 +112,7 @@ type Action =
       value: string
     }
 
-type MODAL_VIEWS = 'USER_MENU_VIEW' | 'LOGOUT_ANNOUNCE_VIEW'
+type MODAL_VIEWS = 'USER_MENU_VIEW' | 'LOGOUT_ANNOUNCE_VIEW' | 'FIND_REPO_VIEW'
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
 

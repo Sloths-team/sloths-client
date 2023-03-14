@@ -98,7 +98,15 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
     useLocalStorage(AUTH_TOKEN_KEY)
 
   const { data } = getLoggedInUserApi()
-  const user = data?.result
+
+  const user = useMemo(() => {
+    const { githubNickname, profileUrl, ...rest } = data?.result || {}
+    return {
+      github_nickname: githubNickname || '',
+      profile_url: profileUrl || '',
+      ...rest,
+    }
+  }, [data?.result])
 
   const login = useCallback((): UseMutationResult<
     any,

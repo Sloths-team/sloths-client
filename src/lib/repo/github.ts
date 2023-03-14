@@ -1,11 +1,9 @@
-import { fetcher } from '@lib/queryClient'
+import { fetcher, githubFetcher } from '@lib/queryClient'
 import { useSession } from '../../components/common/Layout/context'
 
-export const getAllRepos = async () => {
-  const { user } = useSession()
-
-  return await fetcher({
+export const getAllRepos = async (githubNickname: string) => {
+  return await githubFetcher({
     method: 'GET',
-    path: `/users/${user?.github_nickname}/repos`,
+    path: `/users/${githubNickname}/repos`,
   })
 }

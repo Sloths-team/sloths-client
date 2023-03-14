@@ -1,14 +1,16 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState, useMemo } from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import s from './CreateProjectView.module.css'
-import { useRouter } from 'next/router'
 import Textarea from '@components/ui/Textarea'
 import { useSession } from '../../common/Layout/context'
 import { MdNotificationImportant } from 'react-icons/md'
 import Link from 'next/link'
+import { FaCaretDown } from 'react-icons/fa'
+import { useUI } from '@components/ui/context'
+import { useProject } from '../context'
 
 type Form = {
   title: string
@@ -29,20 +31,13 @@ const CreateProjectView: FC = () => {
 
   const { user } = useSession()
 
-  const {
-    control,
-    setFocus,
-    watch,
-    setError,
-    formState: { isValid, errors },
-  } = useForm<Form>({
+  const { control, setFocus, watch } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues: { title: '', description: '', media_url: '', repo_url: '' },
   })
 
-  const { title } = watch()
-  const [disabled, setDisabled] = useState(true)
-  const router = useRouter()
+  const { setModalView, openModal } = useUI()
+  const { repo_url } = useProject()
 
   useEffect(() => {
     setFocus('title')
@@ -65,7 +60,7 @@ const CreateProjectView: FC = () => {
             <Input
               control={control}
               name="title"
-              placeholder="열심히 만든 이번 프로젝트, 뭐라 불리면 좋을까요?"
+              placeholder="공유할 프로젝트 이름을 입력해 주세요."
             />
           </label>
           <label className={s.input_container}>
@@ -79,7 +74,16 @@ const CreateProjectView: FC = () => {
           <label className={s.input_container}>
             <span className={s.label}>Github 레포명</span>
             {user?.github_nickname ? (
-              <Input type="email" control={control} name="repo_url" />
+              <div
+                className={s.find}
+                onClick={() => {
+                  setModalView('FIND_REPO_VIEW')
+                  openModal()
+                }}
+              >
+                {repo_url || '레포 찾기'}
+                <FaCaretDown />
+              </div>
             ) : (
               <button className={s.github}>
                 <MdNotificationImportant />

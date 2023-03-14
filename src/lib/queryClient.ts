@@ -78,7 +78,7 @@ export const githubFetcher = async ({
   body,
   params,
 }: {
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+  method: 'GET'
   path?: string
   body?: AnyOBJ
   params?: AnyOBJ
@@ -89,7 +89,6 @@ export const githubFetcher = async ({
     method,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': GITHUB_BASE_URL,
     },
   }
 

@@ -1,4 +1,5 @@
 import { fetcher } from '@lib/queryClient'
+import { ID } from '@lib/types'
 
 export const getLoggedInUser = async (token: string) => {
   return await fetcher({
@@ -16,7 +17,7 @@ export const getUser = async (token: string) => {
   })
 }
 
-export const getUserById = async (userId: I, token: string) => {
+export const getUserById = async (userId: ID, token: string) => {
   return await fetcher({
     method: 'GET',
     path: `/api/users/${userId}`,

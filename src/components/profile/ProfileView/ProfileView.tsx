@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import s from './ProfileView.module.css'
 import { useRouter } from 'next/router'
 import Textarea from '@components/ui/Textarea'
-import { useSession } from '../../common/Layout/context'
 import { GoMarkGithub } from 'react-icons/go'
 import Button from '@components/ui/Button'
 import { getUserApi } from '@lib/apis/user'
@@ -49,12 +48,13 @@ const ProfileView: FC = () => {
   } as const
 
   const { data } = getUserApi()
+
   const user = useMemo(() => {
     const {
-      profileUrl: profile_url,
-      githubNickname: github_nickname,
-      blogUrl: blog_url,
-      notionEmail: notion_email,
+      profileUrl,
+      githubNickname,
+      blogUrl,
+      notionEmail,
       bio,
       phone,
       regisToken,
@@ -62,10 +62,10 @@ const ProfileView: FC = () => {
     } = data?.result || {}
 
     return {
-      profile_url: profile_url || '',
-      github_nickname: github_nickname || '',
-      blog_url: blog_url || '',
-      notion_email: notion_email || '',
+      profile_url: profileUrl || '',
+      github_nickname: githubNickname || '',
+      blog_url: blogUrl || '',
+      notion_email: notionEmail || '',
       bio: bio || '',
       phone: phone || '',
       ...rest,

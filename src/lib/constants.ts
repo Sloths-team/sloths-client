@@ -6,6 +6,7 @@ export const QUERY_KEYS = {
   ACCESS_TOKEN: 'ACCESS_TOKEN',
   USER: 'USER',
   LOGGEDIN_USER: 'LOGGEDIN_USER',
+  GITHUB: 'GITHUB',
 } as const
 
 export const BASE_URL = 'http://localhost:8080'

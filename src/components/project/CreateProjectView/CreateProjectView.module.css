@@ -42,11 +42,22 @@
 }
 
 .input_container input,
+.input_container .find,
 .input_container textarea {
   padding: 12px;
   font-size: 15px;
   border: 1px solid #dfdfdf;
   border-radius: 4px;
+}
+
+.input_container .find {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.input_container .find svg {
+  font-size: 20px;
 }
 
 .input_container textarea {

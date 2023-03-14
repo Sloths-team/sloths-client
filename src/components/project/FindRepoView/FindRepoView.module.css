@@ -1,0 +1,80 @@
+.modal {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  width: 480px;
+
+  /* padding: 10px; */
+}
+
+.header {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.header h2 {
+  font-size: 18px;
+}
+.close {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-40%);
+  border: none;
+  background-color: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: gray;
+}
+
+.input_container {
+  display: flex;
+  border: 1px solid #dfdfdf;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.input_container .icon {
+  padding: 10px;
+  padding-right: 0;
+  font-size: 20px;
+}
+
+.input_container input {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: none;
+}
+
+.input_container input:focus {
+  outline: none;
+}
+
+.input_container:focus {
+  border: 1px solid var(--bg-blue);
+}
+
+.main {
+  padding: 20px;
+}
+
+.section {
+  overflow: scroll;
+  height: 560px;
+}
+
+.items {
+  margin-top: 10px;
+}
+
+.item {
+  padding: 10px;
+  border-bottom: 1px solid #dfdfdf;
+  cursor: pointer;
+}

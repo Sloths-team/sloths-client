@@ -6,7 +6,8 @@ import { useUI } from '@components/ui/context'
 
 const UserMenuView: FC<any> = (props) => {
   const { inner } = props
-  const { isUserLoggedIn, logout } = useSession()
+  const { isUserLoggedIn, logout, user } = useSession()
+
   const { closeModal, setModalView, openModal } = useUI()
   const router = useRouter()
 
@@ -18,7 +19,7 @@ const UserMenuView: FC<any> = (props) => {
             <li
               className={s.item}
               onClick={() => {
-                router.push('/username')
+                router.push(`/${user?.nickname}`)
                 closeModal()
               }}
             >

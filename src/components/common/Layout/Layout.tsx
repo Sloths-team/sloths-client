@@ -8,6 +8,7 @@ import type { Link as LinkProps } from '../UserNav/MenuSidebar'
 import s from './Layout.module.css'
 import UserMenuView from '../UserNav/UserMenuView/UserMenuView'
 import LogoutAnnounceView from '../UserNav/LogoutAnnounceView/LogoutAnnounceView'
+import FindRepoView from '@components/project/FindRepoView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -17,6 +18,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   const kindsOfModal: { [key: string]: FC } = {
     USER_MENU_VIEW: UserMenuView,
     LOGOUT_ANNOUNCE_VIEW: LogoutAnnounceView,
+    FIND_REPO_VIEW: FindRepoView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]
