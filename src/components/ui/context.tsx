@@ -64,6 +64,19 @@ const MODAL_STYLE = {
       },
     },
   },
+  CONTINUE_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(0,0,0,0.7)' },
+    },
+    inner: {
+      style: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+  },
 }
 
 const initialState = {
@@ -112,7 +125,11 @@ type Action =
       value: string
     }
 
-type MODAL_VIEWS = 'USER_MENU_VIEW' | 'LOGOUT_ANNOUNCE_VIEW' | 'FIND_REPO_VIEW'
+type MODAL_VIEWS =
+  | 'USER_MENU_VIEW'
+  | 'LOGOUT_ANNOUNCE_VIEW'
+  | 'FIND_REPO_VIEW'
+  | 'CONTINUE_VIEW'
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
 

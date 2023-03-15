@@ -11,7 +11,8 @@ export const loginApi = () => {
 export const signUpApi = () => {
   return useMutation(
     [QUERY_KEYS.SIGNUP],
-    ({ name, email, password }: SignUpBody) => signUp({ name, email, password })
+    ({ nickname, email, password }: SignUpBody) =>
+      signUp({ nickname, email, password })
   )
 }
 

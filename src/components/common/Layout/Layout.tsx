@@ -9,6 +9,7 @@ import s from './Layout.module.css'
 import UserMenuView from '../UserNav/UserMenuView/UserMenuView'
 import LogoutAnnounceView from '../UserNav/LogoutAnnounceView/LogoutAnnounceView'
 import FindRepoView from '@components/project/FindRepoView'
+import ContinueView from '@components/project/ContinueView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -19,6 +20,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     USER_MENU_VIEW: UserMenuView,
     LOGOUT_ANNOUNCE_VIEW: LogoutAnnounceView,
     FIND_REPO_VIEW: FindRepoView,
+    CONTINUE_VIEW: ContinueView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useMemo } from 'react'
+import { FC, useEffect, useState, ChangeEvent } from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -13,6 +13,7 @@ import { useUI } from '@components/ui/context'
 import { useProject } from '../context'
 import { GITHUB_HTML_URL } from '@lib/constants'
 import Button from '@components/ui/Button'
+import { createProjectApi } from '@lib/apis/project'
 
 type Form = {
   title: string
@@ -33,16 +34,25 @@ const CreateProjectView: FC = () => {
 
   const { user } = useSession()
 
-  const { control, setFocus, setValue, handleSubmit } = useForm<Form>({
+  const { control, setFocus, setValue, handleSubmit, watch } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues: { title: '', description: '', media_url: '', repo_url: '' },
   })
 
   const { setModalView, openModal } = useUI()
   const { repo_url } = useProject()
+  const [media, setMedia] = useState<string | ArrayBuffer>('')
+  const { media_url } = watch()
 
-  const onSubmit = (data: Form) => {
-    console.log(data)
+  // const createProject = createProjectApi()
+
+  const onSubmit = (data: Form) => {}
+
+  const handleMedia = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader()
+    const files = e.target.files ?? []
+    reader.readAsDataURL(files[0])
+    reader.onload = () => setMedia(reader.result ?? '')
   }
 
   useEffect(() => {
@@ -53,6 +63,8 @@ const CreateProjectView: FC = () => {
     setValue('repo_url', `${GITHUB_HTML_URL}/${repo_url}`)
   }, [user, repo_url])
 
+  useEffect(() => {}, [])
+
   return (
     <div className={s.root}>
       <div className={s.header}>
@@ -61,7 +73,14 @@ const CreateProjectView: FC = () => {
       <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
         <div className={s.left_section}>
           <label className={s.file_preview}>
-            <Input type="file" control={control} name="media_url" />
+            <Input
+              hidden
+              type="file"
+              control={control}
+              name="media_url"
+              onChange={handleMedia}
+            />
+            {media && <img src={media.toString()} alt={media_url} />}
           </label>
         </div>
         <div className={s.right_section}>
