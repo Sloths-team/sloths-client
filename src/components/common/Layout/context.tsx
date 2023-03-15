@@ -14,13 +14,14 @@ import { UseMutationResult } from 'react-query'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import { getCookie, deleteCookie } from '../../../lib/cookie'
 import { AUTH_TOKEN_KEY } from '../../../lib/constants'
-import { getLoggedInUserApi, getUserApi } from '../../../lib/apis/user'
+import { getLoggedInUserApi } from '../../../lib/apis/user'
 
 type User = {
   id: number
   email: string
   nickname: string
   github_nickname: string
+  portfolio_id: number
 }
 
 export type State = {
@@ -100,12 +101,16 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   const { data } = getLoggedInUserApi()
 
   const user = useMemo(() => {
-    const { githubNickname, profileUrl, ...rest } = data?.result || {}
-    return {
-      github_nickname: githubNickname || '',
-      profile_url: profileUrl || '',
-      ...rest,
-    }
+    const { githubNickname, profileUrl, portfolioId, ...rest } =
+      data?.result || {}
+    return data?.result
+      ? {
+          github_nickname: githubNickname || '',
+          profile_url: profileUrl || '',
+          portfolio_id: portfolioId || '',
+          ...rest,
+        }
+      : {}
   }, [data?.result])
 
   const login = useCallback((): UseMutationResult<
@@ -155,8 +160,8 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
   }, [])
 
   useEffect(() => {
-    if (storage) set(user)
-  }, [storage, data])
+    set(user)
+  }, [storage, data?.result])
 
   return <SessionContext.Provider value={value} {...props} />
 }

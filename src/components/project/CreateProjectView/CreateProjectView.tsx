@@ -34,9 +34,16 @@ const CreateProjectView: FC = () => {
 
   const { user } = useSession()
 
+  console.log(user)
   const { control, setFocus, setValue, handleSubmit, watch } = useForm<Form>({
     resolver: yupResolver(schema),
-    defaultValues: { title: '', description: '', media_url: '', repo_url: '' },
+    defaultValues: {
+      title: '',
+      description: '',
+      media_url: '',
+      repo_url: '',
+      root: null,
+    },
   })
 
   const { setModalView, openModal } = useUI()
@@ -44,9 +51,27 @@ const CreateProjectView: FC = () => {
   const [media, setMedia] = useState<string | ArrayBuffer>('')
   const { media_url } = watch()
 
-  // const createProject = createProjectApi()
+  const createProject = createProjectApi(user?.portfolio_id || 0)
 
-  const onSubmit = (data: Form) => {}
+  const onSubmit = ({
+    media_url: mediaUrl,
+    repo_url: repoUrl,
+    ...rest
+  }: Form) => {
+    const form = {
+      mediaUrl,
+      repoUrl,
+      ...rest,
+    }
+
+    createProject?.mutate(form, {
+      onSuccess: (data) => {
+        console.log(data)
+        if (!data.isSuccess) {
+        }
+      },
+    })
+  }
 
   const handleMedia = (e: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader()

@@ -67,7 +67,6 @@ export const fetcher = async ({
     return json
   } catch (error) {
     console.error(error)
-    return error
   }
 }
 

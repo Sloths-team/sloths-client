@@ -11,6 +11,8 @@ const UserMenuView: FC<any> = (props) => {
   const { closeModal, setModalView, openModal } = useUI()
   const router = useRouter()
 
+  if (!user) return <div>로딩중...</div>
+
   return (
     <div className={s.modal} {...inner}>
       <ul>
@@ -19,7 +21,7 @@ const UserMenuView: FC<any> = (props) => {
             <li
               className={s.item}
               onClick={() => {
-                router.push(`/${user?.nickname}`)
+                router.push('/profile')
                 closeModal()
               }}
             >
