@@ -1,17 +1,19 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
 import s from './ProjectOverviewView.module.css'
 import { MdOutlineAddCircleOutline } from 'react-icons/md'
 import { useRouter } from 'next/router'
-const DATA = [
+import { HiDotsVertical } from 'react-icons/hi'
+import { useUI } from '@components/ui/context'
+
+const projects = [
   {
     id: 1,
     title: '프로젝트_1',
     description: '프로젝트_1에 대한 설명',
     media_url: '/image',
     repo_url: '..',
-    root: '',
+    root: null,
   },
   {
     id: 2,
@@ -19,7 +21,7 @@ const DATA = [
     description: '프로젝트_2에 대한 설명',
     media_url: '/image',
     repo_url: '..',
-    root: '',
+    root: null,
   },
   {
     id: 3,
@@ -27,12 +29,14 @@ const DATA = [
     description: '프로젝트_3에 대한 설명',
     media_url: '/image',
     repo_url: '..',
-    root: '',
+    root: null,
   },
 ] as const
 
 const ProjectOverviewView: FC = () => {
   const router = useRouter()
+
+  const { setModalView, openModal } = useUI()
 
   return (
     <div className={s.root}>
@@ -50,20 +54,37 @@ const ProjectOverviewView: FC = () => {
           >
             <MdOutlineAddCircleOutline /> {` `} 새 프로젝트 추가하기
           </button>
-          {DATA.map((project) => (
+          {projects.map((project) => (
             <li key={project.id} className={s.card}>
-              <Link href={`/projects/${project.id}`}>
-                <Image
+              <div className={s.project__thumbnail}>
+                {/* <Image
                   src={project.media_url}
                   width={120}
                   height={120}
                   alt={project.media_url}
-                />
-                <div className={s.card__content}>
-                  <h3 className={s.card__title}>{project.title}</h3>
-                  <p className={s.card__description}>{project.description}</p>
+                /> */}
+              </div>
+              <div className={s.card__content}>
+                <div className={s.card__content__left}>
+                  <Link href={`/projects/${project.id}`}>
+                    <h3 className={s.card__title}>{project.title}</h3>
+                    <p className={s.card__description}>{project.description}</p>
+                  </Link>
                 </div>
-              </Link>
+                <div className={s.card__content__right}>
+                  <div
+                    onClick={() => {
+                      setModalView('MYPROJECT_SETTINGS_VIEW', {
+                        project,
+                      })
+                      openModal()
+                    }}
+                    className={s.settings}
+                  >
+                    <HiDotsVertical />
+                  </div>
+                </div>
+              </div>
             </li>
           ))}
         </ul>

@@ -1,10 +1,10 @@
 import { Layout } from '@components/common'
-import EachProfileView from '@components/profile/EachProfileView'
+import EachPortfolioView from '@components/portfolio/EachPortfolioView'
 
-const EachProfile = () => {
-  return <EachProfileView />
+const EachPortfolio = () => {
+  return <EachPortfolioView />
 }
 
-EachProfile.Layout = Layout
+EachPortfolio.Layout = Layout
 
-export default EachProfile
+export default EachPortfolio

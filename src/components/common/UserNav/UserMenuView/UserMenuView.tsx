@@ -21,12 +21,23 @@ const UserMenuView: FC<any> = (props) => {
             <li
               className={s.item}
               onClick={() => {
-                router.push('/profile')
+                router.push('/porfolios')
                 closeModal()
               }}
             >
-              내 프로필
+              내 포트폴리오
             </li>
+            {isUserLoggedIn && (
+              <li
+                className={s.item}
+                onClick={() => {
+                  router.push(`/profile`)
+                  closeModal()
+                }}
+              >
+                내 프로필
+              </li>
+            )}
             <li
               className={s.item}
               onClick={() => {

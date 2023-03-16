@@ -1,17 +1,30 @@
 import { FC } from 'react'
-import s from './ProfileSettingsView.module.css'
+import s from './PortfolioSettingsView.module.css'
 import { useRouter } from 'next/router'
 import { useUI } from '@components/ui/context'
-import useSocials from '@lib/hooks/useSocials'
+import useSocials from '@lib/shareSocials'
 
 const ProfileSettingsView: FC<any> = (props) => {
   const { inner } = props
 
   const { closeModal } = useUI()
   const { shareFacebook, shareTwitter } = useSocials()
+  const router = useRouter()
 
   return (
     <div className={s.modal} {...inner}>
+      <div className={s.wrapper}>
+        <span className={s.wrapper__title}>설정</span>
+        <div
+          className={s.item}
+          onClick={() => {
+            router.push('/profile')
+            closeModal()
+          }}
+        >
+          프로필 수정하기
+        </div>
+      </div>
       <div className={s.wrapper}>
         <span className={s.wrapper__title}>공유하기</span>
         <div
@@ -40,9 +53,6 @@ const ProfileSettingsView: FC<any> = (props) => {
         >
           트위터
         </div>
-      </div>
-      <div className={s.wrapper}>
-        <span className={s.wrapper__title}>기타</span>
       </div>
     </div>
   )

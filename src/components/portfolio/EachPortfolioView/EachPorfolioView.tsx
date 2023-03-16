@@ -1,9 +1,15 @@
 import { FC, useEffect, useMemo, useState } from 'react'
-import s from './EachProfileView.module.css'
+import s from './EachPortfolioView.module.css'
 import { GoMarkGithub } from 'react-icons/go'
 import { SiNotion } from 'react-icons/si'
 import { SlNote } from 'react-icons/sl'
-import { HiOutlinePhone, HiOutlineMail, HiDotsHorizontal } from 'react-icons/hi'
+import {
+  HiOutlinePhone,
+  HiOutlineMail,
+  HiDotsHorizontal,
+  HiOutlinePencilAlt,
+} from 'react-icons/hi'
+
 import { GITHUB_HTML_URL } from '@lib/constants'
 import { IconType } from 'react-icons'
 import { useUI } from '@components/ui/context'
@@ -21,6 +27,30 @@ const user = {
   bio: '안녕, 나는 박미주구요.. 프론트앤드 개발자를 꿈꾸고 있는 신입입니다.',
   phone: '010.xxxx.xxxx',
   projects: [
+    {
+      id: 7,
+      title: '여섯번째_프로젝트',
+      description: '나의 여섯번째 프로젝트',
+      root: 1,
+    },
+    {
+      id: 6,
+      title: '다섯번째_프로젝트',
+      description: '나의 다섯번째 프로젝트',
+      root: 1,
+    },
+    {
+      id: 5,
+      title: '네번째_프로젝트',
+      description: '나의 네번째 프로젝트',
+      root: 1,
+    },
+    {
+      id: 4,
+      title: '세번째_프로젝트',
+      description: '나의 세번째 프로젝트',
+      root: 1,
+    },
     {
       id: 3,
       title: '두번째_프로젝트',
@@ -44,16 +74,13 @@ type CopyButtonProps = {
 
 const CopyButton: FC<CopyButtonProps> = ({ label, url, Icon }) => {
   const [isCopyReady, setCopyReady] = useState(true)
+
   const handleCopy = () => {
     setCopyReady(true)
 
-    const id = setTimeout(() => {
+    const timerId = setTimeout(() => {
       setCopyReady(false)
-
-      return () => {
-        clearTimeout(id)
-        setCopyReady(true)
-      }
+      return () => clearTimeout(timerId)
     }, 100)
   }
 
@@ -103,7 +130,7 @@ const ProjectCard: FC<ProjectCardProps> = (props) => {
   )
 }
 
-const EachProfileView: FC = () => {
+const EachPortofolioView: FC = () => {
   const { setModalView, openModal } = useUI()
   const [side, setSide] = useState<'personal' | 'team'>('personal')
   const actions = useMemo(() => {
@@ -114,7 +141,7 @@ const EachProfileView: FC = () => {
         url: `${GITHUB_HTML_URL}/${user.github_nickname}`,
         Icon: GoMarkGithub,
       },
-      { label: '블로그', url: user.blog_url, Icon: SlNote },
+      { label: '블로그', url: user.blog_url, Icon: HiOutlinePencilAlt },
       { label: '노션', url: user.blog_url, Icon: SiNotion },
       { label: '전화번호', url: user.phone, Icon: HiOutlinePhone },
     ]
@@ -152,10 +179,13 @@ const EachProfileView: FC = () => {
           </div>
         </div>
       </header>
+
       <main className={s.main}>
         <div className={s.index}>
           <div
-            className={cn(s.index__detail, { [s.active]: side === 'personal' })}
+            className={cn(s.index__detail, {
+              [s.active]: side === 'personal',
+            })}
             onClick={() => setSide('personal')}
           >
             개인 프로젝트
@@ -177,4 +207,4 @@ const EachProfileView: FC = () => {
   )
 }
 
-export default EachProfileView
+export default EachPortofolioView

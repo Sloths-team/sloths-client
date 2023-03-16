@@ -1,0 +1,33 @@
+.modal {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  width: 300px;
+  padding: 10px 3px;
+}
+
+.wrapper {
+  margin-bottom: 14px;
+}
+
+.wrapper__title {
+  font-size: 12px;
+  padding: 5px 10px;
+  color: gray;
+}
+
+.item:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.item {
+  font-size: 14px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.item:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}

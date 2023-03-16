@@ -1,7 +1,8 @@
 import { Layout } from '@components/common'
+import { ProjectDetailView } from '@components/project'
 
 const ProjectDetail = () => {
-  return <div>프로젝트 디테일</div>
+  return <ProjectDetailView />
 }
 
 ProjectDetail.Layout = Layout

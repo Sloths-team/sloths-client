@@ -1,5 +1,4 @@
 import { FC, ReactNode } from 'react'
-import { SignUpView, ForgotPasswordView, LoginView } from '@components/auth'
 import { useUI } from '@components/ui/context'
 import Modal from '../Modal'
 import Navbar from '../Navbar'
@@ -10,7 +9,9 @@ import UserMenuView from '../UserNav/UserMenuView/UserMenuView'
 import LogoutAnnounceView from '../UserNav/LogoutAnnounceView/LogoutAnnounceView'
 import FindRepoView from '@components/project/FindRepoView'
 import ContinueView from '@components/project/ContinueView'
-import ProfileSettingsView from '@components/profile/ProfileSettingsView'
+import ProfileSettingsView from '@components/portfolio/PortfolioSettingsView'
+import MyProjectSettingsView from '@components/project/MyProjectSettingsView'
+import cn from 'clsx'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -23,6 +24,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     FIND_REPO_VIEW: FindRepoView,
     CONTINUE_VIEW: ContinueView,
     PROFILE_SETTINGS_VIEW: ProfileSettingsView,
+    MYPROJECT_SETTINGS_VIEW: MyProjectSettingsView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]
@@ -70,7 +72,10 @@ const SidebarUI: FC<{ links: LinkProps[] }> = ({ links }) => {
   ) : null
 }
 
-const Layout: FC<{ children: ReactNode }> = ({ children }) => {
+const Layout: FC<{ full: boolean | undefined; children: ReactNode }> = ({
+  full,
+  children,
+}) => {
   const navBarlinks = [
     { name: '메뉴 A', slug: 'menu_A' },
     { name: '메뉴 B', slug: 'menu_B' },
@@ -82,7 +87,7 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <div>
       <Navbar links={navBarlinks} />
-      <main className={s.main}>{children}</main>
+      <main className={cn(s.main, { [s.full]: full })}>{children}</main>
       <ModalUI />
       <SidebarUI links={navBarlinks} />
     </div>

@@ -10,8 +10,7 @@ import { GoMarkGithub } from 'react-icons/go'
 import Button from '@components/ui/Button'
 import { getUserApi } from '@lib/apis/user'
 import { SiNotion } from 'react-icons/si'
-import { SlNote } from 'react-icons/sl'
-import { HiOutlinePhone } from 'react-icons/hi'
+import { HiOutlinePhone, HiOutlinePencilAlt } from 'react-icons/hi'
 
 type Form = {
   email: string
@@ -160,7 +159,7 @@ const ProfileView: FC = () => {
               <span className={s.label}>블로그 주소</span>
               <button type="button" className={s.github} onClick={() => {}}>
                 <div className={s.icon}>
-                  <SlNote />
+                  <HiOutlinePencilAlt />
                 </div>
                 <Input control={control} name="blog_url" />
               </button>

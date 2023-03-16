@@ -90,6 +90,19 @@ const MODAL_STYLE = {
       },
     },
   },
+  MYPROJECT_SETTINGS_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(255,255,255,0.7)' },
+    },
+    inner: {
+      style: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+  },
 }
 
 const initialState = {
@@ -144,6 +157,7 @@ type MODAL_VIEWS =
   | 'FIND_REPO_VIEW'
   | 'CONTINUE_VIEW'
   | 'PROFILE_SETTINGS_VIEW'
+  | 'MYPROJECT_SETTINGS_VIEW'
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
 
@@ -194,7 +208,10 @@ function uiReducer(state: State, action: Action) {
       return {
         ...state,
         modalView: action.view,
-        props: { ...action.props, ...MODAL_STYLE[action.view] },
+        props: {
+          ...MODAL_STYLE[action.view],
+          inner: { ...MODAL_STYLE[action.view].inner, ...action.props },
+        },
       }
     }
     case 'SET_SIDEBAR_VIEW': {
