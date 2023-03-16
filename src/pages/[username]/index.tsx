@@ -1,11 +1,10 @@
 import { Layout } from '@components/common'
-import ProfileView from '@components/profile/ProfileView'
-import { withLoggedIn } from '@lib/withLoggedIn'
+import EachProfileView from '@components/profile/EachProfileView'
 
-const Profile = () => {
-  return <ProfileView />
+const EachProfile = () => {
+  return <EachProfileView />
 }
 
-Profile.Layout = Layout
+EachProfile.Layout = Layout
 
-export default withLoggedIn(Profile)
+export default EachProfile

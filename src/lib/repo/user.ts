@@ -24,3 +24,11 @@ export const getUserById = async (userId: ID, token: string) => {
     token,
   })
 }
+
+export const getUserByNickname = async (nickname: string, token: string) => {
+  return await fetcher({
+    method: 'GET',
+    path: `/api/users/${nickname}`,
+    token,
+  })
+}

@@ -1,5 +1,10 @@
 import { QUERY_KEYS } from '@lib/constants'
-import { getLoggedInUser, getUser, getUserById } from '@lib/repo/user'
+import {
+  getLoggedInUser,
+  getUser,
+  getUserById,
+  getUserByNickname,
+} from '@lib/repo/user'
 import { useQuery } from 'react-query'
 import { ID } from '@lib/types'
 import useLocalStorage from '../hooks/useLocalStorage'

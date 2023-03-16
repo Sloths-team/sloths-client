@@ -10,6 +10,7 @@ import UserMenuView from '../UserNav/UserMenuView/UserMenuView'
 import LogoutAnnounceView from '../UserNav/LogoutAnnounceView/LogoutAnnounceView'
 import FindRepoView from '@components/project/FindRepoView'
 import ContinueView from '@components/project/ContinueView'
+import ProfileSettingsView from '@components/profile/ProfileSettingsView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -21,6 +22,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     LOGOUT_ANNOUNCE_VIEW: LogoutAnnounceView,
     FIND_REPO_VIEW: FindRepoView,
     CONTINUE_VIEW: ContinueView,
+    PROFILE_SETTINGS_VIEW: ProfileSettingsView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]

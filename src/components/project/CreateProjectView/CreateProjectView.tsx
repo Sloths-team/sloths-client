@@ -34,7 +34,6 @@ const CreateProjectView: FC = () => {
 
   const { user } = useSession()
 
-  console.log(user)
   const { control, setFocus, setValue, handleSubmit, watch } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues: {
