@@ -148,7 +148,7 @@ const CreateProjectView: FC = () => {
                 아직 깃헙 계정이 등록되어 있지 않습니다.{' '}
                 <Link
                   href={{
-                    pathname: `/${user?.nickname}`,
+                    pathname: `/profile`,
                     query: { target: 'github' },
                   }}
                   as={`/${user?.nickname}`}
