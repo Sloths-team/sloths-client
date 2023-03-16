@@ -2,14 +2,13 @@ import { FC } from 'react'
 import s from './ProfileSettingsView.module.css'
 import { useRouter } from 'next/router'
 import { useUI } from '@components/ui/context'
-import { useSession } from '@components/common/Layout/context'
-import { shareFacebook, shareTwitter } from '@lib/shareSocials'
+import useSocials from '@lib/hooks/useSocials'
 
 const ProfileSettingsView: FC<any> = (props) => {
   const { inner } = props
 
-  const { closeModal, setModalView, openModal } = useUI()
-  const router = useRouter()
+  const { closeModal } = useUI()
+  const { shareFacebook, shareTwitter } = useSocials()
 
   return (
     <div className={s.modal} {...inner}>

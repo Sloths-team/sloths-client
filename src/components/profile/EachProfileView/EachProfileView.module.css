@@ -23,10 +23,22 @@
 
 .header__right {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  flex-direction: column;
   padding: 10px 0;
   width: 100%;
+}
+
+.header__right__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.header__right__bottom {
+  margin-top: 20px;
+}
+
+.bio {
+  font-size: 15px;
 }
 
 .header__right h1 {
@@ -77,4 +89,35 @@
 
 .icon:hover {
   background-color: var(--bg-gray);
+}
+
+.main {
+}
+
+.index {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #dfdfdf;
+  margin-bottom: 10px;
+}
+
+.index__detail {
+  padding: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.active {
+  font-weight: 800;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.project {
+  border: 1px solid #dfdfdf;
+  background-color: gray;
+  min-height: 360px;
 }
