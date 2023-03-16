@@ -26,7 +26,8 @@ export const getProjectById = async (portfolioId: ID, projectId: ID) => {
 export const createProject = async (portfolioId: ID, body: ProjectBody) => {
   return await fetcher({
     method: 'POST',
-    path: `/api/portfolios/${portfolioId}/projects`,
+    path: `/api/projects`,
+    params: { pfid: portfolioId },
     body,
   })
 }

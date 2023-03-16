@@ -10,7 +10,7 @@ import { TfiFaceSmile, TfiEmail, TfiLock } from 'react-icons/tfi'
 import cn from 'clsx'
 import { VscGithubInverted } from 'react-icons/vsc'
 import { useSession } from '../../common/Layout/context'
-import { BASE_URL } from '@lib/constants'
+import { BASE_API_URL } from '@lib/constants'
 import { AUTH_TOKEN_KEY } from '../../../lib/constants'
 import { RiCheckboxCircleFill } from 'react-icons/ri'
 
@@ -137,7 +137,7 @@ const SignupView: FC = () => {
       )}
       <form onSubmit={handleSubmit(onSignup)}>
         <label className={s.input_container}>
-          <span className={s.label}>이름</span>
+          <span className={s.label}>닉이름</span>
           <div className={s.input_wrapper}>
             <div
               className={cn(s.icon, {
@@ -228,7 +228,7 @@ const SignupView: FC = () => {
       <div className={s.socials}>
         <span>또는</span>
         <Button type="button" className={s.github}>
-          <a href={`${BASE_URL}/api/auth/github`}>
+          <a href={`${BASE_API_URL}/api/auth/github`}>
             <VscGithubInverted />
             깃헙 계정으로 회원가입 하기
           </a>

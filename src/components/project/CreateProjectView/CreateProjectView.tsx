@@ -50,7 +50,7 @@ const CreateProjectView: FC = () => {
   const [media, setMedia] = useState<string | ArrayBuffer>('')
   const { media_url } = watch()
 
-  const createProject = createProjectApi(user?.portfolio_id || 0)
+  const createProject = createProjectApi()
 
   const onSubmit = ({
     media_url: mediaUrl,
@@ -63,13 +63,18 @@ const CreateProjectView: FC = () => {
       ...rest,
     }
 
-    createProject?.mutate(form, {
-      onSuccess: (data) => {
-        console.log(data)
-        if (!data.isSuccess) {
-        }
-      },
-    })
+    if (!user?.portfolio_id) return
+
+    createProject?.mutate(
+      { params: user.portfolio_id, body: form },
+      {
+        onSuccess: (data) => {
+          console.log(data)
+          if (!data.isSuccess) {
+          }
+        },
+      }
+    )
   }
 
   const handleMedia = (e: ChangeEvent<HTMLInputElement>) => {

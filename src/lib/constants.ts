@@ -9,6 +9,7 @@ export const QUERY_KEYS = {
   USER: 'USER',
   LOGGEDIN_USER: 'LOGGEDIN_USER',
   GITHUB: 'GITHUB',
+  PORTFOLIO: 'PORTFOLIO',
   PROJECT: 'PROJECT',
 } as const
 

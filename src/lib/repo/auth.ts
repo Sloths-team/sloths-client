@@ -7,19 +7,19 @@ export type SignUpBody = {
 }
 export type LoginBody = Pick<SignUpBody, 'email' | 'password'>
 
-export const signUp = async ({ nickname, email, password }: SignUpBody) => {
+export const signUp = async (body: SignUpBody) => {
   return await fetcher({
     method: 'POST',
     path: '/api/auth/signup',
-    body: { nickname, email, password },
+    body,
   })
 }
 
-export const login = async ({ email, password }: LoginBody) => {
+export const login = async (body: LoginBody) => {
   return await fetcher({
     method: 'POST',
     path: '/api/auth/login',
-    body: { email, password },
+    body: body,
   })
 }
 
