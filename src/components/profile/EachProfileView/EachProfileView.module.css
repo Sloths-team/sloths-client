@@ -34,11 +34,12 @@
   align-items: flex-start;
 }
 .header__right__bottom {
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .bio {
   font-size: 15px;
+  max-height: 120px;
 }
 
 .header__right h1 {
@@ -116,8 +117,28 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-.project {
+.project_card {
   border: 1px solid #dfdfdf;
   background-color: gray;
   min-height: 360px;
+}
+
+.project_card a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.project__title {
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.project__description {
+  font-size: 15px;
+  text-align: center;
+  margin-top: 20px;
 }

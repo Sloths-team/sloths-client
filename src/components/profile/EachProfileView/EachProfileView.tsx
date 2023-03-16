@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import s from './EachProfileView.module.css'
 import { GoMarkGithub } from 'react-icons/go'
 import { SiNotion } from 'react-icons/si'
@@ -8,6 +8,7 @@ import { GITHUB_HTML_URL } from '@lib/constants'
 import { IconType } from 'react-icons'
 import { useUI } from '@components/ui/context'
 import cn from 'clsx'
+import Link from 'next/link'
 
 const user = {
   id: 1,
@@ -21,16 +22,16 @@ const user = {
   phone: '010.xxxx.xxxx',
   projects: [
     {
-      id: 2,
-      title: '첫번째_프로젝트',
-      description: '나의 첫번째 프로젝트',
-      root: null,
-    },
-    {
       id: 3,
       title: '두번째_프로젝트',
       description: '나의 두번째 프로젝트',
       root: 1,
+    },
+    {
+      id: 2,
+      title: '첫번째_프로젝트',
+      description: '나의 첫번째 프로젝트',
+      root: null,
     },
   ],
 }
@@ -84,14 +85,22 @@ const CopyButton: FC<CopyButtonProps> = ({ label, url, Icon }) => {
 }
 
 type ProjectCardProps = {
+  id: number
   title: string
   description: string
 }
 
 const ProjectCard: FC<ProjectCardProps> = (props) => {
-  const { title, description } = props
+  const { id, title, description } = props
 
-  return <li className={s.project}>{title}</li>
+  return (
+    <li className={s.project_card}>
+      <Link href={`/projects/${id}`}>
+        <p className={s.project__title}>{title}</p>
+        <p className={s.project__description}>{description}</p>
+      </Link>
+    </li>
+  )
 }
 
 const EachProfileView: FC = () => {
