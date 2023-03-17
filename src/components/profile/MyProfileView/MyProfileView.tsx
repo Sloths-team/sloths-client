@@ -1,4 +1,12 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -11,22 +19,25 @@ import Button from '@components/ui/Button'
 import { getUserApi } from '@lib/apis/user'
 import { SiNotion } from 'react-icons/si'
 import { HiOutlinePhone, HiOutlinePencilAlt } from 'react-icons/hi'
+import { usePreviews } from '@lib/hooks/usePreviews'
+import File from '@components/ui/File'
+import useFiles from '@lib/hooks/useFiles'
 
 type Form = {
   email: string
+  github_nickname: string
+  nickname: string
+  blog_url: string
+  notion_email: string
+  bio: string
+  phone: string
+} & {
   profile_url: string
-  nickname?: string
-  github_nickname?: string
-  blog_url?: string
-  notion_email?: string
-  bio?: string
-  phone?: string
 }
 
 const ProfileView: FC = () => {
   const schema = yup.object({
     email: yup.string(),
-    profile_url: yup.string(),
     nickname: yup.string(),
     github_nickname: yup.string(),
     blog_url: yup.string(),
@@ -37,8 +48,8 @@ const ProfileView: FC = () => {
 
   const defaultValues = {
     email: '',
-    profile_url: '',
     nickname: '',
+    profile_url: '',
     github_nickname: '',
     blog_url: '',
     notion_email: '',
@@ -48,10 +59,9 @@ const ProfileView: FC = () => {
 
   const { data } = getUserApi()
 
-  console.log(data?.result)
-
   const user = useMemo(() => {
     const {
+      id,
       profileUrl,
       githubNickname,
       blogUrl,
@@ -82,6 +92,33 @@ const ProfileView: FC = () => {
   const router = useRouter()
   const githubRef = useRef<HTMLButtonElement>(null)
   const values = watch()
+  const { previews, handlePreviews } = usePreviews()
+  const { onChangeFiles, formatFormData } = useFiles()
+
+  const handleProfile = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      handlePreviews(e)
+      onChangeFiles(e)
+    },
+    [handlePreviews, onChangeFiles]
+  )
+
+  const onSubmit = (form: Form) => {
+    const profile = formatFormData()
+
+    const { profile_url, github_nickname, blog_url, notion_email, ...rest } =
+      form || {}
+
+    const data = {
+      profileUrl: JSON.stringify(profile) || '',
+      githubNickname: github_nickname || '',
+      blogUrl: blog_url || '',
+      notionEmail: notion_email || '',
+      ...rest,
+    }
+
+    console.log(data)
+  }
 
   useEffect(() => {
     if (user) {
@@ -111,14 +148,14 @@ const ProfileView: FC = () => {
 
       setDisabled(disabled)
     }
-  }, [setDisabled, user])
+  }, [setDisabled, values])
 
   return (
     <div className={s.root}>
       <div className={s.header}>
         <h1>내 프로필</h1>
       </div>
-      <form onSubmit={handleSubmit(() => {})} className={s.form}>
+      <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
         <div className={s.form_inner}>
           <div className={s.left_section}>
             <label className={s.input_container}>
@@ -185,7 +222,13 @@ const ProfileView: FC = () => {
           </div>
           <div className={s.right_section}>
             <label className={s.file_preview}>
-              <Input type="file" control={control} name="media_url" />
+              <Input
+                type="file"
+                control={control}
+                name="profile_url"
+                onChange={handleProfile}
+              />
+              {previews[0] && <img src={previews[0].toString()} alt={''} />}
             </label>
           </div>
         </div>

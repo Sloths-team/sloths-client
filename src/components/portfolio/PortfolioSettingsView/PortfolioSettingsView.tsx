@@ -24,6 +24,15 @@ const ProfileSettingsView: FC<any> = (props) => {
         >
           프로필 수정하기
         </div>
+        <div
+          className={s.item}
+          onClick={() => {
+            router.push('/portfolios/info')
+            closeModal()
+          }}
+        >
+          포트폴로리오 정보 수정하기
+        </div>
       </div>
       <div className={s.wrapper}>
         <span className={s.wrapper__title}>공유하기</span>

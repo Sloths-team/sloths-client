@@ -13,6 +13,8 @@ const UserMenuView: FC<any> = (props) => {
 
   if (!user) return <div>로딩중...</div>
 
+  console.log(user)
+
   return (
     <div className={s.modal} {...inner}>
       <ul>
@@ -21,7 +23,7 @@ const UserMenuView: FC<any> = (props) => {
             <li
               className={s.item}
               onClick={() => {
-                router.push('/porfolios')
+                router.push(`/portfolios/${user.portfolio_id}`)
                 closeModal()
               }}
             >

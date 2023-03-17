@@ -1,5 +1,4 @@
 .root {
-  /* max-width: 800px; */
   margin: auto;
   padding: 0 20px;
 }
@@ -116,19 +115,77 @@
   font-weight: 800;
 }
 
+/* 정보, 개인프로젝트, 팀프로젝트 내용 */
+.container {
+}
+
+/* 정보 */
+.info {
+  max-width: 800px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.info .wrapper {
+  margin-bottom: 14px;
+}
+
+.info .wrapper .label {
+  font-size: 12px;
+  font-weight: 800;
+  color: gray;
+}
+
+.info .wrapper .content {
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.info .edit {
+  font-size: 15px;
+  border: 1px solid #dfdfdf;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 8px 12px 7px;
+  display: flex;
+  align-items: center;
+  color: gray;
+  background-color: var(--bg-gray);
+  margin-top: 100px;
+}
+
+.info .edit svg {
+  font-size: 16px;
+  margin-bottom: 2px;
+  margin-right: 4px;
+}
+
+.info .edit a {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 13px;
+  color: var(--bg-blue);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.info .edit a:hover {
+  text-decoration: underline;
+}
+
 .projects {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
 
-.project_card {
+.projects .project_card {
   border: 1px solid #dfdfdf;
   background-color: gray;
   min-height: 400px;
 }
 
-.project_card a {
+.projects .project_card a {
   width: 100%;
   height: 100%;
   display: flex;

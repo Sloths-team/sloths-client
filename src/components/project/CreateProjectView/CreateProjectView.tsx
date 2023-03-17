@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, ChangeEvent } from 'react'
+import { FC, useEffect, ChangeEvent, useCallback, useState } from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -14,6 +14,8 @@ import { useProject } from '../context'
 import { GITHUB_HTML_URL } from '@lib/constants'
 import Button from '@components/ui/Button'
 import { createProjectApi } from '@lib/apis/project'
+import { usePreviews } from '@lib/hooks/usePreviews'
+import useFiles from '@lib/hooks/useFiles'
 
 type Form = {
   title: string
@@ -32,57 +34,59 @@ const CreateProjectView: FC = () => {
     root: yup.number(),
   })
 
+  const defaultValues = {
+    title: '',
+    description: '',
+    media_url: '',
+    repo_url: '',
+    root: null,
+  } as const
+
   const { user } = useSession()
 
   const { control, setFocus, setValue, handleSubmit, watch } = useForm<Form>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      title: '',
-      description: '',
-      media_url: '',
-      repo_url: '',
-      root: null,
-    },
+    defaultValues,
   })
 
   const { setModalView, openModal } = useUI()
   const { repo_url } = useProject()
-  const [media, setMedia] = useState<string | ArrayBuffer>('')
-  const { media_url } = watch()
-
+  const { previews, handlePreviews } = usePreviews()
+  const { onChangeFiles, formatFormData } = useFiles()
+  const [disabled, setDisabled] = useState(true)
   const createProject = createProjectApi()
+  const values = watch()
 
-  const onSubmit = ({
-    media_url: mediaUrl,
-    repo_url: repoUrl,
-    ...rest
-  }: Form) => {
-    const form = {
-      mediaUrl,
-      repoUrl,
+  const onSubmit = ({ repo_url, ...rest }: Form) => {
+    const formData = formatFormData()
+    const data = {
+      mediaUrl: JSON.stringify(formData),
+      repoUrl: repo_url,
       ...rest,
     }
 
-    if (!user?.portfolio_id) return
+    console.log(data)
+    // if (!user?.portfolio_id) return
 
-    createProject?.mutate(
-      { params: user.portfolio_id, body: form },
-      {
-        onSuccess: (data) => {
-          console.log(data)
-          if (!data.isSuccess) {
-          }
-        },
-      }
-    )
+    // createProject?.mutate(
+    //   { params: { id: user.portfolio_id }, body: form },
+    //   {
+    //     onSuccess: (data) => {
+    //       console.log(data)
+    //       if (!data.isSuccess) {
+    //       }
+    //     },
+    //   }
+    // )
   }
 
-  const handleMedia = (e: ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader()
-    const files = e.target.files ?? []
-    reader.readAsDataURL(files[0])
-    reader.onload = () => setMedia(reader.result ?? '')
-  }
+  const handleProfile = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      handlePreviews(e)
+      onChangeFiles(e)
+    },
+    [handlePreviews, onChangeFiles]
+  )
 
   useEffect(() => {
     setFocus('title')
@@ -92,7 +96,12 @@ const CreateProjectView: FC = () => {
     setValue('repo_url', `${GITHUB_HTML_URL}/${repo_url}`)
   }, [user, repo_url])
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    const disabled = Object.keys(values).every(
+      (key) => values[key as keyof typeof defaultValues] === ''
+    )
+    setDisabled(disabled)
+  }, [values])
 
   return (
     <div className={s.root}>
@@ -107,9 +116,9 @@ const CreateProjectView: FC = () => {
               type="file"
               control={control}
               name="media_url"
-              onChange={handleMedia}
+              onChange={handleProfile}
             />
-            {media && <img src={media.toString()} alt={media_url} />}
+            {previews[0] && <img src={previews[0].toString()} alt={''} />}
           </label>
         </div>
         <div className={s.right_section}>
@@ -159,7 +168,7 @@ const CreateProjectView: FC = () => {
             )}
           </label>
           <div className={s.button_container}>
-            <Button type="submit" className={s.button}>
+            <Button type="submit" className={s.button} disabled={disabled}>
               만들기
             </Button>
           </div>

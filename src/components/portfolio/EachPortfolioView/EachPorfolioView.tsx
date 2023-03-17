@@ -2,19 +2,20 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import s from './EachPortfolioView.module.css'
 import { GoMarkGithub } from 'react-icons/go'
 import { SiNotion } from 'react-icons/si'
-import { SlNote } from 'react-icons/sl'
 import {
   HiOutlinePhone,
   HiOutlineMail,
   HiDotsHorizontal,
   HiOutlinePencilAlt,
 } from 'react-icons/hi'
-
+import { getAllPortfoliosApi } from '@lib/apis/portfolio'
 import { GITHUB_HTML_URL } from '@lib/constants'
 import { IconType } from 'react-icons'
 import { useUI } from '@components/ui/context'
 import cn from 'clsx'
 import Link from 'next/link'
+import { useSession } from '@components/common/Layout/context'
+import { MdNotificationImportant } from 'react-icons/md'
 
 const user = {
   id: 1,
@@ -24,7 +25,7 @@ const user = {
   github_nickname: 'user',
   blog_url: 'https://tisto',
   notion_email: 'user_1@gmail.com',
-  bio: '안녕, 나는 박미주구요.. 프론트앤드 개발자를 꿈꾸고 있는 신입입니다.',
+  bio: '신입 개발자에요! 현재 포트폴리오를 제작하고 있는 중입니다.',
   phone: '010.xxxx.xxxx',
   projects: [
     {
@@ -131,8 +132,10 @@ const ProjectCard: FC<ProjectCardProps> = (props) => {
 }
 
 const EachPortofolioView: FC = () => {
+  const getPortfolios = getAllPortfoliosApi()
+  const { isUserLoggedIn } = useSession()
   const { setModalView, openModal } = useUI()
-  const [side, setSide] = useState<'personal' | 'team'>('personal')
+  const [side, setSide] = useState<'info' | 'personal' | 'team'>('personal')
   const actions = useMemo(() => {
     return [
       { label: '이메일', url: user.email, Icon: HiOutlineMail },
@@ -179,7 +182,6 @@ const EachPortofolioView: FC = () => {
           </div>
         </div>
       </header>
-
       <main className={s.main}>
         <div className={s.index}>
           <div
@@ -196,12 +198,55 @@ const EachPortofolioView: FC = () => {
           >
             팀 프로젝트
           </div>
+          <div
+            className={cn(s.index__detail, {
+              [s.active]: side === 'info',
+            })}
+            onClick={() => setSide('info')}
+          >
+            정보
+          </div>
         </div>
-        <ul className={s.projects}>
-          {user.projects.map((props) => (
-            <ProjectCard key={props.id} {...props} />
-          ))}
-        </ul>
+        <div
+          className={cn(s.container, {
+            [s.info]: side === 'info',
+            [s.projects]: side === 'personal' || side === 'team',
+          })}
+        >
+          {side === 'personal' &&
+            user.projects.map((props) => (
+              <ProjectCard key={props.id} {...props} />
+            ))}
+          {side === 'team' &&
+            user.projects.map((props) => (
+              <ProjectCard key={props.id} {...props} />
+            ))}
+          {side === 'info' && (
+            <div className={s.info}>
+              <div className={s.wrapper}>
+                <span className={s.label}>프로젝트_이름</span>
+                <p className={s.content}>프로젝트_이름</p>
+              </div>
+              <div className={s.wrapper}>
+                <span className={s.label}>프로젝트_설명</span>
+                <p className={s.content}>프로젝트_설명</p>
+              </div>
+              <div className={s.wrapper}>
+                <span className={s.label}>개발자</span>
+                <p className={s.content}>개발자_이름</p>
+              </div>
+              <div className={s.wrapper}>
+                <span className={s.label}>프로젝트_마지막_수정일</span>
+                <p className={s.content}>프로젝트_마지막_수정일</p>
+              </div>
+              <button className={s.edit}>
+                <MdNotificationImportant />내 포트폴리오 정보를 수정하고 싶다면
+                <Link href={'/portfolios/info'}>수정하기</Link>로 이동해주세요.
+              </button>
+              <div></div>
+            </div>
+          )}
+        </div>
       </main>
     </div>
   )

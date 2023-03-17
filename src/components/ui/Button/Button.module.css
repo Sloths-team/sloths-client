@@ -8,3 +8,9 @@
   color: #fff;
   font-weight: 600;
 }
+
+.root:disabled {
+  background-color: #e4e6ea;
+  cursor: text;
+  color: #bcc0c6;
+}
