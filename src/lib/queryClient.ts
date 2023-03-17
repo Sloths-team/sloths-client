@@ -48,7 +48,7 @@ export const fetcher = async ({
     method,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': BASE_API_URL,
+      // 'Access-Control-Allow-Origin': BASE_API_URL,
     },
   }
 

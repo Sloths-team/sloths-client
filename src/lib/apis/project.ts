@@ -6,7 +6,7 @@ import { useMutation } from 'react-query'
 export const createProjectApi = () => {
   return useMutation(
     [QUERY_KEYS.PROJECT],
-    ({ params: portfolioId, body }: { params: ID; body: ProjectBody }) =>
-      createProject(portfolioId, body)
+    ({ params, body }: { params: { id: ID }; body: ProjectBody }) =>
+      createProject(params.id, body)
   )
 }
