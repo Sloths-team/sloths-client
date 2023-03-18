@@ -58,7 +58,7 @@ const CreateProjectView: FC = () => {
     })
 
   const { setModalView, openModal } = useUI()
-  const { project, update, initial } = useProject()
+  const { project, saveLocal, saved } = useProject()
   const { previews, handlePreviews } = usePreviews()
   const { onChangeFiles, formatFormData } = useFiles()
   const [disabled, setDisabled] = useState(true)
@@ -109,12 +109,12 @@ const CreateProjectView: FC = () => {
     setDisabled(!title || !repo_url)
   }, [values.title, values.repo_url])
 
-  // useEffect(() => {
-  //   if (storage && saved) {
-  //     setModalView('CONTINUE_WRITE_VIEW')
-  //     openModal()
-  //   }
-  // }, [saved])
+  useEffect(() => {
+    if (saved) {
+      setModalView('CONTINUE_WRITE_VIEW')
+      openModal()
+    }
+  }, [saved])
 
   useEffect(() => {
     if (project.repo_url) {
@@ -186,7 +186,7 @@ const CreateProjectView: FC = () => {
               id={s.save}
               type="button"
               onClick={() => {
-                update({ project: { ...values }, saved: true, initial: false })
+                saveLocal({ project: { ...values }, saved: true })
               }}
             >
               임시 저장

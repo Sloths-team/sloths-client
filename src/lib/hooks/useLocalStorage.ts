@@ -8,7 +8,6 @@ const useLocalStorage = (key: string) => {
   }
 
   const saveStorage = (value: string) => {
-    console.log(value)
     localStorage.setItem(key, value)
   }
 

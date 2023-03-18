@@ -12,8 +12,7 @@ import React, {
 } from 'react'
 
 export type State = {
-  initial?: boolean
-  saved: boolean
+  saved?: boolean
   project: {
     title?: string
     description?: string
@@ -25,12 +24,11 @@ export type State = {
 
 export type ContextValue = State & {
   set: (data: State) => void
-  update: (data: State) => void
-  destroyCurrent: () => void
+  saveLocal: (data: State) => void
+  destroyLocal: () => void
 }
 
 const initialState: State = {
-  initial: true,
   saved: false,
   project: {
     title: '',
@@ -47,11 +45,11 @@ type Action =
       data: State
     }
   | {
-      type: 'UPDATE'
+      type: 'SAVE_LOCAL'
       data: State
     }
   | {
-      type: 'DESTORY_CURRENT'
+      type: 'DESTROY_LOCAL'
     }
 
 export const ProjectContext = createContext<ContextValue | null>(null)
@@ -66,14 +64,13 @@ function projectReducer(state: State, action: Action): State {
         ...action.data,
       }
     }
-
-    case 'UPDATE': {
+    case 'SAVE_LOCAL': {
       return {
         ...state,
         ...action.data,
       }
     }
-    case 'DESTORY_CURRENT': {
+    case 'DESTROY_LOCAL': {
       return { ...state }
     }
     default: {
@@ -93,24 +90,24 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
     [dispatch]
   )
 
-  const update = useCallback(
+  const saveLocal = useCallback(
     (data: State) => {
-      dispatch({ type: 'UPDATE', data })
+      dispatch({ type: 'SAVE_LOCAL', data })
       saveStorage(JSON.stringify({ ...state, ...data }))
     },
     [dispatch, state]
   )
 
-  const destroyCurrent = useCallback(() => {
-    dispatch({ type: 'DESTORY_CURRENT' })
+  const destroyLocal = useCallback(() => {
+    dispatch({ type: 'DESTROY_LOCAL' })
   }, [dispatch])
 
   const value: ContextValue = useMemo(
     () => ({
       ...state,
       set,
-      update,
-      destroyCurrent,
+      saveLocal,
+      destroyLocal,
     }),
     [state]
   )
