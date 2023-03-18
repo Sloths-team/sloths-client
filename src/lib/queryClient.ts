@@ -107,7 +107,7 @@ export const githubFetcher = async ({
     const json = await res.json()
     return json
   } catch (error) {
-    console.error(error)
+    console.error('🚨', error)
     return error
   }
 }

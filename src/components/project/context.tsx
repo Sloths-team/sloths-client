@@ -12,10 +12,15 @@ import React, {
 } from 'react'
 
 export type State = {
-  title?: string
-  description?: string
-  repo_url?: string
-  media_url?: string
+  initial?: boolean
+  saved: boolean
+  project: {
+    title?: string
+    description?: string
+    repo_url?: string
+    media_url?: string
+    root?: number | null
+  }
 }
 
 export type ContextValue = State & {
@@ -25,10 +30,15 @@ export type ContextValue = State & {
 }
 
 const initialState: State = {
-  title: '',
-  description: '',
-  repo_url: '',
-  media_url: '',
+  initial: true,
+  saved: false,
+  project: {
+    title: '',
+    description: '',
+    repo_url: '',
+    media_url: '',
+    root: null,
+  },
 }
 
 type Action =
@@ -78,9 +88,7 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
 
   const set = useCallback(
     (data: State) => {
-      console.log(data)
       dispatch({ type: 'SET', data })
-      saveStorage(JSON.stringify(data))
     },
     [dispatch]
   )
@@ -88,7 +96,7 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
   const update = useCallback(
     (data: State) => {
       dispatch({ type: 'UPDATE', data })
-      saveStorage(JSON.stringify(data))
+      saveStorage(JSON.stringify({ ...state, ...data }))
     },
     [dispatch, state]
   )

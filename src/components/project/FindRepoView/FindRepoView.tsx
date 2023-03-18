@@ -29,7 +29,7 @@ const FindRepoView: FC<any> = (props) => {
   })
 
   const { closeModal } = useUI()
-  const { repo_url, update } = useProject()
+  const { update } = useProject()
   const router = useRouter()
 
   const [results, setResults] = useState<string[]>([])
@@ -78,7 +78,7 @@ const FindRepoView: FC<any> = (props) => {
                 className={s.item}
                 key={repo.id}
                 onClick={() => {
-                  update({ repo_url: repo.full_name })
+                  update({ project: { repo_url: repo.full_name } })
                   closeModal()
                 }}
               >

@@ -63,3 +63,42 @@ export const getAllSections = async (portfolioId: ID, projectId: ID) => {
     path: `/api/portfolios/${portfolioId}/projects/${projectId}`,
   })
 }
+
+export const createSection = async (
+  projectId: ID,
+  formData: FormData,
+  token: string
+) => {
+  return await fetcher({
+    method: 'POST',
+    path: `/api/sections`,
+    params: { pjid: projectId },
+    body: formData,
+    token,
+    contentType: 'multipart/form-data',
+  })
+}
+
+export const updateSection = async (
+  projectId: ID,
+  formData: FormData,
+  token: string
+) => {
+  return await fetcher({
+    method: 'PUT',
+    path: `/api/sections`,
+    params: { pjid: projectId },
+    body: formData,
+    token,
+    contentType: 'multipart/form-data',
+  })
+}
+
+export const deleteSection = async (projectId: ID, token: string) => {
+  return await fetcher({
+    method: 'DELETE',
+    path: `/api/sections`,
+    params: { pjid: projectId },
+    token,
+  })
+}

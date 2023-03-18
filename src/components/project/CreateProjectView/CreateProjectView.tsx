@@ -51,13 +51,14 @@ const CreateProjectView: FC = () => {
 
   const { user } = useSession()
 
-  const { control, setFocus, handleSubmit, watch, getValues } = useForm<Form>({
-    resolver: yupResolver(schema),
-    defaultValues,
-  })
+  const { control, setFocus, handleSubmit, watch, getValues, setValue } =
+    useForm<Form>({
+      resolver: yupResolver(schema),
+      defaultValues,
+    })
 
   const { setModalView, openModal } = useUI()
-  const { repo_url, set } = useProject()
+  const { project, update, initial } = useProject()
   const { previews, handlePreviews } = usePreviews()
   const { onChangeFiles, formatFormData } = useFiles()
   const [disabled, setDisabled] = useState(true)
@@ -65,15 +66,6 @@ const CreateProjectView: FC = () => {
   const values = watch()
   const router = useRouter()
   const { storage } = useLocalStorage(NEW_PROJECT)
-
-  const project = useMemo(() => {
-    const { repo_url: repoUrl, ...rest } = values
-
-    return {
-      repoUrl: repo_url,
-      ...rest,
-    }
-  }, [values])
 
   const onSubmit = () => {
     const formData = formatFormData()
@@ -115,14 +107,20 @@ const CreateProjectView: FC = () => {
   useEffect(() => {
     const { title, repo_url } = values
     setDisabled(!title || !repo_url)
-  }, [values])
+  }, [values.title, values.repo_url])
+
+  // useEffect(() => {
+  //   if (storage && saved) {
+  //     setModalView('CONTINUE_WRITE_VIEW')
+  //     openModal()
+  //   }
+  // }, [saved])
 
   useEffect(() => {
-    if (storage) {
-      setModalView('CONTINUE_WRITE_VIEW')
-      openModal()
+    if (project.repo_url) {
+      setValue('repo_url', project.repo_url)
     }
-  }, [])
+  }, [project.repo_url])
 
   return (
     <div className={s.root}>
@@ -155,6 +153,7 @@ const CreateProjectView: FC = () => {
           </label>
           <label className={s.input_container}>
             <span className={s.label}>Github 레포명</span>
+            <Input hidden control={control} name="repo_url" />
             {user?.github_nickname ? (
               <div
                 className={s.find}
@@ -163,7 +162,7 @@ const CreateProjectView: FC = () => {
                   openModal()
                 }}
               >
-                {repo_url || '레포 찾기'}
+                {project.repo_url || '레포 찾기'}
                 <FaCaretDown />
               </div>
             ) : (
@@ -187,7 +186,7 @@ const CreateProjectView: FC = () => {
               id={s.save}
               type="button"
               onClick={() => {
-                set(project)
+                update({ project: { ...values }, saved: true, initial: false })
               }}
             >
               임시 저장

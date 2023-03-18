@@ -5,7 +5,7 @@ import useSocials from '@lib/shareSocials'
 
 const MyProjectSettingsView: FC<any> = (props) => {
   const {
-    inner: { style, project },
+    inner: { style },
   } = props
 
   const { closeModal } = useUI()
