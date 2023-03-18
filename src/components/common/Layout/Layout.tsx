@@ -8,10 +8,11 @@ import s from './Layout.module.css'
 import UserMenuView from '../UserNav/UserMenuView/UserMenuView'
 import LogoutAnnounceView from '../UserNav/LogoutAnnounceView/LogoutAnnounceView'
 import FindRepoView from '@components/project/FindRepoView'
-import ContinueView from '@components/project/ContinueView'
+import ContinueView from '@components/project/ContinueWriteView'
 import ProfileSettingsView from '@components/portfolio/PortfolioSettingsView'
 import MyProjectSettingsView from '@components/project/MyProjectSettingsView'
 import cn from 'clsx'
+import ContinueWriteView from '@components/project/ContinueWriteView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -25,6 +26,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     CONTINUE_VIEW: ContinueView,
     PROFILE_SETTINGS_VIEW: ProfileSettingsView,
     MYPROJECT_SETTINGS_VIEW: MyProjectSettingsView,
+    CONTINUE_WRITE_VIEW: ContinueWriteView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]

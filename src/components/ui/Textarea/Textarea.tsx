@@ -4,7 +4,7 @@ import { Control, Controller } from 'react-hook-form'
 export type Props = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   name: string
   control: Control<any>
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const Input: FC<Props> = (props) => {

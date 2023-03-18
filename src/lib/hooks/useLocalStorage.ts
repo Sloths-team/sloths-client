@@ -3,7 +3,12 @@ import { useState, useEffect } from 'react'
 const useLocalStorage = (key: string) => {
   const [value, setValue] = useState('')
 
+  const getStorage = () => {
+    return localStorage.getItem(key)
+  }
+
   const saveStorage = (value: string) => {
+    console.log(value)
     localStorage.setItem(key, value)
   }
 
@@ -12,7 +17,7 @@ const useLocalStorage = (key: string) => {
   }
 
   useEffect(() => {
-    const data = localStorage.getItem(key)
+    const data = getStorage()
     if (data) {
       setValue(data)
     }

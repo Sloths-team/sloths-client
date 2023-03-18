@@ -1,6 +1,6 @@
 export { default as CreateProjectView } from './CreateProjectView'
 export { default as ProjectOverviewView } from './ProjectOverviewView'
 export { default as ProjectDetailView } from './ProjectDetailView'
-export { default as ContinueView } from './ContinueView'
+export { default as ContinueView } from './ContinueWriteView'
 export { default as FindRepoView } from './FindRepoView'
 export { default as MyProjectSettingsView } from './MyProjectSettingsView'

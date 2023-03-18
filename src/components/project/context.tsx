@@ -15,11 +15,12 @@ export type State = {
   title?: string
   description?: string
   repo_url?: string
+  media_url?: string
 }
 
 export type ContextValue = State & {
   set: (data: State) => void
-  saveCurrent: () => void
+  update: (data: State) => void
   destroyCurrent: () => void
 }
 
@@ -27,6 +28,7 @@ const initialState: State = {
   title: '',
   description: '',
   repo_url: '',
+  media_url: '',
 }
 
 type Action =
@@ -35,7 +37,8 @@ type Action =
       data: State
     }
   | {
-      type: 'SAVE_CURRENT'
+      type: 'UPDATE'
+      data: State
     }
   | {
       type: 'DESTORY_CURRENT'
@@ -54,9 +57,10 @@ function projectReducer(state: State, action: Action): State {
       }
     }
 
-    case 'SAVE_CURRENT': {
+    case 'UPDATE': {
       return {
         ...state,
+        ...action.data,
       }
     }
     case 'DESTORY_CURRENT': {
@@ -74,15 +78,20 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
 
   const set = useCallback(
     (data: State) => {
+      console.log(data)
       dispatch({ type: 'SET', data })
-      saveStorage(JSON.stringify({ repo_url: data.repo_url }))
+      saveStorage(JSON.stringify(data))
     },
     [dispatch]
   )
 
-  const saveCurrent = useCallback(() => {
-    dispatch({ type: 'SAVE_CURRENT' })
-  }, [dispatch])
+  const update = useCallback(
+    (data: State) => {
+      dispatch({ type: 'UPDATE', data })
+      saveStorage(JSON.stringify({ ...state, ...data }))
+    },
+    [dispatch, state]
+  )
 
   const destroyCurrent = useCallback(() => {
     dispatch({ type: 'DESTORY_CURRENT' })
@@ -92,12 +101,13 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
     () => ({
       ...state,
       set,
-      saveCurrent,
+      update,
       destroyCurrent,
     }),
     [state]
   )
 
+  console.log(state.repo_url)
   useEffect(() => {
     if (!storage) return
     set(JSON.parse(storage))

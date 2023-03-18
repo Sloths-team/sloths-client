@@ -1,4 +1,11 @@
-import { FC, useEffect, ChangeEvent, useCallback, useState } from 'react'
+import {
+  FC,
+  useEffect,
+  ChangeEvent,
+  useCallback,
+  useState,
+  useMemo,
+} from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -11,11 +18,13 @@ import Link from 'next/link'
 import { FaCaretDown } from 'react-icons/fa'
 import { useUI } from '@components/ui/context'
 import { useProject } from '../context'
-import { GITHUB_HTML_URL } from '@lib/constants'
+import { GITHUB_HTML_URL, NEW_PROJECT } from '@lib/constants'
 import Button from '@components/ui/Button'
 import { createProjectApi } from '@lib/apis/project'
 import { usePreviews } from '@lib/hooks/usePreviews'
 import useFiles from '@lib/hooks/useFiles'
+import { useRouter } from 'next/router'
+import useLocalStorage from '@lib/hooks/useLocalStorage'
 
 type Form = {
   title: string
@@ -44,40 +53,54 @@ const CreateProjectView: FC = () => {
 
   const { user } = useSession()
 
-  const { control, setFocus, setValue, handleSubmit, watch } = useForm<Form>({
+  const { control, setFocus, handleSubmit, watch, getValues } = useForm<Form>({
     resolver: yupResolver(schema),
     defaultValues,
   })
 
   const { setModalView, openModal } = useUI()
-  const { repo_url } = useProject()
+  const { repo_url, set } = useProject()
   const { previews, handlePreviews } = usePreviews()
   const { onChangeFiles, formatFormData } = useFiles()
   const [disabled, setDisabled] = useState(true)
   const createProject = createProjectApi()
   const values = watch()
+  const router = useRouter()
+  const { storage } = useLocalStorage(NEW_PROJECT)
 
-  const onSubmit = ({ repo_url, ...rest }: Form) => {
-    const formData = formatFormData()
-    const data = {
-      mediaUrl: JSON.stringify(formData),
+  const project = useMemo(() => {
+    const { repo_url: repoUrl, ...rest } = values
+
+    return {
       repoUrl: repo_url,
       ...rest,
     }
+  }, [values])
 
-    console.log(data)
-    // if (!user?.portfolio_id) return
+  const onSubmit = () => {
+    const { repo_url, media_url, ...rest } = getValues()
 
-    // createProject?.mutate(
-    //   { params: { id: user.portfolio_id }, body: form },
-    //   {
-    //     onSuccess: (data) => {
-    //       console.log(data)
-    //       if (!data.isSuccess) {
-    //       }
-    //     },
-    //   }
-    // )
+    const formData = formatFormData()
+
+    createProject.mutateAsync(
+      {
+        params: { id: user?.portfolio_id || 8 },
+        body: {
+          mediaUrl: JSON.stringify(formData),
+          repoUrl: `${GITHUB_HTML_URL}/${repo_url}`,
+          ...rest,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          if (data.isSuccess) {
+            router.push({
+              pathname: `/projects`,
+            })
+          }
+        },
+      }
+    )
   }
 
   const handleProfile = useCallback(
@@ -93,22 +116,23 @@ const CreateProjectView: FC = () => {
   }, [])
 
   useEffect(() => {
-    setValue('repo_url', `${GITHUB_HTML_URL}/${repo_url}`)
-  }, [user, repo_url])
+    const { title, repo_url } = values
+    setDisabled(!title || !repo_url)
+  }, [values])
 
   useEffect(() => {
-    const disabled = Object.keys(values).every(
-      (key) => values[key as keyof typeof defaultValues] === ''
-    )
-    setDisabled(disabled)
-  }, [values])
+    if (storage) {
+      setModalView('CONTINUE_WRITE_VIEW')
+      openModal()
+    }
+  }, [])
 
   return (
     <div className={s.root}>
       <div className={s.header}>
         <h1>프로젝트 만들기</h1>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
+      <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={s.left_section}>
           <label className={s.file_preview}>
             <Input
@@ -152,7 +176,7 @@ const CreateProjectView: FC = () => {
                 <FaCaretDown />
               </div>
             ) : (
-              <button className={s.github}>
+              <button className={s.github} type="button">
                 <MdNotificationImportant />
                 아직 깃헙 계정이 등록되어 있지 않습니다.{' '}
                 <Link
@@ -168,6 +192,15 @@ const CreateProjectView: FC = () => {
             )}
           </label>
           <div className={s.button_container}>
+            <Button
+              id={s.save}
+              type="button"
+              onClick={() => {
+                set(project)
+              }}
+            >
+              임시 저장
+            </Button>
             <Button type="submit" className={s.button} disabled={disabled}>
               만들기
             </Button>
