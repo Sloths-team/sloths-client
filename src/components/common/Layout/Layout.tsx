@@ -9,7 +9,7 @@ import UserMenuView from '../UserNav/UserMenuView/UserMenuView'
 import LogoutAnnounceView from '../UserNav/LogoutAnnounceView/LogoutAnnounceView'
 import FindRepoView from '@components/project/FindRepoView'
 import ContinueView from '@components/project/ContinueWriteView'
-import ProfileSettingsView from '@components/portfolio/PortfolioSettingsView'
+import PortfolioSettingsView from '@components/portfolio/PortfolioSettingsView'
 import MyProjectSettingsView from '@components/project/MyProjectSettingsView'
 import cn from 'clsx'
 import ContinueWriteView from '@components/project/ContinueWriteView'
@@ -24,7 +24,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     LOGOUT_ANNOUNCE_VIEW: LogoutAnnounceView,
     FIND_REPO_VIEW: FindRepoView,
     CONTINUE_VIEW: ContinueView,
-    PROFILE_SETTINGS_VIEW: ProfileSettingsView,
+    PORTFOLIO_SETTINGS_VIEW: PortfolioSettingsView,
     MYPROJECT_SETTINGS_VIEW: MyProjectSettingsView,
     CONTINUE_WRITE_VIEW: ContinueWriteView,
   }

@@ -29,25 +29,30 @@ type Options = RequestInit & {
   }
 }
 
+export type MultipartFormData = 'multipart/form-data'
+export type ContentType = 'multipart/form-data' | 'application/json'
+
 export const fetcher = async ({
   method,
   path,
   body,
   params,
   token,
+  contentType = 'application/json',
 }: {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
   path?: string
   body?: AnyOBJ
   params?: AnyOBJ
   token?: string
+  contentType?: ContentType
 }) => {
   let url = `${BASE_API_URL}${path}`
 
   const options: Options = {
     method,
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': contentType,
       // 'Access-Control-Allow-Origin': BASE_API_URL,
     },
   }

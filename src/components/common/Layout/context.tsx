@@ -100,6 +100,8 @@ export const SessionProvider: FC<{ children?: ReactNode }> = (props) => {
 
   const { data } = getLoggedInUserApi()
 
+  console.log('>>>', data?.result)
+
   const user = useMemo(() => {
     const { githubNickname, profileUrl, portfolioId, ...rest } =
       data?.result || {}

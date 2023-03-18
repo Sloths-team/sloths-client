@@ -20,8 +20,8 @@ import { getUserApi } from '@lib/apis/user'
 import { SiNotion } from 'react-icons/si'
 import { HiOutlinePhone, HiOutlinePencilAlt } from 'react-icons/hi'
 import { usePreviews } from '@lib/hooks/usePreviews'
-import File from '@components/ui/File'
 import useFiles from '@lib/hooks/useFiles'
+import File from '@components/ui/File'
 
 type Form = {
   email: string
@@ -31,8 +31,6 @@ type Form = {
   notion_email: string
   bio: string
   phone: string
-} & {
-  profile_url: string
 }
 
 const ProfileView: FC = () => {
@@ -49,7 +47,6 @@ const ProfileView: FC = () => {
   const defaultValues = {
     email: '',
     nickname: '',
-    profile_url: '',
     github_nickname: '',
     blog_url: '',
     notion_email: '',
@@ -104,20 +101,21 @@ const ProfileView: FC = () => {
   )
 
   const onSubmit = (form: Form) => {
-    const profile = formatFormData()
+    const formData = formatFormData()
 
-    const { profile_url, github_nickname, blog_url, notion_email, ...rest } =
-      form || {}
+    const { github_nickname, blog_url, notion_email, ...rest } = form || {}
 
-    const data = {
-      profileUrl: JSON.stringify(profile) || '',
-      githubNickname: github_nickname || '',
-      blogUrl: blog_url || '',
-      notionEmail: notion_email || '',
-      ...rest,
-    }
+    formData.append(
+      'data',
+      JSON.stringify({
+        githubNickname: github_nickname || '',
+        blogUrl: blog_url || '',
+        notionEmail: notion_email || '',
+        ...rest,
+      })
+    )
 
-    console.log(data)
+    console.log(formData)
   }
 
   useEffect(() => {
@@ -222,12 +220,7 @@ const ProfileView: FC = () => {
           </div>
           <div className={s.right_section}>
             <label className={s.file_preview}>
-              <Input
-                type="file"
-                control={control}
-                name="profile_url"
-                onChange={handleProfile}
-              />
+              <File name="image" onChange={handleProfile} />
               {previews[0] && <img src={previews[0].toString()} alt={''} />}
             </label>
           </div>

@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react'
 
-type Values = { [name: string]: FileList | null }
+type Values = { [key: string]: FileList | null }
+
 const useFiles = () => {
   const [values, setValues] = useState<Values>({})
   const onChangeFiles = (e: ChangeEvent<HTMLInputElement>) => {

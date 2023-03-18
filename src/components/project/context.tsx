@@ -88,7 +88,7 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
   const update = useCallback(
     (data: State) => {
       dispatch({ type: 'UPDATE', data })
-      saveStorage(JSON.stringify({ ...state, ...data }))
+      saveStorage(JSON.stringify(data))
     },
     [dispatch, state]
   )
@@ -107,7 +107,6 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
     [state]
   )
 
-  console.log(state.repo_url)
   useEffect(() => {
     if (!storage) return
     set(JSON.parse(storage))

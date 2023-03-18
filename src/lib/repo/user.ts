@@ -1,4 +1,4 @@
-import { fetcher } from '@lib/queryClient'
+import { fetcher, MultipartFormData } from '@lib/queryClient'
 import { ID } from '@lib/types'
 
 export const getLoggedInUser = async (token: string) => {
@@ -30,5 +30,19 @@ export const getUserByNickname = async (nickname: string, token: string) => {
     method: 'GET',
     path: `/api/users/${nickname}`,
     token,
+  })
+}
+
+export const updateProfile = async (
+  userId: ID,
+  formData: FormData,
+  token: string
+) => {
+  return await fetcher({
+    method: 'PUT',
+    path: `/api/users/${userId}`,
+    body: formData,
+    token,
+    contentType: 'multipart/form-data',
   })
 }

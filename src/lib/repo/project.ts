@@ -25,15 +25,16 @@ export const getProjectById = async (portfolioId: ID, projectId: ID) => {
 
 export const createProject = async (
   portfolioId: ID,
-  body: ProjectBody,
+  formData: FormData,
   token: string
 ) => {
   return await fetcher({
     method: 'POST',
     path: `/api/projects`,
     params: { pfid: portfolioId },
-    body,
+    body: formData,
     token,
+    contentType: 'multipart/form-data',
   })
 }
 

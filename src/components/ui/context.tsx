@@ -77,7 +77,7 @@ const MODAL_STYLE = {
       },
     },
   },
-  PROFILE_SETTINGS_VIEW: {
+  PORTFOLIO_SETTINGS_VIEW: {
     outer: {
       style: { backgroundColor: 'rgba(255,255,255,0.7)' },
     },
@@ -169,7 +169,7 @@ type MODAL_VIEWS =
   | 'LOGOUT_ANNOUNCE_VIEW'
   | 'FIND_REPO_VIEW'
   | 'CONTINUE_VIEW'
-  | 'PROFILE_SETTINGS_VIEW'
+  | 'PORTFOLIO_SETTINGS_VIEW'
   | 'MYPROJECT_SETTINGS_VIEW'
   | 'CONTINUE_WRITE_VIEW'
 

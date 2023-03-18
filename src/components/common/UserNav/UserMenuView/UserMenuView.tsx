@@ -13,8 +13,6 @@ const UserMenuView: FC<any> = (props) => {
 
   if (!user) return <div>로딩중...</div>
 
-  console.log(user)
-
   return (
     <div className={s.modal} {...inner}>
       <ul>

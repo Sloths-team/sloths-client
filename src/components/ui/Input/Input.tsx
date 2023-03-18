@@ -26,11 +26,12 @@ const Input: FC<Props> = (props) => {
       render={({ field }) => (
         <input
           type={type}
-          autoCorrect="true"
-          autoCapitalize="off"
-          spellCheck="false"
           {...field}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            if (type === 'file') {
+              onChange(e)
+              return
+            }
             onChange(e)
             field.onChange(e.target.value)
           }}

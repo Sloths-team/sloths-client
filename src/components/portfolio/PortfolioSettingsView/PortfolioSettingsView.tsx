@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useUI } from '@components/ui/context'
 import useSocials from '@lib/shareSocials'
 
-const ProfileSettingsView: FC<any> = (props) => {
+const PortfolioSettingsView: FC<any> = (props) => {
   const { inner } = props
 
   const { closeModal } = useUI()
@@ -67,4 +67,4 @@ const ProfileSettingsView: FC<any> = (props) => {
   )
 }
 
-export default ProfileSettingsView
+export default PortfolioSettingsView

@@ -9,7 +9,7 @@ export const createProjectApi = () => {
 
   return useMutation(
     [QUERY_KEYS.PROJECT, token],
-    ({ params, body }: { params: { id: ID }; body: ProjectBody }) =>
-      createProject(params.id, body, token)
+    ({ params, formData }: { params: { id: ID }; formData: FormData }) =>
+      createProject(params.id, formData, token)
   )
 }

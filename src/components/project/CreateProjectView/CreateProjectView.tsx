@@ -25,11 +25,11 @@ import { usePreviews } from '@lib/hooks/usePreviews'
 import useFiles from '@lib/hooks/useFiles'
 import { useRouter } from 'next/router'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
+import File from '@components/ui/File'
 
 type Form = {
   title: string
   description: string
-  media_url: string
   repo_url: string
   root: null | number
 }
@@ -38,7 +38,6 @@ const CreateProjectView: FC = () => {
   const schema = yup.object({
     title: yup.string(),
     description: yup.string(),
-    media_url: yup.string(),
     repo_url: yup.string(),
     root: yup.number(),
   })
@@ -46,7 +45,6 @@ const CreateProjectView: FC = () => {
   const defaultValues = {
     title: '',
     description: '',
-    media_url: '',
     repo_url: '',
     root: null,
   } as const
@@ -78,18 +76,17 @@ const CreateProjectView: FC = () => {
   }, [values])
 
   const onSubmit = () => {
-    const { repo_url, media_url, ...rest } = getValues()
-
     const formData = formatFormData()
+
+    const { repo_url, ...rest } = getValues()
+    const data = { repoUrl: `${GITHUB_HTML_URL}/${repo_url}`, ...rest }
+
+    formData.append('data', JSON.stringify(data))
 
     createProject.mutateAsync(
       {
-        params: { id: user?.portfolio_id || 8 },
-        body: {
-          mediaUrl: JSON.stringify(formData),
-          repoUrl: `${GITHUB_HTML_URL}/${repo_url}`,
-          ...rest,
-        },
+        params: { id: user?.portfolio_id || 9 },
+        formData,
       },
       {
         onSuccess: (data) => {
@@ -135,13 +132,7 @@ const CreateProjectView: FC = () => {
       <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={s.left_section}>
           <label className={s.file_preview}>
-            <Input
-              hidden
-              type="file"
-              control={control}
-              name="media_url"
-              onChange={handleProfile}
-            />
+            <File hidden name="image" onChange={handleProfile} />
             {previews[0] && <img src={previews[0].toString()} alt={''} />}
           </label>
         </div>

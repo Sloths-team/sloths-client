@@ -168,7 +168,7 @@ const EachPortofolioView: FC = () => {
               <div
                 className={s.icon}
                 onClick={() => {
-                  setModalView('PROFILE_SETTINGS_VIEW')
+                  setModalView('PORTFOLIO_SETTINGS_VIEW')
                   openModal()
                 }}
               >

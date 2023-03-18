@@ -4,6 +4,7 @@ import {
   getUser,
   getUserById,
   getUserByNickname,
+  updateProfile,
 } from '@lib/repo/user'
 import { useQuery } from 'react-query'
 import { ID } from '@lib/types'
@@ -29,4 +30,12 @@ export const getUserByIdApi = (id: ID) => {
   const { storage: token } = useLocalStorage(AUTH_TOKEN_KEY)
 
   return useQuery([QUERY_KEYS.USER, id], () => getUserById(id, token))
+}
+
+export const updateProfileApi = (id: ID, formData: FormData) => {
+  const { storage: token } = useLocalStorage(AUTH_TOKEN_KEY)
+
+  return useQuery([QUERY_KEYS.USER, id], () =>
+    updateProfile(id, formData, token)
+  )
 }
