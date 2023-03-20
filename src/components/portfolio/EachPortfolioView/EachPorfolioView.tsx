@@ -133,7 +133,6 @@ const ProjectCard: FC<ProjectCardProps> = (props) => {
 
 const EachPortofolioView: FC = () => {
   const getPortfolios = getAllPortfoliosApi()
-  const { isUserLoggedIn } = useSession()
   const { setModalView, openModal } = useUI()
   const [side, setSide] = useState<'info' | 'personal' | 'team'>('personal')
   const actions = useMemo(() => {
@@ -224,20 +223,20 @@ const EachPortofolioView: FC = () => {
           {side === 'info' && (
             <div className={s.info}>
               <div className={s.wrapper}>
-                <span className={s.label}>프로젝트_이름</span>
-                <p className={s.content}>프로젝트_이름</p>
+                <span className={s.label}>포트폴리오_이름</span>
+                <p className={s.content}>포트폴리오_이름</p>
               </div>
               <div className={s.wrapper}>
-                <span className={s.label}>프로젝트_설명</span>
-                <p className={s.content}>프로젝트_설명</p>
+                <span className={s.label}>포트폴리오_설명</span>
+                <p className={s.content}>포트폴리오_설명</p>
               </div>
               <div className={s.wrapper}>
                 <span className={s.label}>개발자</span>
                 <p className={s.content}>개발자_이름</p>
               </div>
               <div className={s.wrapper}>
-                <span className={s.label}>프로젝트_마지막_수정일</span>
-                <p className={s.content}>프로젝트_마지막_수정일</p>
+                <span className={s.label}>포트폴리오_마지막_수정일</span>
+                <p className={s.content}>포트폴리오_마지막_수정일</p>
               </div>
               <button className={s.edit}>
                 <MdNotificationImportant />내 포트폴리오 정보를 수정하고 싶다면

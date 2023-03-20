@@ -31,7 +31,7 @@ const PortfolioSettingsView: FC<any> = (props) => {
             closeModal()
           }}
         >
-          포트폴로리오 정보 수정하기
+          포트폴리오 정보 수정하기
         </div>
       </div>
       <div className={s.wrapper}>

@@ -1,11 +1,4 @@
-import {
-  FC,
-  useEffect,
-  ChangeEvent,
-  useCallback,
-  useState,
-  useMemo,
-} from 'react'
+import { FC, useEffect, ChangeEvent, useCallback, useState } from 'react'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -109,12 +102,12 @@ const CreateProjectView: FC = () => {
     setDisabled(!title || !repo_url)
   }, [values.title, values.repo_url])
 
-  useEffect(() => {
-    if (saved) {
-      setModalView('CONTINUE_WRITE_VIEW')
-      openModal()
-    }
-  }, [saved])
+  // useEffect(() => {
+  //   if (saved) {
+  //     setModalView('CONTINUE_WRITE_VIEW')
+  //     openModal()
+  //   }
+  // }, [saved])
 
   useEffect(() => {
     if (project.repo_url) {
