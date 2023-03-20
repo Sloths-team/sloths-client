@@ -23,3 +23,14 @@ const useFiles = () => {
 }
 
 export default useFiles
+
+export const formatFormData = (values: Values) => {
+  const formData = new FormData()
+
+  Object.keys(values).forEach((key) => {
+    const files = values[key] || []
+    Array.from(files).forEach((file) => formData.append(key, file))
+  })
+
+  return formData
+}
