@@ -17,8 +17,6 @@ import { MdNotificationImportant } from 'react-icons/md'
 import Link from 'next/link'
 import { FaCaretDown } from 'react-icons/fa'
 import { useUI } from '@components/ui/context'
-import { GITHUB_HTML_URL, NEW_PROJECT } from '@lib/constants'
-import { createProjectApi } from '@lib/apis/project'
 import { usePreviews } from '@lib/hooks/usePreviews'
 import useFiles from '@lib/hooks/useFiles'
 import { useRouter } from 'next/router'
@@ -28,19 +26,8 @@ import { BsFullscreen, BsImages } from 'react-icons/bs'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { formatFormData } from '@lib/hooks/useFiles'
 
-type Form = {
-  title: string
-  content: string
-  repo_url: string
-  root: null | number
-}
-
-type Props = {
-  index: number
-}
-const CreateSectionView: FC<Props> = ({ index }) => {
+const CreateSectionView: FC<{ index: number }> = ({ index }) => {
   const { user } = useSession()
-
   const { control, setFocus, watch, setValue } = useFormContext()
 
   const { setModalView, openModal } = useUI()
@@ -52,28 +39,6 @@ const CreateSectionView: FC<Props> = ({ index }) => {
   const router = useRouter()
   const fileRef = useRef<HTMLInputElement>()
 
-  const onSubmit = () => {
-    // const formData = formatFormData()
-    // const { repo_url, ...rest } = getValues()
-    // const data = { repoUrl: `${GITHUB_HTML_URL}/${repo_url}`, ...rest }
-    // formData.append('data', JSON.stringify(data))
-    // createProject.mutateAsync(
-    //   {
-    //     params: { id: user?.portfolio_id || 9 },
-    //     formData,
-    //   },
-    //   {
-    //     onSuccess: (data) => {
-    //       if (data.isSuccess) {
-    //         router.push({
-    //           pathname: `/projects`,
-    //         })
-    //       }
-    //     },
-    //   }
-    // )
-  }
-
   const handleProfile = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       handlePreviews(e)
@@ -83,17 +48,12 @@ const CreateSectionView: FC<Props> = ({ index }) => {
   )
 
   useEffect(() => {
-    setFocus('title')
+    setFocus(`sections.${index}.title`)
   }, [])
 
   useEffect(() => {
-    const { title, repo_url } = values
-    setDisabled(!title || !repo_url)
-  }, [values.title, values.repo_url])
-
-  useEffect(() => {
     if (project.repo_url) {
-      setValue('repo_url', project.repo_url)
+      setValue(`sections.${index}.codes`, project.repo_url)
     }
   }, [project.repo_url])
 
@@ -161,9 +121,9 @@ const CreateSectionView: FC<Props> = ({ index }) => {
               placeholder="프로젝트의 섹션 내용을 적어주세요"
             />
           </label>
-          {/* <label className={s.input_container}>
+          <label className={s.input_container}>
             <span className={s.label}>Github 코드 추가하기</span>
-            <Input hidden control={control} name="repo_url" />
+            <Input hidden control={control} name={`sections.${index}.codes`} />
             {user?.github_nickname ? (
               <div
                 className={s.find}
@@ -190,7 +150,7 @@ const CreateSectionView: FC<Props> = ({ index }) => {
                 </Link>
               </button>
             )}
-          </label> */}
+          </label>
         </div>
       </div>
     </div>

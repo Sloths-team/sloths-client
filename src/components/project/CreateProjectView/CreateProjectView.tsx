@@ -77,7 +77,8 @@ const CreateProjectView: FC = () => {
         onSuccess: (data) => {
           if (data.isSuccess) {
             router.push({
-              pathname: `/projects`,
+              pathname: `/sections/new`,
+              query: { pjid: data.result.id },
             })
           }
         },

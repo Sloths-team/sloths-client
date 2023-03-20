@@ -1,11 +1,11 @@
 import { FC, useEffect, useCallback, useState, useRef } from 'react'
 import s from './CreateSectionView.module.css'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useSession } from '../../common/Layout/context'
 import { useUI } from '@components/ui/context'
-import { useProject } from '@components/project/context'
 import { BsPlusCircleDotted } from 'react-icons/bs'
 import CreateEachSectionView from '../CreateEachSectionView'
+import { createSectionApi } from '@lib/apis/project'
+import Button from '@components/ui/Button'
 
 type Section = {
   title: string
@@ -22,46 +22,47 @@ const CreateSectionView: FC = () => {
 
   const methods = useForm<Form>({
     defaultValues: {
-      sections: [{ title: '', content: '', images: [], codes: [] }],
+      sections: [{ title: '', content: '', images: {}, codes: [] }],
     },
   })
 
   const { setModalView, openModal } = useUI()
-  const { project } = useProject()
-  const [, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(true)
   const endRef = useRef<HTMLDivElement>(null)
 
+  const createSection = createSectionApi()
+  const projectId = 1
+
   const onSubmit = ({ sections }: Form) => {
-    const data = sections.map((section) => {
+    const arr = sections.map((section) => {
       const { images: formData, ...rest } = section
       formData.append('data', JSON.stringify(rest))
 
       return formData
     })
 
-    // createProject.mutateAsync(
-    //   {
-    //     params: { id: user?.portfolio_id || 9 },
-    //     formData,
-    //   },
-    //   {
-    //     onSuccess: (data) => {
-    //       if (data.isSuccess) {
-    //         router.push({
-    //           pathname: `/projects`,
-    //         })
-    //       }
-    //     },
-    //   }
-    // )
+    arr.forEach((section) => {
+      createSection.mutateAsync(
+        {
+          params: { id: projectId },
+          formData: section,
+        },
+        {
+          onSuccess: (data) => {
+            if (data.isSuccess) {
+              // router.push({
+              //   pathname: `/projects`,
+              // })
+            }
+          },
+        }
+      )
+    })
   }
 
   const scrollToBottom = useCallback(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [endRef.current])
-  // useEffect(() => {
-  //   setFocus('title')
-  // }, [])
 
   // useEffect(() => {
   //   const { title } = values
@@ -91,7 +92,7 @@ const CreateSectionView: FC = () => {
         <div className={s.header__inner}>
           <div className={s.inner_item}>
             <div className={s.image}></div>
-            <h2>{"'첫번째_프로젝트_xx"}</h2>
+            <h3>{'첫번째_프로젝트_xx'}</h3>
           </div>
           <div className={s.inner_item}>
             <button
@@ -111,7 +112,7 @@ const CreateSectionView: FC = () => {
             <CreateEachSectionView key={i} index={i} />
           ))}
         </FormProvider>
-        <button>완료</button>
+        <Button disabled={disabled}>완료</Button>
       </form>
       <div ref={endRef}></div>
       <div className={s.add} onClick={() => setCount((p) => p + 1)}>

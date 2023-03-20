@@ -9,7 +9,7 @@ import React, {
 export type Props = InputHTMLAttributes<HTMLInputElement> & {
   name: string
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
-  ref: any
+  ref?: any
 }
 
 const File: FC<Props> = forwardRef(

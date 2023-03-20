@@ -121,7 +121,7 @@
 .input_container textarea {
   font-family: inherit;
   resize: none;
-  min-height: 300px;
+  min-height: 200px;
 }
 
 .file_dropper {
