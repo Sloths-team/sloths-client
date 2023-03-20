@@ -1,23 +1,32 @@
-import React, { FC, InputHTMLAttributes, ChangeEvent } from 'react'
-import { Control, Controller } from 'react-hook-form'
+import React, {
+  FC,
+  InputHTMLAttributes,
+  ChangeEvent,
+  forwardRef,
+  LegacyRef,
+} from 'react'
 
 export type Props = InputHTMLAttributes<HTMLInputElement> & {
   name: string
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  ref: any
 }
 
-const FileInput: FC<Props> = (props) => {
-  const { name, onChange = () => {}, ...rest } = props
+const File: FC<Props> = forwardRef(
+  (props, inputRef: LegacyRef<HTMLInputElement> | undefined) => {
+    const { name, onChange = () => {}, ...rest } = props
 
-  return (
-    <input
-      type="file"
-      name={name}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-        onChange(e)
-      }}
-      {...rest}
-    />
-  )
-}
-export default FileInput
+    return (
+      <input
+        ref={inputRef}
+        type="file"
+        name={name}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          onChange(e)
+        }}
+        {...rest}
+      />
+    )
+  }
+)
+export default File

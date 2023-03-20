@@ -116,6 +116,19 @@ const MODAL_STYLE = {
       },
     },
   },
+  SECTION_PROJECT_SETTINGS_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(255,255,255,0.7)' },
+    },
+    inner: {
+      style: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+  },
 }
 
 const initialState = {
@@ -172,6 +185,7 @@ type MODAL_VIEWS =
   | 'PORTFOLIO_SETTINGS_VIEW'
   | 'MYPROJECT_SETTINGS_VIEW'
   | 'CONTINUE_WRITE_VIEW'
+  | 'SECTION_PROJECT_SETTINGS_VIEW'
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
 

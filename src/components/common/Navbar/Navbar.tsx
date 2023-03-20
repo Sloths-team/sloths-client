@@ -9,7 +9,7 @@ type Link = {
   label: string
 }
 type Props = {
-  links: Link[]
+  links?: Link[]
 }
 
 const Navbar: FC<Props> = ({ links }) => {
@@ -18,15 +18,17 @@ const Navbar: FC<Props> = ({ links }) => {
       <div className={s.root}>
         <div className={s.left}>
           <h1 className={s.logo}>로고</h1>
-          <ul className={s.nav_items}>
-            {links.map((l) => (
-              <li key={l.href} className={s.nav_item}>
-                <Link href={l.href} key={l.href}>
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {links && (
+            <ul className={s.nav_items}>
+              {links?.map((l) => (
+                <li key={l.href} className={s.nav_item}>
+                  <Link href={l.href} key={l.href}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         <div>
           <UserNav />

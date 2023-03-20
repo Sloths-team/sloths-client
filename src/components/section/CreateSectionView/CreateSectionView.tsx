@@ -8,7 +8,6 @@ import {
 } from 'react'
 import s from './CreateSectionView.module.css'
 import cn from 'clsx'
-import EditProfileView from '../EditProjectView/EditProjectView'
 import File from '@components/ui/File'
 import Input from '@components/ui/Input'
 import { useForm } from 'react-hook-form'
@@ -21,14 +20,14 @@ import Link from 'next/link'
 import { FaCaretDown } from 'react-icons/fa'
 import { useUI } from '@components/ui/context'
 import { GITHUB_HTML_URL, NEW_PROJECT } from '@lib/constants'
-import Button from '@components/ui/Button'
 import { createProjectApi } from '@lib/apis/project'
 import { usePreviews } from '@lib/hooks/usePreviews'
 import useFiles from '@lib/hooks/useFiles'
 import { useRouter } from 'next/router'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import { useProject } from '@components/project/context'
-import { BsPlusCircleDotted } from 'react-icons/bs'
+import { BsPlusCircleDotted, BsFullscreen } from 'react-icons/bs'
+import { AiOutlinePlus } from 'react-icons/ai'
 
 const title = '첫번째_프로젝트_xx'
 const description = '프로젝트에 대한 설명이 들어갈 곳입니다.'
@@ -65,15 +64,17 @@ const CreateSectionView: FC = () => {
     })
 
   const { setModalView, openModal } = useUI()
-  const { project, saveLocal, saved } = useProject()
-  const { previews, handlePreviews } = usePreviews()
+  const { project } = useProject()
+  const { previews, handlePreviews } = usePreviews('stack')
   const { onChangeFiles, formatFormData } = useFiles()
-  const [disabled, setDisabled] = useState(true)
+  const [, setDisabled] = useState(true)
   const createProject = createProjectApi()
   const values = watch()
   const router = useRouter()
   const { storage } = useLocalStorage(NEW_PROJECT)
   const endRef = useRef<HTMLDivElement>(null)
+  const fileRef = useRef<HTMLInputElement>()
+
   const onSubmit = () => {
     const formData = formatFormData()
 
@@ -145,18 +146,61 @@ const CreateSectionView: FC = () => {
     <div className={s.root}>
       <div className={s.header}>
         <div className={s.header__inner}>
-          <div className={s.image}></div>
-          <h2>{title}</h2>
+          <div className={s.inner_item}>
+            <div className={s.image}></div>
+            <h2>{title}</h2>
+          </div>
+          <div className={s.inner_item}>
+            <button
+              onClick={() => {
+                setModalView('SECTION_PROJECT_SETTINGS_VIEW')
+                openModal()
+              }}
+            >
+              설정
+            </button>
+          </div>
         </div>
       </div>
       <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-        {Array.from({ length: count }).map((section) => (
-          <div className={s.section_container}>
+        {Array.from({ length: count }).map((section, i) => (
+          <div key={i} className={s.section_container}>
             <div className={cn(s.section, { [s.left]: true })}>
-              <label className={s.file_preview}>
-                <File hidden name="image" onChange={handleProfile} />
-                {previews[0] && <img src={previews[0].toString()} alt={''} />}
-              </label>
+              <div className={s.file_dropper}>
+                <label
+                  className={cn(s.file, { [s.hidden]: !!previews.length })}
+                  htmlFor="image"
+                >
+                  이미지
+                </label>
+                <File
+                  ref={fileRef}
+                  id="image"
+                  name="image"
+                  onChange={handleProfile}
+                  multiple
+                />
+                <ul className={s.previews}>
+                  {previews.length
+                    ? previews.map((preview, i) => (
+                        <li key={preview + ''} className={s.image_wrapper}>
+                          <img src={preview?.toString()} alt={''} />
+                        </li>
+                      ))
+                    : null}
+                </ul>
+                <div className={s.actions}>
+                  <div
+                    className={s.action}
+                    onClick={() => fileRef?.current?.click() || null}
+                  >
+                    <AiOutlinePlus />
+                  </div>
+                  <div className={s.action}>
+                    <BsFullscreen />
+                  </div>
+                </div>
+              </div>
             </div>
             <div className={cn(s.section, { [s.right]: true })}>
               <div className={s.main}>
@@ -206,26 +250,12 @@ const CreateSectionView: FC = () => {
                     </button>
                   )}
                 </label>
-                {/* <div className={s.button_container}>
-              <Button
-                id={s.save}
-                type="button"
-                onClick={() => {
-                  saveLocal({ project: { ...values }, saved: true })
-                }}
-              >
-                임시 저장
-              </Button>
-              <Button type="submit" className={s.button} disabled={disabled}>
-                만들기
-              </Button>
-            </div> */}
               </div>
             </div>
+            <div ref={endRef}></div>
           </div>
         ))}
       </form>
-      <div ref={endRef}></div>
       <div className={s.add} onClick={handleAdd}>
         <BsPlusCircleDotted />
       </div>

@@ -13,6 +13,7 @@ import PortfolioSettingsView from '@components/portfolio/PortfolioSettingsView'
 import MyProjectSettingsView from '@components/project/MyProjectSettingsView'
 import cn from 'clsx'
 import ContinueWriteView from '@components/project/ContinueWriteView'
+import SectionProjectSettingsView from '@components/section/ProjectSettingsView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -27,6 +28,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     PORTFOLIO_SETTINGS_VIEW: PortfolioSettingsView,
     MYPROJECT_SETTINGS_VIEW: MyProjectSettingsView,
     CONTINUE_WRITE_VIEW: ContinueWriteView,
+    SECTION_PROJECT_SETTINGS_VIEW: SectionProjectSettingsView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]
@@ -88,7 +90,7 @@ const Layout: FC<{ full: boolean | undefined; children: ReactNode }> = ({
 
   return (
     <div>
-      <Navbar links={navBarlinks} />
+      <Navbar />
       <main className={cn(s.main, { [s.full]: full })}>{children}</main>
       <ModalUI />
       <SidebarUI links={navBarlinks} />
