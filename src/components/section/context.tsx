@@ -17,10 +17,27 @@ export type State = {
   sections: Section[]
 }
 
+export type DragDrop = {
+  draggableId: string
+  droppableStartId: string
+  droppableEndId: string
+  droppableStartIndex: number
+  droppableEndIndex: number
+  type: string
+}
+
 export type ContextValue = State & {
   set: (data: State) => void
   saveLocal: (data: State) => void
   destroyLocal: () => void
+  sort: (
+    draggableId: string,
+    droppableStartId: string,
+    droppableEndId: string,
+    droppableStartIndex: number,
+    droppableEndIndex: number,
+    type: string
+  ) => void
 }
 
 const initialState: State = {
@@ -39,6 +56,10 @@ type Action =
     }
   | {
       type: 'DESTROY_LOCAL'
+    }
+  | {
+      type: 'SORT'
+      data: DragDrop
     }
 
 export const SectionsContext = createContext<ContextValue | null>(null)
@@ -63,6 +84,32 @@ function projectReducer(state: State, action: Action): State {
       return { ...state }
     }
 
+    case 'SORT': {
+      const {
+        droppableStartId,
+        droppableEndId,
+        droppableStartIndex,
+        droppableEndIndex,
+        type,
+      } = action.data
+
+      const copied = [...state.sections]
+
+      const list = copied.splice(droppableStartIndex, 1)[0]
+      copied.splice(droppableEndIndex, 0, list)
+
+      const startList = copied.filter(
+        (section) => section.id + '' === droppableStartId
+      )[0]
+
+      const endList = copied.filter(
+        (section) => section.id + '' === droppableEndId
+      )[0]
+
+      // updateLists(copied)
+
+      return { ...state, sections: copied }
+    }
     default: {
       return { ...state }
     }
@@ -92,12 +139,35 @@ export const SectionsProvider: FC<{ children?: ReactNode }> = (props) => {
     dispatch({ type: 'DESTROY_LOCAL' })
   }, [dispatch])
 
+  const sort = useCallback(
+    (
+      draggableId: string,
+      droppableStartId: string,
+      droppableEndId: string,
+      droppableStartIndex: number,
+      droppableEndIndex: number,
+      type: string
+    ) => ({
+      type: 'SORT',
+      data: {
+        draggableId,
+        droppableStartId,
+        droppableEndId,
+        droppableStartIndex,
+        droppableEndIndex,
+        type,
+      },
+    }),
+    [dispatch]
+  )
+
   const value: ContextValue = useMemo(
     () => ({
       ...state,
       set,
       saveLocal,
       destroyLocal,
+      sort,
     }),
     [state]
   )

@@ -1,11 +1,13 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 type Values = { [key: string]: File[] }
 
-const useFiles = () => {
-  const [_values, setValues] = useState<Values>({})
+const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
+  const [files, setFiles] = useState<Values>({})
+  const [previews, setPreviews] = useState<(string | ArrayBuffer | null)[]>([])
+
   const onChangeFiles = (e: ChangeEvent<HTMLInputElement>) => {
-    setValues((prev) => {
+    setFiles((prev) => {
       const exist = prev[e.target.name]
       return {
         ...prev,
@@ -15,9 +17,38 @@ const useFiles = () => {
         ],
       }
     })
+
+    handlePreviews(e.target.files || [])
   }
 
-  return { files: _values, onChangeFiles }
+  const handlePreviews = (files: FileList | []) => {
+    Promise.all(
+      Array.from(files).map(
+        (file) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader()
+
+            reader.readAsDataURL(file)
+            reader.onload = () => resolve(reader.result)
+          })
+      )
+    ).then((res: any) => {
+      setPreviews((prev) => (mode === 'stack' ? [...prev, ...res] : res))
+    })
+  }
+
+  const formatFormData = () => {
+    const formData = new FormData()
+
+    Object.keys(files).forEach((key) => {
+      const _files = files[key] || []
+      Array.from(_files).forEach((file) => formData.append(key, file))
+    })
+
+    return formData
+  }
+
+  return { files, previews, onChangeFiles, formatFormData }
 }
 
 export default useFiles

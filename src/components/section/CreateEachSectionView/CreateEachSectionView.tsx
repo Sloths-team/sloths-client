@@ -3,26 +3,39 @@ import s from './CreateEachSectionView.module.css'
 import cn from 'clsx'
 import File from '@components/ui/File'
 import Input from '@components/ui/Input'
-import { useFieldArray, useFormContext } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
 import Textarea from '@components/ui/Textarea'
-import { usePreviews } from '@lib/hooks/usePreviews'
 import useFiles from '@lib/hooks/useFiles'
 import { BsFullscreen, BsImages } from 'react-icons/bs'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { formatFormData } from '@lib/hooks/useFiles'
+import { Section } from '../CreateSectionView/CreateSectionView'
 
-const CreateEachSectionView: FC<{ index: number }> = ({ index }) => {
-  const { control, setFocus, setValue } = useFormContext()
-  const { previews, handlePreviews } = usePreviews('stack')
-  const { files, onChangeFiles } = useFiles()
+type Props = {
+  index: number
+  methods: UseFormReturn<{ sections: Section[] }, any>
+}
+
+const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
+  const { control, setFocus, setValue, watch } = methods
+  const { files, previews, onChangeFiles } = useFiles('stack')
+
   const fileRef = useRef<HTMLInputElement>()
+  const { sections } = watch()
+  const section = sections[index]
+
+  const onDelete = (index: number) => {
+    setValue(
+      'sections',
+      sections.filter((s, i) => i !== index)
+    )
+  }
 
   const handleProfile = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      handlePreviews(e)
       onChangeFiles(e)
     },
-    [handlePreviews, onChangeFiles]
+    [onChangeFiles]
   )
 
   useEffect(() => {
@@ -31,14 +44,19 @@ const CreateEachSectionView: FC<{ index: number }> = ({ index }) => {
 
   useEffect(() => {
     setValue(`sections.${index}.images`, formatFormData(files))
-  }, [files])
+    setValue(`sections.${index}.previews`, previews)
+  }, [files, previews])
 
   useEffect(() => {
-    setValue(`sections.${index}.previews`, previews)
-  }, [previews])
+    setValue(`sections.${index}.title`, section.title)
+    setValue(`sections.${index}.content`, section.content)
+    setValue(`sections.${index}.previews`, section.previews)
+    setValue(`sections.${index}.codes`, section.codes)
+  }, [section, index])
 
   return (
     <li className={s.section_container}>
+      <button onClick={() => onDelete(index)}>삭제</button>
       <div className={cn(s.section, { [s.left]: true })}>
         <div className={s.file_dropper}>
           <label
@@ -96,6 +114,7 @@ const CreateEachSectionView: FC<{ index: number }> = ({ index }) => {
               control={control}
               name={`sections.${index}.content`}
               placeholder="프로젝트의 색션 내용을 적어주세요"
+              value={section.content}
             />
           </label>
           <label className={s.input_container}>

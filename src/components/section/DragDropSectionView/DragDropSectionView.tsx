@@ -1,6 +1,12 @@
-import { useSession } from '@components/common/Layout/context'
 import { useUI } from '@components/ui/context'
-import { CSSProperties, FC, useMemo } from 'react'
+import {
+  CSSProperties,
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import s from './DragDropSectionView.module.css'
 import { IoCloseOutline } from 'react-icons/io5'
 import {
@@ -10,12 +16,15 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 import { Section } from '../CreateSectionView/CreateSectionView'
-import { UseFormReturn } from 'react-hook-form'
+import { useFieldArray, UseFormReturn } from 'react-hook-form'
+import { useSections } from '../context'
+import Button from '@components/ui/Button'
 
 type Props = {
   inner: {
     style: CSSProperties
     methods: UseFormReturn<{ sections: Section[] }, any>
+    onDelete: (index: number) => void
   }
 }
 
@@ -25,27 +34,42 @@ const DragDropSectionView: FC<Props> = (props) => {
   } = props
 
   const { closeModal } = useUI()
-  const { getValues } = methods
-  const sections = useMemo(() => getValues('sections'), [methods])
 
-  console.log(sections)
+  const _sections = methods.watch().sections
+
+  const { sections, sort, set } = useSections()
+  const [copied, setCopied] = useState<Section[]>([])
+
+  const onDeleteCopied = (idx: number) =>
+    setCopied((p) => p.filter((v, i) => i !== idx))
+
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result
 
-    console.log('good')
     if (!destination) return
 
-    //  dispatch(
-    //    rearrange(
-    //      draggableId,
-    //      source.droppableId,
-    //      destination?.droppableId,
-    //      source.index,
-    //      destination?.index,
-    //      type
-    //    )
-    //  )
+    sort(
+      draggableId,
+      source.droppableId,
+      destination?.droppableId,
+      source.index,
+      destination?.index,
+      type
+    )
   }
+
+  const onSave = useCallback(() => {
+    methods.setValue('sections', copied)
+    closeModal()
+  }, [copied])
+
+  useEffect(() => {
+    set({ sections: _sections })
+  }, [_sections])
+
+  useEffect(() => {
+    setCopied(sections)
+  }, [sections])
 
   return (
     <div style={style} className={s.root}>
@@ -62,40 +86,44 @@ const DragDropSectionView: FC<Props> = (props) => {
         </ul>
         <div className={s.container}>
           <DragDropContext onDragEnd={handleDragEnd}>
-            <Droppable
-              type="list"
-              droppableId={'total'}
-              direction={'horizontal'}
-            >
+            <Droppable droppableId={'sections'} direction={'horizontal'}>
               {(provided) => (
-                <ol
+                <ul
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   className={s.cards}
                 >
-                  {sections?.map((section, i) => (
+                  {copied?.map((section, i) => (
                     <Draggable
-                      draggableId={`section.${i}`}
+                      key={section.id + ''}
+                      draggableId={section.id + ''}
                       index={i}
-                      key={section.title}
                     >
                       {(provided) => (
                         <li
                           ref={provided.innerRef}
-                          {...provided.dragHandleProps}
                           {...provided.draggableProps}
+                          {...provided.dragHandleProps}
                           className={s.card}
                         >
+                          <button onClick={() => onDeleteCopied(i)}>
+                            삭제
+                          </button>
                           <div>{section.title}</div>
                         </li>
                       )}
                     </Draggable>
                   ))}
                   {provided.placeholder}
-                </ol>
+                </ul>
               )}
             </Droppable>
           </DragDropContext>
+        </div>
+        <div className={s.footer}>
+          <Button type="button" onClick={onSave}>
+            저장
+          </Button>
         </div>
       </main>
     </div>

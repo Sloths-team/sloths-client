@@ -1,19 +1,19 @@
-import { FC, useEffect, useCallback, useState, useRef } from 'react'
+import { FC, useEffect, useState, useRef } from 'react'
 import s from './CreateSectionView.module.css'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { useUI } from '@components/ui/context'
-import { BsPlusCircleDotted } from 'react-icons/bs'
 import CreateEachSectionView from '../CreateEachSectionView'
 import { createSectionApi } from '@lib/apis/project'
 import Button from '@components/ui/Button'
 import { useSections } from '../context'
 
 export type Section = {
+  id: number
   title: string
   content: string
   images: FormData
   codes?: []
-  previews?: []
+  previews?: (string | ArrayBuffer | null)[]
 }
 
 type Form = {
@@ -25,7 +25,16 @@ const CreateSectionView: FC = () => {
     defaultValues: {
       sections: [
         {
-          title: '',
+          id: 0,
+          title: '연습_1',
+          content: '',
+          images: new FormData(),
+          codes: [],
+          previews: [],
+        },
+        {
+          id: 1,
+          title: '연습_2',
           content: '',
           images: new FormData(),
           codes: [],
@@ -35,26 +44,26 @@ const CreateSectionView: FC = () => {
     },
   })
 
-  const { fields, append } = useFieldArray({
-    control: methods.control,
-    name: 'sections',
-  })
+  const nextId =
+    Math.max(...methods.watch().sections.map((section) => section.id)) + 1
 
   const { setModalView, openModal } = useUI()
   const [disabled, setDisabled] = useState(true)
   const endRef = useRef<HTMLDivElement>(null)
-
   const createSection = createSectionApi()
   const projectId = 1
-  const { saveLocal } = useSections()
+  const { saveLocal, sort } = useSections()
+  const { sections } = methods.watch()
 
   const onSubmit = ({ sections }: Form) => {
-    const arr = sections.map((section) => {
-      const { images: formData, previews, ...rest } = section
-      formData.append('data', JSON.stringify(rest))
+    console.log(sections)
 
-      return formData
-    })
+    // const arr = sections.map((section) => {
+    //   const { images: formData, previews, ...rest } = section
+    //   formData.append('data', JSON.stringify(rest))
+
+    //   return formData
+    // })
 
     // console.log(arr)
     // arr.forEach((section) => {
@@ -76,10 +85,6 @@ const CreateSectionView: FC = () => {
     // })
   }
 
-  const scrollToBottom = useCallback(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [endRef.current])
-
   // useEffect(() => {
   //   const { title } = values
   //   setDisabled(!title)
@@ -99,8 +104,12 @@ const CreateSectionView: FC = () => {
   // }, [project.repo_url])
 
   useEffect(() => {
-    scrollToBottom()
-  }, [fields.length])
+    const bottom = endRef.current
+
+    if (bottom) {
+      bottom.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [sections.length])
 
   return (
     <div className={s.root}>
@@ -124,24 +133,32 @@ const CreateSectionView: FC = () => {
       </div>
       <form className={s.form} onSubmit={methods.handleSubmit(onSubmit)}>
         <ul className={s.ul}>
-          <FormProvider {...methods}>
-            {fields.map((section, i) => (
-              <CreateEachSectionView key={i} index={i} />
-            ))}
-          </FormProvider>
+          {sections.map((section, i) => {
+            return (
+              <CreateEachSectionView
+                key={section.id}
+                index={i}
+                methods={methods}
+              />
+            )
+          })}
         </ul>
         <div className={s.button_container}>
           <Button
             type="button"
             className={s.button}
             onClick={() =>
-              append({
-                title: '',
-                content: '',
-                images: new FormData(),
-                previews: [],
-                codes: [],
-              })
+              methods.setValue('sections', [
+                ...sections,
+                {
+                  id: nextId,
+                  title: '',
+                  content: '',
+                  images: new FormData(),
+                  previews: [],
+                  codes: [],
+                },
+              ])
             }
           >
             추가하기
@@ -166,7 +183,7 @@ const CreateSectionView: FC = () => {
             임시 저장
           </Button>
           <Button type="submit" className={s.button}>
-            (총 {fields.length} 색션)만들기
+            (총 {sections.length} 색션)만들기
           </Button>
         </div>
       </form>

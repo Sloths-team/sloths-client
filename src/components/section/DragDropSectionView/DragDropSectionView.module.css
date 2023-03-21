@@ -60,12 +60,33 @@
   height: 100%;
 }
 .cards {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   margin-top: 30px;
 }
 .card {
   padding: 10px;
-  border: 1px solid #dfdfdf;
   cursor: pointer;
   margin-right: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: #fff;
+}
+
+.footer {
+  display: flex;
+  position: fixed;
+  left: 50px;
+  right: 50px;
+  bottom: 0;
+  background-color: #fff;
+  padding: 10px 0;
+  justify-content: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.footer button {
+  margin: 0 10px;
+  background-color: gray;
+  padding: 12px 48px;
+  cursor: pointer;
 }
