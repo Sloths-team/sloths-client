@@ -17,11 +17,7 @@ export const usePreviews = (mode: 'stack' | 'oneOff' = 'oneOff') => {
           })
       )
     ).then((res: any) => {
-      if (mode === 'stack') {
-        setPreviews((prev) => [...prev, ...res])
-      } else {
-        setPreviews(res)
-      }
+      setPreviews((prev) => (mode === 'stack' ? [...prev, ...res] : res))
     })
   }
 
