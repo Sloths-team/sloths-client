@@ -1,29 +1,43 @@
 import { FC, useEffect, useCallback, useState, useRef } from 'react'
 import s from './CreateSectionView.module.css'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { useUI } from '@components/ui/context'
 import { BsPlusCircleDotted } from 'react-icons/bs'
 import CreateEachSectionView from '../CreateEachSectionView'
 import { createSectionApi } from '@lib/apis/project'
 import Button from '@components/ui/Button'
+import { useSections } from '../context'
 
-type Section = {
+export type Section = {
   title: string
   content: string
   images: FormData
-  codes: []
+  codes?: []
+  previews?: []
 }
+
 type Form = {
   sections: Section[]
 }
 
 const CreateSectionView: FC = () => {
-  const [count, setCount] = useState(1)
-
   const methods = useForm<Form>({
     defaultValues: {
-      sections: [{ title: '', content: '', images: {}, codes: [] }],
+      sections: [
+        {
+          title: '',
+          content: '',
+          images: new FormData(),
+          codes: [],
+          previews: [],
+        },
+      ],
     },
+  })
+
+  const { fields, append } = useFieldArray({
+    control: methods.control,
+    name: 'sections',
   })
 
   const { setModalView, openModal } = useUI()
@@ -32,32 +46,34 @@ const CreateSectionView: FC = () => {
 
   const createSection = createSectionApi()
   const projectId = 1
+  const { saveLocal } = useSections()
 
   const onSubmit = ({ sections }: Form) => {
     const arr = sections.map((section) => {
-      const { images: formData, ...rest } = section
+      const { images: formData, previews, ...rest } = section
       formData.append('data', JSON.stringify(rest))
 
       return formData
     })
 
-    arr.forEach((section) => {
-      createSection.mutateAsync(
-        {
-          params: { id: projectId },
-          formData: section,
-        },
-        {
-          onSuccess: (data) => {
-            if (data.isSuccess) {
-              // router.push({
-              //   pathname: `/projects`,
-              // })
-            }
-          },
-        }
-      )
-    })
+    // console.log(arr)
+    // arr.forEach((section) => {
+    //   createSection.mutateAsync(
+    //     {
+    //       params: { id: projectId },
+    //       formData: section,
+    //     },
+    //     {
+    //       onSuccess: (data) => {
+    //         if (data.isSuccess) {
+    //           // router.push({
+    //           //   pathname: `/projects`,
+    //           // })
+    //         }
+    //       },
+    //     }
+    //   )
+    // })
   }
 
   const scrollToBottom = useCallback(() => {
@@ -84,7 +100,7 @@ const CreateSectionView: FC = () => {
 
   useEffect(() => {
     scrollToBottom()
-  }, [count])
+  }, [fields.length])
 
   return (
     <div className={s.root}>
@@ -109,7 +125,7 @@ const CreateSectionView: FC = () => {
       <form className={s.form} onSubmit={methods.handleSubmit(onSubmit)}>
         <ul className={s.ul}>
           <FormProvider {...methods}>
-            {Array.from({ length: count }).map((section, i) => (
+            {fields.map((section, i) => (
               <CreateEachSectionView key={i} index={i} />
             ))}
           </FormProvider>
@@ -118,15 +134,39 @@ const CreateSectionView: FC = () => {
           <Button
             type="button"
             className={s.button}
-            onClick={() => setCount((p) => p + 1)}
+            onClick={() =>
+              append({
+                title: '',
+                content: '',
+                images: new FormData(),
+                previews: [],
+                codes: [],
+              })
+            }
           >
             추가하기
           </Button>
-          <Button type="button" className={s.button}>
+          <Button
+            type="button"
+            className={s.button}
+            onClick={() => {
+              setModalView('DRAG_DROP_SECTION_VIEW', { methods })
+              openModal()
+            }}
+          >
             미리보기
           </Button>
-          <Button type="submit" className={s.button} disabled={disabled}>
-            (총 {count} 색션)만들기
+          <Button
+            id={s.save}
+            type="button"
+            onClick={() => {
+              saveLocal({ ...methods.getValues(), saved: true })
+            }}
+          >
+            임시 저장
+          </Button>
+          <Button type="submit" className={s.button}>
+            (총 {fields.length} 색션)만들기
           </Button>
         </div>
       </form>

@@ -28,10 +28,6 @@ const Input: FC<Props> = (props) => {
           type={type}
           {...field}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            if (type === 'file') {
-              onChange(e)
-              return
-            }
             onChange(e)
             field.onChange(e.target.value)
           }}

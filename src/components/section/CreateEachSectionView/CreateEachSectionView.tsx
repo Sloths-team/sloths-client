@@ -1,42 +1,20 @@
-import {
-  FC,
-  useEffect,
-  ChangeEvent,
-  useCallback,
-  useState,
-  useRef,
-} from 'react'
+import { FC, useEffect, ChangeEvent, useCallback, useRef } from 'react'
 import s from './CreateEachSectionView.module.css'
 import cn from 'clsx'
 import File from '@components/ui/File'
 import Input from '@components/ui/Input'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import Textarea from '@components/ui/Textarea'
-import { useSession } from '../../common/Layout/context'
-import { MdNotificationImportant } from 'react-icons/md'
-import Link from 'next/link'
-import { FaCaretDown } from 'react-icons/fa'
-import { useUI } from '@components/ui/context'
 import { usePreviews } from '@lib/hooks/usePreviews'
 import useFiles from '@lib/hooks/useFiles'
-import { useRouter } from 'next/router'
-import useLocalStorage from '@lib/hooks/useLocalStorage'
-import { useProject } from '@components/project/context'
 import { BsFullscreen, BsImages } from 'react-icons/bs'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { formatFormData } from '@lib/hooks/useFiles'
 
-const CreateSectionView: FC<{ index: number }> = ({ index }) => {
-  const { user } = useSession()
-  const { control, setFocus, watch, setValue } = useFormContext()
-
-  const { setModalView, openModal } = useUI()
-  const { project } = useProject()
+const CreateEachSectionView: FC<{ index: number }> = ({ index }) => {
+  const { control, setFocus, setValue } = useFormContext()
   const { previews, handlePreviews } = usePreviews('stack')
   const { files, onChangeFiles } = useFiles()
-  const [, setDisabled] = useState(true)
-  const values = watch()
-  const router = useRouter()
   const fileRef = useRef<HTMLInputElement>()
 
   const handleProfile = useCallback(
@@ -52,22 +30,20 @@ const CreateSectionView: FC<{ index: number }> = ({ index }) => {
   }, [])
 
   useEffect(() => {
-    if (project.repo_url) {
-      setValue(`sections.${index}.codes`, project.repo_url)
-    }
-  }, [project.repo_url])
-
-  useEffect(() => {
     setValue(`sections.${index}.images`, formatFormData(files))
   }, [files])
 
+  useEffect(() => {
+    setValue(`sections.${index}.previews`, previews)
+  }, [previews])
+
   return (
-    <div className={s.section_container}>
+    <li className={s.section_container}>
       <div className={cn(s.section, { [s.left]: true })}>
         <div className={s.file_dropper}>
           <label
             className={cn(s.file, { [s.hidden]: !!previews.length })}
-            htmlFor="image"
+            htmlFor="images"
           >
             <p className={s.text}>
               <BsImages />
@@ -76,11 +52,12 @@ const CreateSectionView: FC<{ index: number }> = ({ index }) => {
           </label>
           <File
             ref={fileRef}
-            id="image"
-            name={`sections.${index}.images`}
+            id="images"
+            name="images"
             onChange={handleProfile}
             multiple
           />
+          <Input hidden control={control} name={`sections.${index}.previews`} />
           <ul className={s.previews}>
             {previews.length
               ? previews.map((preview, i) => (
@@ -124,7 +101,7 @@ const CreateSectionView: FC<{ index: number }> = ({ index }) => {
           <label className={s.input_container}>
             <span className={s.label}>Github 코드 추가하기</span>
             <Input hidden control={control} name={`sections.${index}.codes`} />
-            {user?.github_nickname ? (
+            {/* {user?.github_nickname ? (
               <div
                 className={s.find}
                 onClick={() => {
@@ -132,7 +109,7 @@ const CreateSectionView: FC<{ index: number }> = ({ index }) => {
                   openModal()
                 }}
               >
-                {project.repo_url || '레포 찾기'}
+                {project?.repo_url || '레포 찾기'}
                 <FaCaretDown />
               </div>
             ) : (
@@ -149,12 +126,12 @@ const CreateSectionView: FC<{ index: number }> = ({ index }) => {
                   등록하러 가기
                 </Link>
               </button>
-            )}
+            )} */}
           </label>
         </div>
       </div>
-    </div>
+    </li>
   )
 }
 
-export default CreateSectionView
+export default CreateEachSectionView

@@ -51,14 +51,13 @@ const CreateProjectView: FC = () => {
     })
 
   const { setModalView, openModal } = useUI()
-  const { project, saveLocal, saved } = useProject()
+  const { project, saveLocal } = useProject()
   const { previews, handlePreviews } = usePreviews()
   const { onChangeFiles, formatFormData } = useFiles()
   const [disabled, setDisabled] = useState(true)
   const createProject = createProjectApi()
   const values = watch()
   const router = useRouter()
-  const { storage } = useLocalStorage(NEW_PROJECT)
 
   const onSubmit = () => {
     const formData = formatFormData()
@@ -111,10 +110,10 @@ const CreateProjectView: FC = () => {
   // }, [saved])
 
   useEffect(() => {
-    if (project.repo_url) {
-      setValue('repo_url', project.repo_url)
+    if (project?.repo_url) {
+      setValue('repo_url', project?.repo_url)
     }
-  }, [project.repo_url])
+  }, [project?.repo_url])
 
   return (
     <div className={s.root}>
@@ -156,7 +155,7 @@ const CreateProjectView: FC = () => {
                   openModal()
                 }}
               >
-                {project.repo_url || '레포 찾기'}
+                {project?.repo_url || '레포 찾기'}
                 <FaCaretDown />
               </div>
             ) : (

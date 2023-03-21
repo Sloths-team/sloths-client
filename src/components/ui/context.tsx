@@ -129,6 +129,14 @@ const MODAL_STYLE = {
       },
     },
   },
+  DRAG_DROP_SECTION_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(0,0,0,0.7)' },
+    },
+    inner: {
+      style: {},
+    },
+  },
 }
 
 const initialState = {
@@ -186,6 +194,7 @@ type MODAL_VIEWS =
   | 'MYPROJECT_SETTINGS_VIEW'
   | 'CONTINUE_WRITE_VIEW'
   | 'SECTION_PROJECT_SETTINGS_VIEW'
+  | 'DRAG_DROP_SECTION_VIEW'
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
 

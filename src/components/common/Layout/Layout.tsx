@@ -14,6 +14,7 @@ import MyProjectSettingsView from '@components/project/MyProjectSettingsView'
 import cn from 'clsx'
 import ContinueWriteView from '@components/project/ContinueWriteView'
 import SectionProjectSettingsView from '@components/section/ProjectSettingsView'
+import DragDropSectionView from '@components/section/DragDropSectionView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -29,6 +30,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     MYPROJECT_SETTINGS_VIEW: MyProjectSettingsView,
     CONTINUE_WRITE_VIEW: ContinueWriteView,
     SECTION_PROJECT_SETTINGS_VIEW: SectionProjectSettingsView,
+    DRAG_DROP_SECTION_VIEW: DragDropSectionView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]

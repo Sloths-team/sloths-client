@@ -1,5 +1,5 @@
 import { Section } from '@components/section/CreateSectionView/CreateSectionView'
-import { NEW_PROJECT } from '@lib/constants'
+import { NEW_SECTIONS } from '@lib/constants'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import React, {
   FC,
@@ -14,32 +14,17 @@ import React, {
 
 export type State = {
   saved?: boolean
-  project?: {
-    title?: string
-    description?: string
-    repo_url?: string
-    media_url?: string
-    root?: number | null
-  }
-  sections?: Section[]
+  sections: Section[]
 }
 
 export type ContextValue = State & {
   set: (data: State) => void
   saveLocal: (data: State) => void
   destroyLocal: () => void
-  saveSections: (data: Section[]) => void
 }
 
 const initialState: State = {
   saved: false,
-  project: {
-    title: '',
-    description: '',
-    repo_url: '',
-    media_url: '',
-    root: null,
-  },
   sections: [],
 }
 
@@ -55,14 +40,10 @@ type Action =
   | {
       type: 'DESTROY_LOCAL'
     }
-  | {
-      type: 'SAVE_SECTIONS'
-      data: Section[]
-    }
 
-export const ProjectContext = createContext<ContextValue | null>(null)
+export const SectionsContext = createContext<ContextValue | null>(null)
 
-ProjectContext.displayName = 'ProjectContext'
+SectionsContext.displayName = 'SectionsContext'
 
 function projectReducer(state: State, action: Action): State {
   switch (action.type) {
@@ -82,21 +63,15 @@ function projectReducer(state: State, action: Action): State {
       return { ...state }
     }
 
-    case 'SAVE_SECTIONS': {
-      return {
-        ...state,
-        sections: action.data,
-      }
-    }
     default: {
       return { ...state }
     }
   }
 }
 
-export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
+export const SectionsProvider: FC<{ children?: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(projectReducer, initialState)
-  const { storage, saveStorage } = useLocalStorage(NEW_PROJECT)
+  const { storage, saveStorage } = useLocalStorage(NEW_SECTIONS)
 
   const set = useCallback(
     (data: State) => {
@@ -117,21 +92,12 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
     dispatch({ type: 'DESTROY_LOCAL' })
   }, [dispatch])
 
-  const saveSections = useCallback(
-    (data: Section[]) => {
-      dispatch({ type: 'SAVE_SECTIONS', data })
-      saveStorage(JSON.stringify({ ...state, sections: data }))
-    },
-    [dispatch, state]
-  )
-
   const value: ContextValue = useMemo(
     () => ({
       ...state,
       set,
       saveLocal,
       destroyLocal,
-      saveSections,
     }),
     [state]
   )
@@ -141,13 +107,13 @@ export const ProjectProvider: FC<{ children?: ReactNode }> = (props) => {
     set(JSON.parse(storage))
   }, [storage])
 
-  return <ProjectContext.Provider value={value} {...props} />
+  return <SectionsContext.Provider value={value} {...props} />
 }
 
-export const useProject = () => {
-  const context = useContext(ProjectContext)
+export const useSections = () => {
+  const context = useContext(SectionsContext)
   if (!context) {
-    throw new Error(`useProject must be used within a ProjectProvider`)
+    throw new Error(`useSections must be used within a SectionsProvider`)
   }
 
   return context
