@@ -87,27 +87,27 @@
   margin-top: 20px;
 }
 
+.ul {
+  padding-bottom: 30px;
+}
+
 .button_container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 5px;
-}
-.button_container button:not(:disabled):active {
-  width: 100%;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: 0.2s;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  left: 0;
+  right: 0;
+  padding: 10px 0;
+  justify-content: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-#save {
+.button_container button {
+  margin: 0 10px;
   background-color: gray;
-}
-
-.add {
-  font-size: 80px;
+  padding: 12px 24px;
   cursor: pointer;
-  color: gray;
-  transition: 0.2s;
 }
 
 .add:hover {

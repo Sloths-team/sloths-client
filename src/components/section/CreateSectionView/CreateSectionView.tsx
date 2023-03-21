@@ -107,17 +107,30 @@ const CreateSectionView: FC = () => {
         </div>
       </div>
       <form className={s.form} onSubmit={methods.handleSubmit(onSubmit)}>
-        <FormProvider {...methods}>
-          {Array.from({ length: count }).map((section, i) => (
-            <CreateEachSectionView key={i} index={i} />
-          ))}
-        </FormProvider>
-        <Button disabled={disabled}>완료</Button>
+        <ul className={s.ul}>
+          <FormProvider {...methods}>
+            {Array.from({ length: count }).map((section, i) => (
+              <CreateEachSectionView key={i} index={i} />
+            ))}
+          </FormProvider>
+        </ul>
+        <div className={s.button_container}>
+          <Button
+            type="button"
+            className={s.button}
+            onClick={() => setCount((p) => p + 1)}
+          >
+            추가하기
+          </Button>
+          <Button type="button" className={s.button}>
+            미리보기
+          </Button>
+          <Button type="submit" className={s.button} disabled={disabled}>
+            (총 {count} 색션)만들기
+          </Button>
+        </div>
       </form>
       <div ref={endRef}></div>
-      <div className={s.add} onClick={() => setCount((p) => p + 1)}>
-        <BsPlusCircleDotted />
-      </div>
     </div>
   )
 }

@@ -106,19 +106,19 @@ const CreateSectionView: FC<{ index: number }> = ({ index }) => {
       <div className={cn(s.section, { [s.right]: true })}>
         <div className={s.main}>
           <label className={s.input_container}>
-            <span className={s.label}>섹션 제목</span>
+            <span className={s.label}>색션 제목</span>
             <Input
               control={control}
               name={`sections.${index}.title`}
-              placeholder="프로젝트의 섹션 제목을 적어주세요"
+              placeholder="프로젝트의 색션 제목을 적어주세요"
             />
           </label>
           <label className={s.input_container}>
-            <span className={s.label}>섹션 내용</span>
+            <span className={s.label}>색션 내용</span>
             <Textarea
               control={control}
               name={`sections.${index}.content`}
-              placeholder="프로젝트의 섹션 내용을 적어주세요"
+              placeholder="프로젝트의 색션 내용을 적어주세요"
             />
           </label>
           <label className={s.input_container}>
