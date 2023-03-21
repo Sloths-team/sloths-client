@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 export const usePreviews = (mode: 'stack' | 'oneOff' = 'oneOff') => {
   const [previews, setPreviews] = useState<(string | ArrayBuffer | null)[]>([])

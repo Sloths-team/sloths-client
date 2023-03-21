@@ -8,6 +8,7 @@ import { getClient } from '../lib/queryClient'
 import { QueryClientProvider } from 'react-query'
 import { SessionProvider } from '@components/common/Layout/context'
 import { ProjectProvider } from '@components/project/context'
+import { SectionsProvider } from '@components/section/context'
 
 const Noop: FC<{ children?: React.ReactNode }> = ({ children }) => (
   <>{children}</>
@@ -24,9 +25,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <SessionProvider>
           <ManagedUIContext>
             <ProjectProvider>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <SectionsProvider>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </SectionsProvider>
             </ProjectProvider>
           </ManagedUIContext>
         </SessionProvider>

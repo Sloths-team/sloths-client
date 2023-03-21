@@ -1,5 +1,6 @@
 export const AUTH_TOKEN_KEY = 'authorization'
 export const NEW_PROJECT = 'new_project'
+export const NEW_SECTIONS = 'new_section'
 
 export const QUERY_KEYS = {
   LOGIN: 'LOGIN',
