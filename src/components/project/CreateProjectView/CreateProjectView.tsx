@@ -14,17 +14,18 @@ import { useProject } from '../context'
 import { GITHUB_HTML_URL, NEW_PROJECT } from '@lib/constants'
 import Button from '@components/ui/Button'
 import { createProjectApi } from '@lib/apis/project'
-import { usePreviews } from '@lib/hooks/usePreviews'
 import useFiles from '@lib/hooks/useFiles'
 import { useRouter } from 'next/router'
 import useLocalStorage from '@lib/hooks/useLocalStorage'
 import File from '@components/ui/File'
+import { formatFormData } from '@lib/hooks/useFiles'
 
 type Form = {
   title: string
   description: string
   repo_url: string
   root: null | number
+  image: File
 }
 
 const CreateProjectView: FC = () => {
@@ -40,6 +41,7 @@ const CreateProjectView: FC = () => {
     description: '',
     repo_url: '',
     root: null,
+    image: undefined,
   } as const
 
   const { user } = useSession()
@@ -52,20 +54,17 @@ const CreateProjectView: FC = () => {
 
   const { setModalView, openModal } = useUI()
   const { project, saveLocal } = useProject()
-  const { previews, handlePreviews } = usePreviews()
-  const { onChangeFiles, formatFormData } = useFiles()
+  const { files, previews, onChangeFiles } = useFiles()
   const [disabled, setDisabled] = useState(true)
   const createProject = createProjectApi()
   const values = watch()
   const router = useRouter()
 
   const onSubmit = () => {
-    const formData = formatFormData()
-
-    const { repo_url, ...rest } = getValues()
+    const { repo_url, image, ...rest } = getValues()
     const data = { repoUrl: `${GITHUB_HTML_URL}/${repo_url}`, ...rest }
 
-    formData.append('data', JSON.stringify(data))
+    const formData = formatFormData({ image, data: JSON.stringify(data) })
 
     createProject.mutateAsync(
       {
@@ -85,12 +84,11 @@ const CreateProjectView: FC = () => {
     )
   }
 
-  const handleProfile = useCallback(
+  const handleFiles = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      handlePreviews(e)
       onChangeFiles(e)
     },
-    [handlePreviews, onChangeFiles]
+    [onChangeFiles]
   )
 
   useEffect(() => {
@@ -115,6 +113,10 @@ const CreateProjectView: FC = () => {
     }
   }, [project?.repo_url])
 
+  useEffect(() => {
+    setValue('image', files.image?.[0])
+  }, [files])
+
   return (
     <div className={s.root}>
       <div className={s.header}>
@@ -123,7 +125,7 @@ const CreateProjectView: FC = () => {
       <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={s.left_section}>
           <label className={s.file_preview}>
-            <File hidden name="image" onChange={handleProfile} />
+            <File hidden name="image" onChange={handleFiles} />
             {previews[0] && <img src={previews[0].toString()} alt={''} />}
           </label>
         </div>

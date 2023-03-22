@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 
-type Values = { [key: string]: File[] }
+type Values = { [key: string]: any }
 
 const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
   const [files, setFiles] = useState<Values>({})
@@ -79,8 +79,13 @@ export const formatFormData = (values: Values = {}) => {
   const formData = new FormData()
 
   Object.keys(values).forEach((key) => {
-    const files = values[key] || []
-    Array.from(files).forEach((file) => formData.append(key, file))
+    const vals = values[key]
+
+    if (Array.isArray(vals)) {
+      vals.forEach((val) => formData.append(key, val))
+    } else {
+      formData.append(key, vals)
+    }
   })
 
   return formData
