@@ -69,7 +69,7 @@
 .file_preview {
   display: block;
   min-width: 260px;
-  min-height: 260px;
+  height: 260px;
   border-radius: 10px;
   background-color: lightgray;
   overflow: hidden;
@@ -82,7 +82,7 @@
 
 .file_preview img {
   width: 100%;
-  object-fit: cover;
+  object-fit: full;
 }
 
 .github {
