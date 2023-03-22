@@ -47,7 +47,6 @@ const CreateSectionView: FC = () => {
   const { saveLocal } = useSections()
   const { sections } = methods.watch()
 
-  console.log(sections)
   const onSubmit = ({ sections }: Form) => {
     console.log(sections)
 

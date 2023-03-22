@@ -9,7 +9,6 @@ import React, {
   useReducer,
   createContext,
   useContext,
-  useEffect,
 } from 'react'
 
 export type State = {
@@ -57,6 +56,8 @@ export type ContextValue = State & {
     droppableEndIndex: number,
     type: string
   ) => void
+  deleteSection: (index: number) => void
+  deleteImage: (sectionIndex: number, imageIndex: number) => void
 }
 
 const initialState: State = {
@@ -92,6 +93,14 @@ type Action =
   | {
       type: 'SORT_IMAGES'
       data: ImageDragDrop
+    }
+  | {
+      type: 'DELETE_SECTION'
+      data: { index: number }
+    }
+  | {
+      type: 'DELETE_IMAGE'
+      data: { sectionIndex: number; imageIndex: number }
     }
 
 export const SectionsContext = createContext<ContextValue | null>(null)
@@ -157,6 +166,34 @@ function projectReducer(state: State, action: Action): State {
         }),
       }
     }
+
+    case 'DELETE_SECTION': {
+      const { index } = action.data
+      return {
+        ...state,
+        sections: state.sections.filter((_, i) => i !== index),
+      }
+    }
+
+    case 'DELETE_IMAGE': {
+      const { sectionIndex, imageIndex } = action.data
+      return {
+        ...state,
+        sections: state.sections.map((section, i) => {
+          if (i === sectionIndex) {
+            const images = Array.from(section.images).filter(
+              (img, imgI) => imgI !== imageIndex
+            )
+            const previews = Array.from(section.previews).filter(
+              (img, imgI) => imgI !== imageIndex
+            )
+            return { ...section, images, previews }
+          } else {
+            return section
+          }
+        }),
+      }
+    }
     default: {
       return { ...state }
     }
@@ -210,6 +247,26 @@ export const SectionsProvider: FC<{ children?: ReactNode }> = (props) => {
     [dispatch]
   )
 
+  const addSection = useCallback(() => {}, [dispatch])
+  const deleteSection = useCallback(
+    (index: number) => {
+      dispatch({
+        type: 'DELETE_SECTION',
+        data: { index },
+      })
+    },
+    [dispatch]
+  )
+  const deleteImage = useCallback(
+    (sectionIndex: number, imageIndex: number) => {
+      dispatch({
+        type: 'DELETE_IMAGE',
+        data: { sectionIndex, imageIndex },
+      })
+    },
+    [dispatch]
+  )
+
   const sortImages = useCallback(
     (
       sectionIndex: number,
@@ -243,6 +300,8 @@ export const SectionsProvider: FC<{ children?: ReactNode }> = (props) => {
       destroyLocal,
       sortSections,
       sortImages,
+      deleteSection,
+      deleteImage,
     }),
     [state]
   )

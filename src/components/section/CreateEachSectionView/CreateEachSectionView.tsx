@@ -29,7 +29,7 @@ type Props = {
 const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
   const { user } = useSession()
   const { control, setFocus, setValue, watch } = methods
-  const { files, previews, onChangeFiles, onDeleteFile } = useFiles('stack')
+  const { files, previews, onChangeFiles, updateFiles } = useFiles('stack')
 
   const fileRef = useRef<HTMLInputElement>()
   const { sections } = watch()
@@ -66,6 +66,8 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
     setValue(`sections.${index}.images`, section.images)
     setValue(`sections.${index}.codes`, section.codes)
   }, [section])
+
+  console.log('>>', sections[0].images)
 
   return (
     <li className={s.section_container}>
@@ -112,7 +114,7 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
                 setModalView('DRAG_DROP_IMAGE_VIEW', {
                   methods,
                   index,
-                  onDeleteFile,
+                  updateFiles,
                 })
                 openModal()
               }}

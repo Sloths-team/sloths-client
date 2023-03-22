@@ -44,14 +44,16 @@ const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
   }
 
   const onDeleteFile = (name: string, index: number) => {
-    let result
-
     setFiles((prev) => {
       const files = prev[name]
-      result = files.filter((_, i) => i !== index)
+      const result = files.filter((_, i) => i !== index)
 
       return { ...prev, [name]: result }
     })
+  }
+
+  const updateFiles = (name: string, files: File[] | []) => {
+    setFiles((prev) => ({ ...prev, [name]: files }))
   }
 
   useEffect(() => {
@@ -61,7 +63,14 @@ const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
       })
     })
   }, [files])
-  return { files, previews, onChangeFiles, formatFormData, onDeleteFile }
+  return {
+    files,
+    previews,
+    onChangeFiles,
+    formatFormData,
+    onDeleteFile,
+    updateFiles,
+  }
 }
 
 export default useFiles

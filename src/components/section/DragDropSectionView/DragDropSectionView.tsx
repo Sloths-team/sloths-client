@@ -31,11 +31,9 @@ const DragDropSectionView: FC<Props | any> = (props) => {
 
   const _sections = methods?.watch().sections || []
 
-  const { sections, set, sortSections } = useSections()
-  const [copied, setCopied] = useState<Section[]>([])
+  const { sections, set, sortSections, deleteSection } = useSections()
 
-  const onDeleteCopied = (idx: number) =>
-    setCopied((p) => p.filter((v, i) => i !== idx))
+  const onDelete = (idx: number) => deleteSection(idx)
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result
@@ -53,17 +51,13 @@ const DragDropSectionView: FC<Props | any> = (props) => {
   }
 
   const onSave = useCallback(() => {
-    methods.setValue('sections', copied)
+    methods.setValue('sections', sections)
     closeModal()
-  }, [copied])
+  }, [sections])
 
   useEffect(() => {
     set({ sections: _sections })
   }, [_sections])
-
-  useEffect(() => {
-    setCopied(sections)
-  }, [sections])
 
   return (
     <div style={style} className={s.root}>
@@ -87,7 +81,7 @@ const DragDropSectionView: FC<Props | any> = (props) => {
                   {...provided.droppableProps}
                   className={s.cards}
                 >
-                  {copied?.map((section, i) => (
+                  {sections?.map((section, i) => (
                     <Draggable
                       key={section.id + ''}
                       draggableId={section.id + ''}
@@ -101,7 +95,7 @@ const DragDropSectionView: FC<Props | any> = (props) => {
                           className={s.card}
                         >
                           <div className={s.card__header}>
-                            <button onClick={() => onDeleteCopied(i)}>
+                            <button onClick={() => onDelete(i)}>
                               <AiFillMinusCircle />
                             </button>
                           </div>

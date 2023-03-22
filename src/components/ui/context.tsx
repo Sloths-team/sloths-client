@@ -132,6 +132,7 @@ const MODAL_STYLE = {
   DRAG_DROP_SECTION_VIEW: {
     outer: {
       style: { backgroundColor: 'rgba(0,0,0,0.7)' },
+      closeavailable: false,
     },
     inner: {
       style: {},
@@ -140,6 +141,7 @@ const MODAL_STYLE = {
   DRAG_DROP_IMAGE_VIEW: {
     outer: {
       style: { backgroundColor: 'rgba(0,0,0,0.7)' },
+      closeavailable: false,
     },
     inner: {
       style: {
@@ -153,6 +155,7 @@ const MODAL_STYLE = {
   IMAGE_ZOOM_VIEW: {
     outer: {
       style: { backgroundColor: 'rgba(0,0,0,0.8)' },
+      closeAvailable: false,
     },
     inner: {
       style: {

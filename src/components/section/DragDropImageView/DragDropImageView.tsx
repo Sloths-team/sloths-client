@@ -19,26 +19,23 @@ type Props = {
     style: CSSProperties
     methods: UseFormReturn<{ sections: Section[] }, any>
     index: number
-    onDeleteFile: (name: string, index: number) => void
+    updateFiles: (name: string, files: File[]) => void
   }
 }
 
 const ImageZoomView: FC<Props | any> = (props) => {
   const {
-    inner: { style, methods, index, onDeleteFile },
+    inner: { style, methods, index, updateFiles },
   } = props
 
   const { closeModal, setModalView, openModal } = useUI()
 
   const _sections: Section[] = methods?.watch().sections || []
 
-  const { sections, set, sortImages } = useSections()
-  const [ids, setIds] = useState<number[]>([])
-  const [previews, setPreviews] = useState<(string | ArrayBuffer | null)[]>([])
+  const { sections, set, sortImages, deleteImage } = useSections()
 
   const onDeleteCopied = (idx: number) => {
-    setPreviews((p) => p.filter((v, i) => i !== idx))
-    setIds((p) => [...p, idx])
+    deleteImage(index, idx)
   }
 
   const handleDragEnd = (result: DropResult) => {
@@ -58,12 +55,8 @@ const ImageZoomView: FC<Props | any> = (props) => {
   }
 
   const onSave = useCallback(() => {
-    ids.forEach((id) => onDeleteFile('images', id))
+    updateFiles('images', sections[index].images)
     closeModal()
-  }, [previews])
-
-  useEffect(() => {
-    setPreviews(sections[index].previews)
   }, [sections])
 
   useEffect(() => {
@@ -92,7 +85,7 @@ const ImageZoomView: FC<Props | any> = (props) => {
                   {...provided.droppableProps}
                   className={s.cards}
                 >
-                  {previews?.map((preview, i) => (
+                  {sections[index].previews?.map((preview, i) => (
                     <Draggable
                       key={preview + ''}
                       draggableId={preview + ''}
