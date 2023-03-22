@@ -137,6 +137,32 @@ const MODAL_STYLE = {
       style: {},
     },
   },
+  DRAG_DROP_IMAGE_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(0,0,0,0.7)' },
+    },
+    inner: {
+      style: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+  },
+  IMAGE_ZOOM_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(0,0,0,0.8)' },
+    },
+    inner: {
+      style: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+  },
 }
 
 const initialState = {
@@ -195,6 +221,8 @@ type MODAL_VIEWS =
   | 'CONTINUE_WRITE_VIEW'
   | 'SECTION_PROJECT_SETTINGS_VIEW'
   | 'DRAG_DROP_SECTION_VIEW'
+  | 'DRAG_DROP_IMAGE_VIEW'
+  | 'IMAGE_ZOOM_VIEW'
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
 

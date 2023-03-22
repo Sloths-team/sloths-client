@@ -8,7 +8,6 @@ const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
 
   const onChangeFiles = (e: ChangeEvent<HTMLInputElement>) => {
     setFiles((prev) => {
-      const exist = prev[e.target.name]
       return {
         ...prev,
         [e.target.name]: [
@@ -17,12 +16,10 @@ const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
         ],
       }
     })
-
-    handlePreviews(e.target.files || [])
   }
 
-  const handlePreviews = (files: FileList | []) => {
-    Promise.all(
+  const handlePreviews = (files: FileList | File[] | []) => {
+    return Promise.all(
       Array.from(files).map(
         (file) =>
           new Promise((resolve, reject) => {
@@ -32,9 +29,7 @@ const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
             reader.onload = () => resolve(reader.result)
           })
       )
-    ).then((res: any) => {
-      setPreviews((prev) => (mode === 'stack' ? [...prev, ...res] : res))
-    })
+    )
   }
 
   const formatFormData = () => {
@@ -48,7 +43,25 @@ const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
     return formData
   }
 
-  return { files, previews, onChangeFiles, formatFormData }
+  const onDeleteFile = (name: string, index: number) => {
+    let result
+
+    setFiles((prev) => {
+      const files = prev[name]
+      result = files.filter((_, i) => i !== index)
+
+      return { ...prev, [name]: result }
+    })
+  }
+
+  useEffect(() => {
+    Object.keys(files).forEach((key) => {
+      handlePreviews(files[key] || []).then((res: any) => {
+        setPreviews(res)
+      })
+    })
+  }, [files])
+  return { files, previews, onChangeFiles, formatFormData, onDeleteFile }
 }
 
 export default useFiles

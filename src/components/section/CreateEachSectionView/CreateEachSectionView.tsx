@@ -1,4 +1,11 @@
-import { FC, useEffect, ChangeEvent, useCallback, useRef } from 'react'
+import {
+  FC,
+  useEffect,
+  ChangeEvent,
+  useCallback,
+  useRef,
+  useState,
+} from 'react'
 import s from './CreateEachSectionView.module.css'
 import cn from 'clsx'
 import File from '@components/ui/File'
@@ -8,8 +15,11 @@ import Textarea from '@components/ui/Textarea'
 import useFiles from '@lib/hooks/useFiles'
 import { BsFullscreen, BsImages } from 'react-icons/bs'
 import { AiOutlinePlus } from 'react-icons/ai'
-import { formatFormData } from '@lib/hooks/useFiles'
 import { Section } from '../CreateSectionView/CreateSectionView'
+import { useSession } from '@components/common/Layout/context'
+import { MdNotificationImportant } from 'react-icons/md'
+import { useUI } from '@components/ui/context'
+import Button from '@components/ui/Button'
 
 type Props = {
   index: number
@@ -17,12 +27,14 @@ type Props = {
 }
 
 const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
+  const { user } = useSession()
   const { control, setFocus, setValue, watch } = methods
-  const { files, previews, onChangeFiles } = useFiles('stack')
+  const { files, previews, onChangeFiles, onDeleteFile } = useFiles('stack')
 
   const fileRef = useRef<HTMLInputElement>()
   const { sections } = watch()
   const section = sections[index]
+  const { setModalView, openModal } = useUI()
 
   const onDelete = (index: number) => {
     setValue(
@@ -43,7 +55,7 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
   }, [])
 
   useEffect(() => {
-    setValue(`sections.${index}.images`, formatFormData(files))
+    setValue(`sections.${index}.images`, files.images)
     setValue(`sections.${index}.previews`, previews)
   }, [files, previews])
 
@@ -51,12 +63,12 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
     setValue(`sections.${index}.title`, section.title)
     setValue(`sections.${index}.content`, section.content)
     setValue(`sections.${index}.previews`, section.previews)
+    setValue(`sections.${index}.images`, section.images)
     setValue(`sections.${index}.codes`, section.codes)
-  }, [section, index])
+  }, [section])
 
   return (
     <li className={s.section_container}>
-      <button onClick={() => onDelete(index)}>삭제</button>
       <div className={cn(s.section, { [s.left]: true })}>
         <div className={s.file_dropper}>
           <label
@@ -79,12 +91,14 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
           <ul className={s.previews}>
             {previews.length
               ? previews.map((preview, i) => (
-                  <li key={preview + ''} className={s.image_wrapper}>
+                  <li key={preview?.toString()} className={s.image_wrapper}>
                     <img src={preview?.toString()} alt={''} />
                   </li>
                 ))
               : null}
+            {<div className={s.alarm}>코드를 태그해보세요</div>}
           </ul>
+
           <div className={s.actions}>
             <div
               className={s.action}
@@ -92,7 +106,17 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
             >
               <AiOutlinePlus />
             </div>
-            <div className={s.action}>
+            <div
+              className={s.action}
+              onClick={() => {
+                setModalView('DRAG_DROP_IMAGE_VIEW', {
+                  methods,
+                  index,
+                  onDeleteFile,
+                })
+                openModal()
+              }}
+            >
               <BsFullscreen />
             </div>
           </div>
@@ -117,10 +141,10 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
               value={section.content}
             />
           </label>
-          <label className={s.input_container}>
+          {/* <label className={s.input_container}>
             <span className={s.label}>Github 코드 추가하기</span>
             <Input hidden control={control} name={`sections.${index}.codes`} />
-            {/* {user?.github_nickname ? (
+            {user?.github_nickname ? (
               <div
                 className={s.find}
                 onClick={() => {
@@ -145,8 +169,15 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
                   등록하러 가기
                 </Link>
               </button>
-            )} */}
-          </label>
+            )}
+          </label> */}
+          <button className={s.tag}>
+            <MdNotificationImportant />
+            사진 및 동영상에 코드(code)를 태그로 걸어보세요.
+          </button>
+          <Button onClick={() => onDelete(index)} className={s.delete}>
+            삭제
+          </Button>
         </div>
       </div>
     </li>

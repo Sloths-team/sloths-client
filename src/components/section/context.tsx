@@ -17,7 +17,17 @@ export type State = {
   sections: Section[]
 }
 
-export type DragDrop = {
+export type SectionDragDrop = {
+  draggableId: string
+  droppableStartId: string
+  droppableEndId: string
+  droppableStartIndex: number
+  droppableEndIndex: number
+  type: string
+}
+
+export type ImageDragDrop = {
+  sectionIndex: number
   draggableId: string
   droppableStartId: string
   droppableEndId: string
@@ -30,7 +40,16 @@ export type ContextValue = State & {
   set: (data: State) => void
   saveLocal: (data: State) => void
   destroyLocal: () => void
-  sort: (
+  sortSections: (
+    draggableId: string,
+    droppableStartId: string,
+    droppableEndId: string,
+    droppableStartIndex: number,
+    droppableEndIndex: number,
+    type: string
+  ) => void
+  sortImages: (
+    sectionIndex: number,
     draggableId: string,
     droppableStartId: string,
     droppableEndId: string,
@@ -42,7 +61,16 @@ export type ContextValue = State & {
 
 const initialState: State = {
   saved: false,
-  sections: [],
+  sections: [
+    {
+      id: 0,
+      title: '',
+      content: '',
+      images: [],
+      previews: [],
+      codes: [],
+    },
+  ],
 }
 
 type Action =
@@ -58,8 +86,12 @@ type Action =
       type: 'DESTROY_LOCAL'
     }
   | {
-      type: 'SORT'
-      data: DragDrop
+      type: 'SORT_SECTIONS'
+      data: SectionDragDrop
+    }
+  | {
+      type: 'SORT_IMAGES'
+      data: ImageDragDrop
     }
 
 export const SectionsContext = createContext<ContextValue | null>(null)
@@ -84,7 +116,7 @@ function projectReducer(state: State, action: Action): State {
       return { ...state }
     }
 
-    case 'SORT': {
+    case 'SORT_SECTIONS': {
       const {
         droppableStartId,
         droppableEndId,
@@ -98,9 +130,32 @@ function projectReducer(state: State, action: Action): State {
       const list = copied.splice(droppableStartIndex, 1)[0]
       copied.splice(droppableEndIndex, 0, list)
 
-      console.log({ ...state, sections: copied })
-
       return { ...state, sections: copied }
+    }
+    case 'SORT_IMAGES': {
+      const {
+        sectionIndex,
+        droppableStartId,
+        droppableEndId,
+        droppableStartIndex,
+        droppableEndIndex,
+        type,
+      } = action.data
+
+      const images = Array.from(state.sections[sectionIndex].images)
+      const list = images.splice(droppableStartIndex, 1)[0]
+      images.splice(droppableEndIndex, 0, list)
+
+      const previews = Array.from(state.sections[sectionIndex].previews)
+      const previewList = previews.splice(droppableStartIndex, 1)[0]
+      previews.splice(droppableEndIndex, 0, previewList)
+
+      return {
+        ...state,
+        sections: state.sections.map((section, i) => {
+          return i === sectionIndex ? { ...section, images, previews } : section
+        }),
+      }
     }
     default: {
       return { ...state }
@@ -131,7 +186,7 @@ export const SectionsProvider: FC<{ children?: ReactNode }> = (props) => {
     dispatch({ type: 'DESTROY_LOCAL' })
   }, [dispatch])
 
-  const sort = useCallback(
+  const sortSections = useCallback(
     (
       draggableId: string,
       droppableStartId: string,
@@ -141,7 +196,7 @@ export const SectionsProvider: FC<{ children?: ReactNode }> = (props) => {
       type: string
     ) => {
       dispatch({
-        type: 'SORT',
+        type: 'SORT_SECTIONS',
         data: {
           draggableId,
           droppableStartId,
@@ -155,21 +210,47 @@ export const SectionsProvider: FC<{ children?: ReactNode }> = (props) => {
     [dispatch]
   )
 
+  const sortImages = useCallback(
+    (
+      sectionIndex: number,
+      draggableId: string,
+      droppableStartId: string,
+      droppableEndId: string,
+      droppableStartIndex: number,
+      droppableEndIndex: number,
+      type: string
+    ) => {
+      dispatch({
+        type: 'SORT_IMAGES',
+        data: {
+          sectionIndex,
+          draggableId,
+          droppableStartId,
+          droppableEndId,
+          droppableStartIndex,
+          droppableEndIndex,
+          type,
+        },
+      })
+    },
+    [dispatch]
+  )
   const value: ContextValue = useMemo(
     () => ({
       ...state,
       set,
       saveLocal,
       destroyLocal,
-      sort,
+      sortSections,
+      sortImages,
     }),
     [state]
   )
 
-  useEffect(() => {
-    if (!storage) return
-    set(JSON.parse(storage))
-  }, [storage])
+  // useEffect(() => {
+  //   if (!storage) return
+  //   set(JSON.parse(storage))
+  // }, [storage])
 
   return <SectionsContext.Provider value={value} {...props} />
 }

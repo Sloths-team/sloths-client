@@ -84,6 +84,8 @@
 .main {
   padding: 0 10px;
   margin-top: 20px;
+  position: relative;
+  height: 100%;
 }
 
 .input_container {
@@ -121,13 +123,12 @@
 .input_container textarea {
   font-family: inherit;
   resize: none;
-  min-height: 200px;
+  min-height: 260px;
 }
 
 .file_dropper {
   background-color: lightgray;
   height: 600px;
-  /* overflow-x: scroll; */
   width: 100%;
   position: relative;
 }
@@ -144,6 +145,7 @@
   transform: translate(-50%, -50%);
   display: flex;
   justify-content: center;
+  padding: 10px;
 }
 
 .file .text {
@@ -167,14 +169,13 @@
 }
 
 .previews {
-  width: 100%;
   height: 100%;
   display: flex;
   overflow-x: scroll;
 }
 
 .image_wrapper {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
 }
 
@@ -212,7 +213,8 @@
 .action:hover {
   background-color: rgba(0, 0, 0, 0.4);
 }
-.github {
+.tag {
+  width: 100%;
   font-size: 15px;
   border: 1px solid #dfdfdf;
   border-radius: 4px;
@@ -224,23 +226,10 @@
   background-color: var(--bg-gray);
 }
 
-.github svg {
+.tag svg {
   font-size: 16px;
   margin-bottom: 2px;
   margin-right: 4px;
-}
-
-.github a {
-  display: inline-block;
-  margin-left: 10px;
-  font-size: 13px;
-  color: var(--bg-blue);
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.github a:hover {
-  text-decoration: underline;
 }
 
 .button_container {
@@ -268,4 +257,26 @@
 
 .add:hover {
   color: #000;
+}
+
+.delete {
+  position: absolute;
+  bottom: 20px;
+  right: 0;
+  padding: 12px 24px;
+  cursor: pointer;
+  background-color: gray;
+}
+
+.alarm {
+  padding: 10px 20px;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  /* transform: translateX(-50%); */
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 0 50px 50px 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
 }

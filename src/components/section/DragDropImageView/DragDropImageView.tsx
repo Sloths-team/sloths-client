@@ -1,6 +1,6 @@
 import { useUI } from '@components/ui/context'
 import { CSSProperties, FC, useCallback, useEffect, useState } from 'react'
-import s from './DragDropSectionView.module.css'
+import s from './DragDropImageView.module.css'
 import { IoCloseOutline } from 'react-icons/io5'
 import {
   DragDropContext,
@@ -18,31 +18,36 @@ type Props = {
   inner: {
     style: CSSProperties
     methods: UseFormReturn<{ sections: Section[] }, any>
-    onDelete: (index: number) => void
+    index: number
+    onDeleteFile: (name: string, index: number) => void
   }
 }
 
-const DragDropSectionView: FC<Props | any> = (props) => {
+const ImageZoomView: FC<Props | any> = (props) => {
   const {
-    inner: { style, methods },
+    inner: { style, methods, index, onDeleteFile },
   } = props
 
-  const { closeModal } = useUI()
+  const { closeModal, setModalView, openModal } = useUI()
 
-  const _sections = methods?.watch().sections || []
+  const _sections: Section[] = methods?.watch().sections || []
 
-  const { sections, set, sortSections } = useSections()
-  const [copied, setCopied] = useState<Section[]>([])
+  const { sections, set, sortImages } = useSections()
+  const [ids, setIds] = useState<number[]>([])
+  const [previews, setPreviews] = useState<(string | ArrayBuffer | null)[]>([])
 
-  const onDeleteCopied = (idx: number) =>
-    setCopied((p) => p.filter((v, i) => i !== idx))
+  const onDeleteCopied = (idx: number) => {
+    setPreviews((p) => p.filter((v, i) => i !== idx))
+    setIds((p) => [...p, idx])
+  }
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result
 
     if (!destination) return
 
-    sortSections(
+    sortImages(
+      index,
       draggableId,
       source.droppableId,
       destination?.droppableId,
@@ -53,17 +58,17 @@ const DragDropSectionView: FC<Props | any> = (props) => {
   }
 
   const onSave = useCallback(() => {
-    methods.setValue('sections', copied)
+    ids.forEach((id) => onDeleteFile('images', id))
     closeModal()
-  }, [copied])
+  }, [previews])
+
+  useEffect(() => {
+    setPreviews(sections[index].previews)
+  }, [sections])
 
   useEffect(() => {
     set({ sections: _sections })
   }, [_sections])
-
-  useEffect(() => {
-    setCopied(sections)
-  }, [sections])
 
   return (
     <div style={style} className={s.root}>
@@ -75,7 +80,7 @@ const DragDropSectionView: FC<Props | any> = (props) => {
       </div>
       <main className={s.main}>
         <ul className={s.texts}>
-          <li>각 색션의 정보 및 순서를 수정할 수 있습니다.</li>
+          <li>각 이미지 및 영상의 정보 및 순서를 수정할 수 있습니다.</li>
           <li>하단의 저장하기 버튼을 눌러야 수정이 완료됩니다.</li>
         </ul>
         <div className={s.container}>
@@ -87,10 +92,10 @@ const DragDropSectionView: FC<Props | any> = (props) => {
                   {...provided.droppableProps}
                   className={s.cards}
                 >
-                  {copied?.map((section, i) => (
+                  {previews?.map((preview, i) => (
                     <Draggable
-                      key={section.id + ''}
-                      draggableId={section.id + ''}
+                      key={preview + ''}
+                      draggableId={preview + ''}
                       index={i}
                     >
                       {(provided) => (
@@ -106,14 +111,14 @@ const DragDropSectionView: FC<Props | any> = (props) => {
                             </button>
                           </div>
                           <div className={s.card__content}>
-                            <div className={s.card__images}>
-                              {section.previews?.map((preview, i) => (
-                                <img key={i} src={preview + ''} />
-                              ))}
-                            </div>
-                            <div className={s.card__texts}>
-                              <h3>{section.title}</h3>
-                              <p>{section.content}</p>
+                            <div
+                              className={s.card__images}
+                              onClick={() => {
+                                setModalView('IMAGE_ZOOM_VIEW', { index })
+                                openModal()
+                              }}
+                            >
+                              <img key={i} src={preview + ''} />
                             </div>
                           </div>
                         </li>
@@ -136,4 +141,4 @@ const DragDropSectionView: FC<Props | any> = (props) => {
   )
 }
 
-export default DragDropSectionView
+export default ImageZoomView

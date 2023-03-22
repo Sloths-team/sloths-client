@@ -15,6 +15,8 @@ import cn from 'clsx'
 import ContinueWriteView from '@components/project/ContinueWriteView'
 import SectionProjectSettingsView from '@components/section/ProjectSettingsView'
 import DragDropSectionView from '@components/section/DragDropSectionView'
+import ImageZoomView from '@components/section/ImageZoomView'
+import DragDropImageView from '@components/section/DragDropImageView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -31,6 +33,8 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     CONTINUE_WRITE_VIEW: ContinueWriteView,
     SECTION_PROJECT_SETTINGS_VIEW: SectionProjectSettingsView,
     DRAG_DROP_SECTION_VIEW: DragDropSectionView,
+    DRAG_DROP_IMAGE_VIEW: DragDropImageView,
+    IMAGE_ZOOM_VIEW: ImageZoomView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]

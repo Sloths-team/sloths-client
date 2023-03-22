@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useRef } from 'react'
 import s from './CreateSectionView.module.css'
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useUI } from '@components/ui/context'
 import CreateEachSectionView from '../CreateEachSectionView'
 import { createSectionApi } from '@lib/apis/project'
@@ -11,9 +11,9 @@ export type Section = {
   id: number
   title: string
   content: string
-  images: FormData
+  images: FileList | File[] | []
   codes?: []
-  previews?: (string | ArrayBuffer | null)[]
+  previews: (string | ArrayBuffer | null)[]
 }
 
 type Form = {
@@ -28,15 +28,7 @@ const CreateSectionView: FC = () => {
           id: 0,
           title: '연습_1',
           content: '',
-          images: new FormData(),
-          codes: [],
-          previews: [],
-        },
-        {
-          id: 1,
-          title: '연습_2',
-          content: '',
-          images: new FormData(),
+          images: [],
           codes: [],
           previews: [],
         },
@@ -52,9 +44,10 @@ const CreateSectionView: FC = () => {
   const endRef = useRef<HTMLDivElement>(null)
   const createSection = createSectionApi()
   const projectId = 1
-  const { saveLocal, sort, set } = useSections()
+  const { saveLocal } = useSections()
   const { sections } = methods.watch()
 
+  console.log(sections)
   const onSubmit = ({ sections }: Form) => {
     console.log(sections)
 
@@ -103,6 +96,20 @@ const CreateSectionView: FC = () => {
   //   }
   // }, [project.repo_url])
 
+  const addSection = () => {
+    methods.setValue('sections', [
+      ...sections,
+      {
+        id: nextId,
+        title: '',
+        content: '',
+        images: [],
+        previews: [],
+        codes: [],
+      },
+    ])
+  }
+
   useEffect(() => {
     const bottom = endRef.current
 
@@ -110,6 +117,12 @@ const CreateSectionView: FC = () => {
       bottom.scrollIntoView({ behavior: 'smooth' })
     }
   }, [sections.length])
+
+  useEffect(() => {
+    if (!sections.length) {
+      addSection()
+    }
+  }, [sections])
 
   // TODO
   // 만약에 p에 존재하지 않는 프로젝트 아이디가 들어온다면, 처리
@@ -148,23 +161,7 @@ const CreateSectionView: FC = () => {
           })}
         </ul>
         <div className={s.button_container}>
-          <Button
-            type="button"
-            className={s.button}
-            onClick={() =>
-              methods.setValue('sections', [
-                ...sections,
-                {
-                  id: nextId,
-                  title: '',
-                  content: '',
-                  images: new FormData(),
-                  previews: [],
-                  codes: [],
-                },
-              ])
-            }
-          >
+          <Button type="button" className={s.button} onClick={addSection}>
             추가하기
           </Button>
           <Button
@@ -175,7 +172,7 @@ const CreateSectionView: FC = () => {
               openModal()
             }}
           >
-            미리보기
+            비교하기
           </Button>
           <Button
             id={s.save}
@@ -187,7 +184,7 @@ const CreateSectionView: FC = () => {
             임시 저장
           </Button>
           <Button type="submit" className={s.button}>
-            (총 {sections.length} 색션)만들기
+            만들기
           </Button>
         </div>
       </form>
