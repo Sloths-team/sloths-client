@@ -67,8 +67,6 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
     setValue(`sections.${index}.codes`, section.codes)
   }, [section])
 
-  console.log('>>', sections[0].images)
-
   return (
     <li className={s.section_container}>
       <div className={cn(s.section, { [s.left]: true })}>
