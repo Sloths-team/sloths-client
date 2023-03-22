@@ -98,15 +98,7 @@ function projectReducer(state: State, action: Action): State {
       const list = copied.splice(droppableStartIndex, 1)[0]
       copied.splice(droppableEndIndex, 0, list)
 
-      const startList = copied.filter(
-        (section) => section.id + '' === droppableStartId
-      )[0]
-
-      const endList = copied.filter(
-        (section) => section.id + '' === droppableEndId
-      )[0]
-
-      // updateLists(copied)
+      console.log({ ...state, sections: copied })
 
       return { ...state, sections: copied }
     }
@@ -147,17 +139,19 @@ export const SectionsProvider: FC<{ children?: ReactNode }> = (props) => {
       droppableStartIndex: number,
       droppableEndIndex: number,
       type: string
-    ) => ({
-      type: 'SORT',
-      data: {
-        draggableId,
-        droppableStartId,
-        droppableEndId,
-        droppableStartIndex,
-        droppableEndIndex,
-        type,
-      },
-    }),
+    ) => {
+      dispatch({
+        type: 'SORT',
+        data: {
+          draggableId,
+          droppableStartId,
+          droppableEndId,
+          droppableStartIndex,
+          droppableEndIndex,
+          type,
+        },
+      })
+    },
     [dispatch]
   )
 

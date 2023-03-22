@@ -52,7 +52,7 @@ const CreateSectionView: FC = () => {
   const endRef = useRef<HTMLDivElement>(null)
   const createSection = createSectionApi()
   const projectId = 1
-  const { saveLocal, sort } = useSections()
+  const { saveLocal, sort, set } = useSections()
   const { sections } = methods.watch()
 
   const onSubmit = ({ sections }: Form) => {
@@ -110,6 +110,10 @@ const CreateSectionView: FC = () => {
       bottom.scrollIntoView({ behavior: 'smooth' })
     }
   }, [sections.length])
+
+  // TODO
+  // 만약에 p에 존재하지 않는 프로젝트 아이디가 들어온다면, 처리
+  // 로그인 사용자만 접근 가능
 
   return (
     <div className={s.root}>

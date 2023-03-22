@@ -1,12 +1,5 @@
 import { useUI } from '@components/ui/context'
-import {
-  CSSProperties,
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { CSSProperties, FC, useCallback, useEffect, useState } from 'react'
 import s from './DragDropSectionView.module.css'
 import { IoCloseOutline } from 'react-icons/io5'
 import {
@@ -16,9 +9,10 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 import { Section } from '../CreateSectionView/CreateSectionView'
-import { useFieldArray, UseFormReturn } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
 import { useSections } from '../context'
 import Button from '@components/ui/Button'
+import { AiFillMinusCircle } from 'react-icons/ai'
 
 type Props = {
   inner: {
@@ -35,9 +29,9 @@ const DragDropSectionView: FC<Props> = (props) => {
 
   const { closeModal } = useUI()
 
-  const _sections = methods.watch().sections
+  const _sections = methods?.watch().sections || []
 
-  const { sections, sort, set } = useSections()
+  const { sections, set, sort } = useSections()
   const [copied, setCopied] = useState<Section[]>([])
 
   const onDeleteCopied = (idx: number) =>
@@ -106,10 +100,22 @@ const DragDropSectionView: FC<Props> = (props) => {
                           {...provided.dragHandleProps}
                           className={s.card}
                         >
-                          <button onClick={() => onDeleteCopied(i)}>
-                            삭제
-                          </button>
-                          <div>{section.title}</div>
+                          <div className={s.card__header}>
+                            <button onClick={() => onDeleteCopied(i)}>
+                              <AiFillMinusCircle />
+                            </button>
+                          </div>
+                          <div className={s.card__content}>
+                            <div className={s.card__images}>
+                              {section.previews?.map((preview, i) => (
+                                <img key={i} src={preview + ''} />
+                              ))}
+                            </div>
+                            <div className={s.card__texts}>
+                              <h3>{section.title}</h3>
+                              <p>{section.content}</p>
+                            </div>
+                          </div>
                         </li>
                       )}
                     </Draggable>

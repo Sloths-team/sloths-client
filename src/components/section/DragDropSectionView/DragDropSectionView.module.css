@@ -70,8 +70,57 @@
   margin-right: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   background-color: #fff;
+  position: relative;
 }
 
+.card .card__header {
+  display: flex;
+  flex-direction: row-reverse;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.card .card__header button {
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #fff;
+}
+
+.card .card__header button:hover {
+  opacity: 0.7;
+}
+
+.card .card__content {
+  width: 100%;
+}
+
+.card .card__content .card__images {
+  width: 100%;
+  height: 300px;
+  background-color: red;
+  overflow-x: scroll;
+  display: flex;
+}
+
+.card .card__content img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.card .card__texts h3 {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.card .card__texts p {
+  margin-top: 10px;
+  font-size: 14px;
+}
 .footer {
   display: flex;
   position: fixed;
