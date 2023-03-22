@@ -61,14 +61,21 @@
 
 .file_preview {
   display: block;
-  min-width: 260px;
-  min-height: 260px;
+  width: 260px;
+  height: 260px;
   border-radius: 50%;
   background-color: lightgray;
+  overflow: hidden;
+}
+
+.file_preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
 }
 
 .root input[type='file'] {
-  visibility: hidden;
+  display: hidden;
 }
 
 .github {

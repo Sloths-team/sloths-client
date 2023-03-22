@@ -32,17 +32,6 @@ const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
     )
   }
 
-  const formatFormData = () => {
-    const formData = new FormData()
-
-    Object.keys(files).forEach((key) => {
-      const _files = files[key] || []
-      Array.from(_files).forEach((file) => formData.append(key, file))
-    })
-
-    return formData
-  }
-
   const onDeleteFile = (name: string, index: number) => {
     setFiles((prev) => {
       const files = prev[name]
@@ -67,7 +56,6 @@ const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
     files,
     previews,
     onChangeFiles,
-    formatFormData,
     onDeleteFile,
     updateFiles,
   }

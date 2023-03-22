@@ -19,10 +19,9 @@ import Button from '@components/ui/Button'
 import { getUserApi } from '@lib/apis/user'
 import { SiNotion } from 'react-icons/si'
 import { HiOutlinePhone, HiOutlinePencilAlt } from 'react-icons/hi'
-import { usePreviews } from '@lib/hooks/usePreviews'
 import useFiles from '@lib/hooks/useFiles'
 import File from '@components/ui/File'
-
+import { formatFormData } from '@lib/hooks/useFiles'
 type Form = {
   email: string
   github_nickname: string
@@ -31,6 +30,7 @@ type Form = {
   notion_email: string
   bio: string
   phone: string
+  profile_url: File
 }
 
 const ProfileView: FC = () => {
@@ -52,6 +52,7 @@ const ProfileView: FC = () => {
     notion_email: '',
     bio: '',
     phone: '',
+    profile_url: undefined,
   } as const
 
   const { data } = getUserApi()
@@ -89,31 +90,27 @@ const ProfileView: FC = () => {
   const router = useRouter()
   const githubRef = useRef<HTMLButtonElement>(null)
   const values = watch()
-  const { previews, handlePreviews } = usePreviews()
-  const { onChangeFiles, formatFormData } = useFiles()
+  const { files, previews, onChangeFiles } = useFiles()
 
-  const handleProfile = useCallback(
+  const handleFile = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      handlePreviews(e)
       onChangeFiles(e)
     },
-    [handlePreviews, onChangeFiles]
+    [onChangeFiles]
   )
 
   const onSubmit = (form: Form) => {
-    const formData = formatFormData()
-
-    const { github_nickname, blog_url, notion_email, ...rest } = form || {}
-
-    formData.append(
-      'data',
-      JSON.stringify({
+    const { profile_url, github_nickname, blog_url, notion_email, ...rest } =
+      form || {}
+    const formData = formatFormData({
+      image: profile_url,
+      data: JSON.stringify({
         githubNickname: github_nickname || '',
         blogUrl: blog_url || '',
         notionEmail: notion_email || '',
         ...rest,
-      })
-    )
+      }),
+    })
 
     console.log(formData)
   }
@@ -148,6 +145,9 @@ const ProfileView: FC = () => {
     }
   }, [setDisabled, values])
 
+  useEffect(() => {
+    setValue('profile_url', files.image?.[0])
+  }, [files])
   return (
     <div className={s.root}>
       <div className={s.header}>
@@ -220,7 +220,7 @@ const ProfileView: FC = () => {
           </div>
           <div className={s.right_section}>
             <label className={s.file_preview}>
-              <File name="image" onChange={handleProfile} />
+              <File name="image" onChange={handleFile} hidden />
               {previews[0] && <img src={previews[0].toString()} alt={''} />}
             </label>
           </div>
