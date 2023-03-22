@@ -1,5 +1,5 @@
 import { useUI } from '@components/ui/context'
-import { CSSProperties, FC, useCallback, useEffect, useState } from 'react'
+import { CSSProperties, FC, useCallback, useEffect } from 'react'
 import s from './DragDropImageView.module.css'
 import { IoCloseOutline } from 'react-icons/io5'
 import {

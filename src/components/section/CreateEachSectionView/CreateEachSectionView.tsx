@@ -1,11 +1,4 @@
-import {
-  FC,
-  useEffect,
-  ChangeEvent,
-  useCallback,
-  useRef,
-  useState,
-} from 'react'
+import { FC, useEffect, ChangeEvent, useCallback, useRef } from 'react'
 import s from './CreateEachSectionView.module.css'
 import cn from 'clsx'
 import File from '@components/ui/File'
@@ -96,7 +89,6 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
                   </li>
                 ))
               : null}
-            {<div className={s.alarm}>코드를 태그해보세요</div>}
           </ul>
 
           <div className={s.actions}>
@@ -171,10 +163,13 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
               </button>
             )}
           </label> */}
-          <button className={s.tag}>
-            <MdNotificationImportant />
-            사진 및 동영상에 코드(code)를 태그로 걸어보세요.
-          </button>
+          {
+            <div className={s.tags}>
+              <MdNotificationImportant />
+              코드를 태그해보세요
+            </div>
+          }
+
           <Button onClick={() => onDelete(index)} className={s.delete}>
             삭제
           </Button>

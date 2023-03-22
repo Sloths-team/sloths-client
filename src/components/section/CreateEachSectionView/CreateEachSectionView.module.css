@@ -26,7 +26,6 @@
   height: 50px;
   border-radius: 20px;
   display: flex;
-  background-color: red;
 }
 
 .header__inner {
@@ -84,8 +83,8 @@
 .main {
   padding: 0 10px;
   margin-top: 20px;
-  position: relative;
   height: 100%;
+  position: relative;
 }
 
 .input_container {
@@ -213,20 +212,28 @@
 .action:hover {
   background-color: rgba(0, 0, 0, 0.4);
 }
-.tag {
-  width: 100%;
-  font-size: 15px;
+.tags {
   border: 1px solid #dfdfdf;
-  border-radius: 4px;
   font-size: 14px;
-  padding: 8px 12px 7px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   color: gray;
-  background-color: var(--bg-gray);
+  padding: 10px 20px 10px 12px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 0 50px 50px 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  transition: 0.2s;
 }
 
-.tag svg {
+.tags:hover {
+  opacity: 0.8;
+}
+
+.tags svg {
   font-size: 16px;
   margin-bottom: 2px;
   margin-right: 4px;
@@ -262,21 +269,11 @@
 .delete {
   position: absolute;
   bottom: 20px;
-  right: 0;
+  right: 10px;
   padding: 12px 24px;
   cursor: pointer;
   background-color: gray;
 }
 
 .alarm {
-  padding: 10px 20px;
-  position: absolute;
-  top: 10px;
-  left: 0;
-  /* transform: translateX(-50%); */
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 0 50px 50px 0;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
 }
