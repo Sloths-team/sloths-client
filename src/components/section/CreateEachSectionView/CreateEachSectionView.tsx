@@ -22,7 +22,7 @@ type Props = {
 const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
   const { user } = useSession()
   const { control, setFocus, setValue, watch } = methods
-  const { files, previews, onChangeFiles, updateFiles } = useFiles('stack')
+  const { files, previews, onChangeFiles, updateFiles } = useFiles()
 
   const fileRef = useRef<HTMLInputElement>()
   const { sections } = watch()

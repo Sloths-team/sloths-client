@@ -1,9 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 
-type Values = { [key: string]: any }
-
-const useFiles = (mode: 'stack' | 'oneOff' = 'oneOff') => {
-  const [files, setFiles] = useState<Values>({})
+const useFiles = () => {
+  const [files, setFiles] = useState<{ [key: string]: any }>({})
   const [previews, setPreviews] = useState<(string | ArrayBuffer | null)[]>([])
 
   const onChangeFiles = (e: ChangeEvent<HTMLInputElement>) => {

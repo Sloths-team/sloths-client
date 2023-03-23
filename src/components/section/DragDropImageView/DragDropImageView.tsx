@@ -34,10 +34,6 @@ const ImageZoomView: FC<Props | any> = (props) => {
 
   const { sections, set, sortImages, deleteImage } = useSections()
 
-  const onDeleteCopied = (idx: number) => {
-    deleteImage(index, idx)
-  }
-
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result
 
@@ -99,7 +95,7 @@ const ImageZoomView: FC<Props | any> = (props) => {
                           className={s.card}
                         >
                           <div className={s.card__header}>
-                            <button onClick={() => onDeleteCopied(i)}>
+                            <button onClick={() => deleteImage(index, i)}>
                               <AiFillMinusCircle />
                             </button>
                           </div>
