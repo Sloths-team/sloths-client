@@ -6,27 +6,31 @@
 ```
 
 ## 스택
+
 - `Next.js`
+
+## 파일
+
+(...수정중)
 
 ## 페이지
 
-- /: 홈
+- `/`: 홈
 
-- /login: 로그인
-- /signup: 회원가입
-- /forgot_password: 비밀번호 찾기
+- `/login`: 로그인
+- `/signup`: 회원가입
+- `/forgot_password`: 비밀번호 찾기
 
-- /profile: 프로필
+- `/profile`: 프로필
 
-- /portfolios: 포트폴리오 전체 보기
-- /portfolios/:id: 포트폴리오 상세 보기
+- `/portfolios`: 포트폴리오 전체 보기
+- `/portfolios/:id`: 포트폴리오 상세 보기
 
-- /projects: 프로젝트 전체 보기
-- /projects/:id: 프로젝트 상세 보기
-- /projects/new: 프로젝트 생성
+- `/projects`: 프로젝트 전체 보기
+- `/projects/:id`: 프로젝트 상세 보기
+- `/projects/new`: 프로젝트 생성
 
-- /sections/new: 섹션 생성
-
+- `/sections/new`: 섹션 생성
 
 ## 상태 관리(with `context api`)
 
@@ -37,7 +41,5 @@
 
 ## 그 외
 
-- 페이지 구분 대신 모달로 뷰(view) 컨트롤!
+- 페이지 구분 대신 모달로 뷰(`view`) 컨트롤!
 - `SEO` 구현
-
-
