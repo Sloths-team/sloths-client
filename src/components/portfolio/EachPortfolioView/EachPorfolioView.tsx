@@ -16,6 +16,7 @@ import cn from 'clsx'
 import Link from 'next/link'
 import { MdNotificationImportant } from 'react-icons/md'
 import Calendar from '../Calendar/Calendar'
+import { useRouter } from 'next/router'
 
 const user = {
   id: 1,
@@ -135,6 +136,7 @@ const EachPortofolioView: FC = () => {
   const getPortfolios = getAllPortfoliosApi()
   const { setModalView, openModal } = useUI()
   const [side, setSide] = useState<'info' | 'personal' | 'team'>('personal')
+  const router = useRouter()
   const actions = useMemo(() => {
     return [
       { label: '이메일', url: user.email, Icon: HiOutlineMail },
@@ -179,32 +181,39 @@ const EachPortofolioView: FC = () => {
         </div>
       </div>
       <main className={s.main}>
-        <div className={s.index}>
-          <div
-            className={cn(s.index_item, {
-              [s.active]: side === 'personal',
-            })}
-            onClick={() => setSide('personal')}
-          >
-            개인 프로젝트
+        <div className={s.header}>
+          <div className={s.index}>
+            <div
+              className={cn(s.index_item, {
+                [s.active]: side === 'personal',
+              })}
+              onClick={() => setSide('personal')}
+            >
+              개인 프로젝트
+            </div>
+            <div
+              className={cn(s.index_item, { [s.active]: side === 'team' })}
+              onClick={() => setSide('team')}
+            >
+              팀 프로젝트
+            </div>
+            <div
+              className={cn(s.index_item, {
+                [s.active]: side === 'info',
+              })}
+              onClick={() => setSide('info')}
+            >
+              정보
+            </div>
           </div>
-          <div
-            className={cn(s.index_item, { [s.active]: side === 'team' })}
-            onClick={() => setSide('team')}
-          >
-            팀 프로젝트
-          </div>
-          <div
-            className={cn(s.index_item, {
-              [s.active]: side === 'info',
-            })}
-            onClick={() => setSide('info')}
-          >
-            정보
+          <div className={s.action}>
+            <button onClick={() => router.push('/projects/new')}>
+              프로젝트 생성하기
+            </button>
           </div>
         </div>
         <div
-          className={cn(s.container, {
+          className={cn(s.projects, {
             [s.info]: side === 'info',
             [s.projects]: side === 'personal' || side === 'team',
           })}

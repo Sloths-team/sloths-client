@@ -92,14 +92,23 @@
 
 .main {
   width: 100%;
-  margin-top: 20px;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  justify-content: space-between;
+  padding: 0 10px;
+  left: 300px;
+  right: 0;
+  position: fixed;
+  height: 60px;
 }
 
 .index {
   display: flex;
-  width: 100%;
-  margin-left: 10px;
-  margin-bottom: 10px;
 }
 
 .index_item {
@@ -111,20 +120,24 @@
   border: 1px solid #dfdfdf;
 }
 
+.action {
+}
+
 .active {
   font-weight: 800;
   border: 1px solid #000;
 }
 
 /* 정보, 개인프로젝트, 팀프로젝트 내용 */
-.container {
+.projects {
+  margin-top: 60px;
 }
 
 /* 정보 */
 .info {
+  margin-top: 60px;
   /* max-width: 800px; */
   /* margin: auto; */
-  margin-top: 50px;
 }
 
 .info .wrapper {

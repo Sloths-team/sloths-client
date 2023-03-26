@@ -7,7 +7,7 @@ const WEEKS = ['일', '월', '화', '수', '목', '금', '토'] as const
 
 const getDates = (year: number, month: number) => {
   const dt = new Date(year, month - 1, 1)
-  const startIdx = dt.getDay()
+  const start = dt.getDay()
   const dates = []
 
   while (dt.getMonth() === month - 1) {
@@ -16,23 +16,33 @@ const getDates = (year: number, month: number) => {
     dt.setDate(d + 1)
   }
 
-  return { dates, startIdx, endIdx: dt.getDay() }
+  return { dates, index: { start, end: dt.getDay() } }
 }
 
 const Calendar = () => {
   const dt = new Date()
   const [year, setYear] = useState<number>(dt.getFullYear())
   const [month, setMonth] = useState<number>(dt.getMonth() + 1)
-  const [cur, setCur] = useState<number[]>([])
-  const [prev, setPrev] = useState<number[]>([])
-  const [next, setNext] = useState<number[]>([])
+  const [dates, setDates] = useState<{
+    prev: number[]
+    current: number[]
+    next: number[]
+  }>({ prev: [], current: [], next: [] })
 
   useEffect(() => {
     const { dates: prev } = getDates(year, month - 1)
-    const { dates, startIdx, endIdx } = getDates(year, month)
-    setPrev(prev.slice(startIdx * -1))
-    setCur(dates)
-    setNext(Array.from({ length: 7 - endIdx }, (_, i) => i + 1))
+    const {
+      dates,
+      index: { start, end },
+    } = getDates(year, month)
+
+    setDates((p) => {
+      return {
+        prev: prev.slice(start * -1),
+        current: dates,
+        next: Array.from({ length: 7 - end }, (_, i) => i + 1),
+      }
+    })
   }, [year, month])
 
   return (
@@ -85,7 +95,7 @@ const Calendar = () => {
           {WEEKS.map((week) => (
             <li className={s.week}>{week}</li>
           ))}
-          {prev.map((date, i) => {
+          {dates.prev?.map((date, i) => {
             return (
               <li
                 className={cn(s.date, {
@@ -96,7 +106,7 @@ const Calendar = () => {
               </li>
             )
           })}
-          {cur.map((date, i) => {
+          {dates.current.map((date, i) => {
             return (
               <li
                 className={cn(s.date, {
@@ -108,7 +118,7 @@ const Calendar = () => {
               </li>
             )
           })}
-          {next.map((date, i) => {
+          {dates.next.map((date, i) => {
             return (
               <li
                 className={cn(s.date, {
