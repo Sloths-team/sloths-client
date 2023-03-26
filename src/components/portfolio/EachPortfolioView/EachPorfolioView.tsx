@@ -14,8 +14,8 @@ import { IconType } from 'react-icons'
 import { useUI } from '@components/ui/context'
 import cn from 'clsx'
 import Link from 'next/link'
-import { useSession } from '@components/common/Layout/context'
 import { MdNotificationImportant } from 'react-icons/md'
+import Calendar from '../Calendar/Calendar'
 
 const user = {
   id: 1,
@@ -151,40 +151,37 @@ const EachPortofolioView: FC = () => {
 
   return (
     <div className={s.root}>
-      <header className={s.header}>
-        <div className={s.header__left}>
-          <div className={s.profile_img}>
-            {/* <Image src={user.profile_url} width={100} height={100}/> */}
-          </div>
+      <div className={s.nav}>
+        <div className={s.profile}>
+          {/* <Image src={user.profile_url} width={100} height={100}/> */}
         </div>
-        <div className={s.header__right}>
-          <div className={s.header__right__top}>
-            <h1>{user.nickname}</h1>
-            <div className={s.icons}>
-              {actions.map((props) => (
-                <CopyButton key={props.label} {...props} />
-              ))}
-              <div
-                className={s.icon}
-                onClick={() => {
-                  setModalView('PORTFOLIO_SETTINGS_VIEW')
-                  openModal()
-                }}
-              >
-                <HiDotsHorizontal />
-                <span className={s.label}>기타</span>
-              </div>
+        <div className={s.content}>
+          <h1>{user.nickname}</h1>
+          <div className={s.actions}>
+            {actions.map((props) => (
+              <CopyButton key={props.label} {...props} />
+            ))}
+            <div
+              className={s.icon}
+              onClick={() => {
+                setModalView('PORTFOLIO_SETTINGS_VIEW')
+                openModal()
+              }}
+            >
+              <HiDotsHorizontal />
+              <span className={s.label}>기타</span>
             </div>
           </div>
-          <div className={s.header__right__bottom}>
-            <p className={s.bio}>{user.bio}</p>
+          <p className={s.bio}>{user.bio}</p>
+          <div className={s.bottom}>
+            <Calendar />
           </div>
         </div>
-      </header>
+      </div>
       <main className={s.main}>
         <div className={s.index}>
           <div
-            className={cn(s.index__detail, {
+            className={cn(s.index_item, {
               [s.active]: side === 'personal',
             })}
             onClick={() => setSide('personal')}
@@ -192,13 +189,13 @@ const EachPortofolioView: FC = () => {
             개인 프로젝트
           </div>
           <div
-            className={cn(s.index__detail, { [s.active]: side === 'team' })}
+            className={cn(s.index_item, { [s.active]: side === 'team' })}
             onClick={() => setSide('team')}
           >
             팀 프로젝트
           </div>
           <div
-            className={cn(s.index__detail, {
+            className={cn(s.index_item, {
               [s.active]: side === 'info',
             })}
             onClick={() => setSide('info')}

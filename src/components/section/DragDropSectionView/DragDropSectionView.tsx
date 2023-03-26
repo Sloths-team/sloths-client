@@ -33,8 +33,6 @@ const DragDropSectionView: FC<Props | any> = (props) => {
 
   const { sections, set, sortSections, deleteSection } = useSections()
 
-  const onDelete = (idx: number) => deleteSection(idx)
-
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result
 
@@ -83,7 +81,7 @@ const DragDropSectionView: FC<Props | any> = (props) => {
                 >
                   {sections?.map((section, i) => (
                     <Draggable
-                      key={section.id + ''}
+                      key={section.id}
                       draggableId={section.id + ''}
                       index={i}
                     >
@@ -95,7 +93,7 @@ const DragDropSectionView: FC<Props | any> = (props) => {
                           className={s.card}
                         >
                           <div className={s.card__header}>
-                            <button onClick={() => onDelete(i)}>
+                            <button onClick={() => deleteSection(i)}>
                               <AiFillMinusCircle />
                             </button>
                           </div>

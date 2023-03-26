@@ -1,0 +1,58 @@
+.calendar_root {
+}
+
+.calendar__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow {
+  border: none;
+  background-color: transparent;
+  font-size: 34px;
+  cursor: pointer;
+}
+
+.calendar__main {
+  margin-top: 20px;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.week {
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.date {
+  width: 100%;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 4px;
+}
+
+.date:hover {
+  background-color: var(--bg-gray);
+}
+
+.current {
+  background-color: orangered;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.dim {
+  color: gray;
+}
