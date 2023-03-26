@@ -111,7 +111,9 @@ const Calendar = () => {
               <li
                 className={cn(s.date, {
                   [s.current]:
-                    month === dt.getMonth() + 1 && dt.getDate() === date,
+                    year === dt.getFullYear() &&
+                    month === dt.getMonth() + 1 &&
+                    date === dt.getDate(),
                 })}
               >
                 {date}
