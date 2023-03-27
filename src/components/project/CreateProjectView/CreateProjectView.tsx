@@ -54,7 +54,7 @@ const CreateProjectView: FC = () => {
   const { setModalView, openModal } = useUI()
   const { project, saveLocal } = useProject()
   const { files, previews, onChangeFiles } = useFiles()
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(false)
   const createProject = createProjectApi()
   const values = watch()
   const router = useRouter()
@@ -67,7 +67,7 @@ const CreateProjectView: FC = () => {
 
     createProject.mutateAsync(
       {
-        params: { id: user?.portfolio_id || 9 },
+        params: { id: user?.portfolio_id },
         formData,
       },
       {
@@ -94,10 +94,10 @@ const CreateProjectView: FC = () => {
     setFocus('title')
   }, [])
 
-  useEffect(() => {
-    const { title, repo_url } = values
-    setDisabled(!title || !repo_url)
-  }, [values.title, values.repo_url])
+  // useEffect(() => {
+  //   const { title, repo_url } = values
+  //   setDisabled(!title || !repo_url)
+  // }, [values.title, values.repo_url])
 
   // useEffect(() => {
   //   if (saved) {
