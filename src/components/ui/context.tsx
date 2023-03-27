@@ -171,14 +171,7 @@ const MODAL_STYLE = {
       style: { backgroundColor: 'rgba(0,0,0,0.8)' },
       closeAvailable: false,
     },
-    inner: {
-      style: {
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
-      },
-    },
+    inner: {},
   },
 }
 

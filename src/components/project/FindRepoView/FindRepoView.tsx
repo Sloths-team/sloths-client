@@ -9,14 +9,14 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import { CiSearch } from 'react-icons/ci'
-import { getAllReposApi } from '@lib/apis/github'
+import { getAllGithubReposApi } from '@lib/apis/github'
 
 type Form = {
   search: string
 }
 
 const FindRepoView: FC<any> = (props) => {
-  const { data } = getAllReposApi()
+  const { data } = getAllGithubReposApi()
 
   const schema = yup.object({
     search: yup.string(),

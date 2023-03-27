@@ -3,7 +3,7 @@ import { QUERY_KEYS } from '@lib/constants'
 import { getAllRepos, getAllRepoContents } from '@lib/repo/github'
 import { useQuery } from 'react-query'
 
-export const getAllReposApi = () => {
+export const getAllGithubReposApi = () => {
   const { user } = useSession()
 
   return useQuery([QUERY_KEYS.GITHUB, user?.github_nickname], () =>
