@@ -65,9 +65,11 @@ const CreateProjectView: FC = () => {
 
     const formData = formatFormData({ image, data: JSON.stringify(data) })
 
+    if (!user?.portfolio_id) return
+
     createProject.mutateAsync(
       {
-        params: { id: user?.portfolio_id },
+        params: { id: user.portfolio_id },
         formData,
       },
       {
