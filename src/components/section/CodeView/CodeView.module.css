@@ -1,0 +1,136 @@
+.root {
+  position: absolute;
+  width: 1000px;
+  height: 800px;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.header {
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #dfdfdf;
+  position: relative;
+}
+
+.header h2 {
+  font-size: 20px;
+}
+
+.header button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 10px 6px 10px;
+  right: 10px;
+  font-size: 30px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.header button:hover {
+  color: gray;
+}
+
+.main {
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+}
+
+.texts {
+  padding: 0 20px;
+}
+
+.texts li {
+  font-size: 14px;
+  color: gray;
+  line-height: 24px;
+  list-style: disc;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin-top: 30px;
+  gap: 10px;
+}
+.card {
+  cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: #fff;
+  position: relative;
+}
+
+.card .card__header {
+  display: flex;
+  flex-direction: row-reverse;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.card .card__header button {
+  border: none;
+  background-color: transparent;
+  font-size: 28px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: #fff;
+}
+
+.card .card__header button:hover {
+  opacity: 0.7;
+}
+
+.card .card__content {
+  width: 100%;
+}
+
+.card .card__content .card__images {
+  width: 100%;
+  height: 300px;
+  overflow-x: scroll;
+  display: flex;
+  border-radius: 4px;
+}
+
+.card .card__content img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card .card__texts h3 {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.card .card__texts p {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.footer {
+  display: flex;
+  position: fixed;
+  width: 1000px;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  padding: 10px 0;
+  justify-content: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.footer button {
+  margin: 0 10px;
+  background-color: gray;
+  padding: 12px 48px;
+  cursor: pointer;
+}

@@ -27,6 +27,16 @@ type Options = RequestInit & {
   headers: HeadersInit & {
     Authorization?: string
   }
+  body?: (BodyInit | null | undefined) &
+    (
+      | string
+      | ReadableStream<any>
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+    )
 }
 
 export type MultipartFormData = 'multipart/form-data'
@@ -42,7 +52,16 @@ export const fetcher = async ({
 }: {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
   path?: string
-  body?: AnyOBJ
+  body?: (BodyInit | null | undefined) &
+    (
+      | string
+      | ReadableStream<any>
+      | Blob
+      | ArrayBufferView
+      | ArrayBuffer
+      | FormData
+      | URLSearchParams
+    )
   params?: AnyOBJ
   token?: string
   contentType?: ContentType
@@ -52,8 +71,7 @@ export const fetcher = async ({
   const options: Options = {
     method,
     headers: {
-      'Content-Type': contentType,
-      // 'Access-Control-Allow-Origin': BASE_API_URL,
+      // 'Content-Type': contentType,
     },
   }
 
@@ -64,7 +82,7 @@ export const fetcher = async ({
     url += '?' + searchParams.toString()
   }
 
-  if (body) options.body = JSON.stringify(body)
+  if (body) options.body = body
 
   try {
     const res = await fetch(url, options)
@@ -91,7 +109,7 @@ export const githubFetcher = async ({
   const options: RequestInit = {
     method,
     headers: {
-      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/json',
     },
   }
 
@@ -100,7 +118,7 @@ export const githubFetcher = async ({
     url += '?' + searchParams.toString()
   }
 
-  if (body) options.body = JSON.stringify(body)
+  if (body) options.body = body
 
   try {
     const res = await fetch(url, options)

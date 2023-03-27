@@ -155,7 +155,21 @@ const MODAL_STYLE = {
   IMAGE_ZOOM_VIEW: {
     outer: {
       style: { backgroundColor: 'rgba(0,0,0,0.8)' },
-      closeAvailable: false,
+      closeavailable: false,
+    },
+    inner: {
+      style: {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+      },
+    },
+  },
+  CODE_VIEW: {
+    outer: {
+      style: { backgroundColor: 'rgba(0,0,0,0.8)' },
+      closeavailable: false,
     },
     inner: {
       style: {
@@ -226,6 +240,7 @@ type MODAL_VIEWS =
   | 'DRAG_DROP_SECTION_VIEW'
   | 'DRAG_DROP_IMAGE_VIEW'
   | 'IMAGE_ZOOM_VIEW'
+  | 'CODE_VIEW'
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
 

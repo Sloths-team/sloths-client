@@ -17,6 +17,7 @@ import SectionProjectSettingsView from '@components/section/ProjectSettingsView'
 import DragDropSectionView from '@components/section/DragDropSectionView'
 import ImageZoomView from '@components/section/ImageZoomView'
 import DragDropImageView from '@components/section/DragDropImageView'
+import CodeView from '@components/section/CodeView/CodeView'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -40,6 +41,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     DRAG_DROP_SECTION_VIEW: DragDropSectionView,
     DRAG_DROP_IMAGE_VIEW: DragDropImageView,
     IMAGE_ZOOM_VIEW: ImageZoomView,
+    CODE_VIEW: CodeView,
   }
 
   const SelectedModalView = kindsOfModal[modalView]

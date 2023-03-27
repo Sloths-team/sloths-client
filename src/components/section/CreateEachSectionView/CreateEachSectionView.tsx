@@ -164,7 +164,13 @@ const CreateEachSectionView: FC<Props> = ({ index, methods }) => {
             )}
           </label> */}
           {
-            <div className={s.tags}>
+            <div
+              className={s.tags}
+              onClick={() => {
+                setModalView('CODE_VIEW')
+                openModal()
+              }}
+            >
               <MdNotificationImportant />
               코드를 태그해보세요
             </div>
