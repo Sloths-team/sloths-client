@@ -27,8 +27,6 @@ const PortfolioInfoView: FC = () => {
 
   const { data } = getUserApi()
 
-  console.log(data?.result)
-
   const user = useMemo(() => {
     const {
       profileUrl,

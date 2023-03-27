@@ -26,7 +26,8 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   const { props } = useUI()
 
   const {
-    outer: { closeavailable = true },
+    outer: { closeAvailable = true },
+    inner,
   } = props
 
   const kindsOfModal: { [key: string]: FC } = {
@@ -47,8 +48,8 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   const SelectedModalView = kindsOfModal[modalView]
 
   return (
-    <Modal onClose={() => (closeavailable ? onCloseModal() : null)}>
-      <SelectedModalView {...props} />
+    <Modal onClose={() => (closeAvailable ? onCloseModal() : null)}>
+      <SelectedModalView {...inner} />
     </Modal>
   )
 }

@@ -5,14 +5,12 @@ import { useUI } from '@components/ui/context'
 import useSocials from '@lib/shareSocials'
 
 const PortfolioSettingsView: FC<any> = (props) => {
-  const { inner } = props
-
   const { closeModal } = useUI()
   const { shareFacebook, shareTwitter } = useSocials()
   const router = useRouter()
 
   return (
-    <div className={s.modal} {...inner}>
+    <div className={s.modal} {...props.inner}>
       <div className={s.wrapper}>
         <span className={s.wrapper__title}>설정</span>
         <div

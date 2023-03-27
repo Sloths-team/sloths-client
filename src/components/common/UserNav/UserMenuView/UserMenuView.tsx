@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import { useUI } from '@components/ui/context'
 
 const UserMenuView: FC<any> = (props) => {
-  const { inner } = props
   const { isUserLoggedIn, logout, user } = useSession()
 
   const { closeModal, setModalView, openModal } = useUI()
@@ -14,7 +13,7 @@ const UserMenuView: FC<any> = (props) => {
   if (!user) return <div>로딩중...</div>
 
   return (
-    <div className={s.modal} {...inner}>
+    <div className={s.modal} {...props.inner}>
       <ul>
         {isUserLoggedIn && (
           <>

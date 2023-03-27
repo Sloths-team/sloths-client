@@ -45,8 +45,6 @@ const Calendar = () => {
     })
   }, [year, month])
 
-  console.log(dt.getDate())
-
   return (
     <div className={s.calendar_root}>
       <header className={s.calendar__header}>

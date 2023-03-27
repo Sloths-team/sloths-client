@@ -15,17 +15,13 @@ import Button from '@components/ui/Button'
 import { AiFillMinusCircle } from 'react-icons/ai'
 
 type Props = {
-  inner: {
-    style: CSSProperties
-    methods: UseFormReturn<{ sections: Section[] }, any>
-    onDelete: (index: number) => void
-  }
+  style: CSSProperties
+  methods: UseFormReturn<{ sections: Section[] }, any>
+  onDelete: (index: number) => void
 }
 
 const DragDropSectionView: FC<Props | any> = (props) => {
-  const {
-    inner: { style, methods },
-  } = props
+  const { style, methods } = props
 
   const { closeModal } = useUI()
 

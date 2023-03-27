@@ -4,15 +4,11 @@ import { useUI } from '@components/ui/context'
 import useSocials from '@lib/shareSocials'
 
 const MyProjectSettingsView: FC<any> = (props) => {
-  const {
-    inner: { style },
-  } = props
-
   const { closeModal } = useUI()
   const { shareFacebook, shareTwitter } = useSocials()
 
   return (
-    <div className={s.modal} style={style}>
+    <div className={s.modal} style={props.style}>
       <div className={s.wrapper}>
         <span className={s.wrapper__title}>설정</span>
         <div

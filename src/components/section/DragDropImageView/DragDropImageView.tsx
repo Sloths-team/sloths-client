@@ -15,18 +15,14 @@ import Button from '@components/ui/Button'
 import { AiFillMinusCircle } from 'react-icons/ai'
 
 type Props = {
-  inner: {
-    style: CSSProperties
-    methods: UseFormReturn<{ sections: Section[] }, any>
-    index: number
-    updateFiles: (name: string, files: File[]) => void
-  }
+  style: CSSProperties
+  methods: UseFormReturn<{ sections: Section[] }, any>
+  index: number
+  updateFiles: (name: string, files: File[]) => void
 }
 
 const ImageZoomView: FC<Props | any> = (props) => {
-  const {
-    inner: { style, methods, index, updateFiles },
-  } = props
+  const { style, methods, index, updateFiles } = props
 
   const { closeModal, setModalView, openModal } = useUI()
 

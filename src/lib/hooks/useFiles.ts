@@ -1,3 +1,4 @@
+import { AnyOBJ } from '@lib/types'
 import { ChangeEvent, useEffect, useState } from 'react'
 
 const useFiles = () => {
@@ -61,7 +62,7 @@ const useFiles = () => {
 
 export default useFiles
 
-export const formatFormData = (values: Values = {}) => {
+export const formatFormData = (values: AnyOBJ = {}) => {
   const formData = new FormData()
 
   Object.keys(values).forEach((key) => {

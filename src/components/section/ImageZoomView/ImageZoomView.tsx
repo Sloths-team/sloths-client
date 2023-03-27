@@ -7,18 +7,14 @@ import { useSections } from '../context'
 import { IoCloseOutline } from 'react-icons/io5'
 
 type Props = {
-  inner: {
-    style: CSSProperties
-    methods: UseFormReturn<{ sections: Section[] }, any>
-    index: number
-    onDeleteFile: (name: string, index: number) => void
-  }
+  style: CSSProperties
+  methods: UseFormReturn<{ sections: Section[] }, any>
+  index: number
+  onDeleteFile: (name: string, index: number) => void
 }
 
 const ImageZoomView: FC<Props | any> = (props) => {
-  const {
-    inner: { style, index },
-  } = props
+  const { style, index } = props
 
   const { closeModal } = useUI()
 

@@ -5,11 +5,10 @@ import { useUI } from '@components/ui/context'
 import Button from '@components/ui/Button'
 
 const ContinueView: FC<any> = (props) => {
-  const { inner } = props
   const { closeModal } = useUI()
 
   return (
-    <div className={s.modal} {...inner}>
+    <div className={s.modal} {...props.inner}>
       <div className={s.content}>
         <div>
           <h1>작성 중인 글이 있어요.</h1>

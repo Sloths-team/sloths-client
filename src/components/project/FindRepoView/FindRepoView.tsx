@@ -16,7 +16,6 @@ type Form = {
 }
 
 const FindRepoView: FC<any> = (props) => {
-  const { inner } = props
   const { data } = getAllReposApi()
 
   const schema = yup.object({
@@ -50,7 +49,7 @@ const FindRepoView: FC<any> = (props) => {
   }, [data])
 
   return (
-    <div className={s.modal} {...inner}>
+    <div className={s.modal} {...props.inner}>
       <div className={s.header}>
         <button className={s.close} onClick={closeModal}>
           <SlClose />
