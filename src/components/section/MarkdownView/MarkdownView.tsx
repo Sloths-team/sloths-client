@@ -36,13 +36,11 @@ const CodeView: FC<any> = (props) => {
 
   const { data: project } = getProjectByIdApi(Number(p))
 
-  const repoRef = useRef<HTMLSelectElement>(null)
-  const repoInput = repoRef?.current?.value
+  const [repo, setRepo] = useState('')
 
   const folderRef = useRef<HTMLInputElement>(null)
   const folderInput = folderRef?.current?.value
 
-  const [repo, setRepo] = useState('uniswap')
   const [folder, setFolder] = useState()
   const folderRefs = Array.from({ length: _repos?.length }).map((repo) =>
     createRef<HTMLLIElement>()
@@ -80,6 +78,13 @@ const CodeView: FC<any> = (props) => {
     folderRef.current?.focus()
   }, [])
 
+  useEffect(() => {
+    if (_repos) {
+      // 선택된 저장소로 초기화
+      setRepo(_repos[0].name)
+    }
+  }, [_repos])
+
   return (
     <div className={s.root} style={style}>
       <div className={s.header}>
@@ -98,7 +103,11 @@ const CodeView: FC<any> = (props) => {
             <span className={s.icon}>
               <BsFolder2Open />
             </span>
-            <select className={s.select_repo} ref={repoRef}>
+            <select
+              className={s.select_repo}
+              value={repo}
+              onChange={(e) => setRepo(e.target.value)}
+            >
               {_repos?.map((repo: any, i) => (
                 <option key={repo.name} value={repo.name}>
                   {repo.name}
