@@ -12,14 +12,15 @@ export type ProjectBody = {
 export const getAllProjects = async (portfolioId: ID) => {
   return await fetcher({
     method: 'GET',
-    path: `/api/portfolios/${portfolioId}/projects`,
+    path: `/api/projects`,
+    params: { pfid: portfolioId },
   })
 }
 
-export const getProjectById = async (portfolioId: ID, projectId: ID) => {
+export const getProjectById = async (id: ID) => {
   return await fetcher({
     method: 'GET',
-    path: `/api/portfolios/${portfolioId}/projects/${projectId}`,
+    path: `/api/projects/${id}`,
   })
 }
 

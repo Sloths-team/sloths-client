@@ -89,36 +89,29 @@ export const fetcher = async ({
     const json = await res.json()
     return json
   } catch (error) {
-    console.error(error)
+    console.error('🚨', error)
   }
 }
 
 export const githubFetcher = async ({
   method,
   path,
-  body,
   params,
 }: {
   method: 'GET'
   path?: string
-  body?: AnyOBJ
   params?: AnyOBJ
 }) => {
   let url = `${GITHUB_BASE_API_URL}${path}`
 
   const options: RequestInit = {
     method,
-    headers: {
-      // 'Content-Type': 'application/json',
-    },
   }
 
   if (params) {
     const searchParams = new URLSearchParams(params)
     url += '?' + searchParams.toString()
   }
-
-  if (body) options.body = body
 
   try {
     const res = await fetch(url, options)

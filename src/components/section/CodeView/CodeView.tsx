@@ -4,16 +4,26 @@ import { IoCloseOutline } from 'react-icons/io5'
 import Button from '@components/ui/Button'
 import { useUI } from '@components/ui/context'
 import { useSession } from '@components/common/Layout/context'
+import { getRepoAllContentsApi } from '@lib/apis/github'
+import { useRouter } from 'next/router'
+import { getProjectByIdApi } from '@lib/apis/project'
 
 const CodeView: FC<any> = (props) => {
   const { style } = props
+  const {
+    query: { p },
+  } = useRouter()
 
-  // api.github.com/repos/{{username}}/{{repo}}/contents/{{path}}?ref={{branchName}}
+  const { data: project } = getProjectByIdApi(Number(p))
+  console.log(project)
+  // const { data } = getRepoAllContentsApi({
+  //   repo: '',
+  //   path: '',
+  //   branchName: '',
+  // })
 
   const { closeModal } = useUI()
   const { user } = useSession()
-
-  console.log(user)
 
   return (
     <div className={s.root} style={style}>
