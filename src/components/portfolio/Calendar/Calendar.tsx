@@ -45,6 +45,8 @@ const Calendar = () => {
     })
   }, [year, month])
 
+  console.log(dt.getDate())
+
   return (
     <div className={s.calendar_root}>
       <header className={s.calendar__header}>
@@ -77,7 +79,7 @@ const Calendar = () => {
               setMonth(Number(e.target.value))
             }}
           >
-            {Array.from({ length: dt.getDate() }).map((dt, i) => (
+            {Array.from({ length: 12 }).map((dt, i) => (
               <option value={i + 1}>{i + 1}</option>
             ))}
           </select>
