@@ -19,6 +19,7 @@ import cn from 'clsx'
 import debounce from '@lib/debounce'
 import { BsFolder2Open, BsFileCode } from 'react-icons/bs'
 import MarkdownView from '../MarkdownView'
+import throttle from '@lib/throttle'
 
 const RenderHeader: FC = () => {
   const { closeModal } = useUI()
@@ -67,7 +68,7 @@ const CodeView: FC<any> = (props) => {
   const { user } = useSession()
 
   const onSearch = useCallback(
-    debounce((e: ChangeEvent<HTMLInputElement>) => {
+    throttle((e: ChangeEvent<HTMLInputElement>) => {
       setFolders(() =>
         _repos.filter((repo: any) => repo.name.indexOf(e.target.value) > -1)
       )
