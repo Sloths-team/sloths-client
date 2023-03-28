@@ -20,6 +20,23 @@ import debounce from '@lib/debounce'
 import { BsFolder2Open, BsFileCode } from 'react-icons/bs'
 import MarkdownView from '../MarkdownView'
 
+const RenderHeader: FC = () => {
+  const { closeModal } = useUI()
+
+  return (
+    <div className={s.header}>
+      <div className={s.group}>
+        <h2>MD</h2>
+      </div>
+      <div className={s.group}>
+        <button onClick={closeModal}>
+          <IoCloseOutline />
+        </button>
+      </div>
+    </div>
+  )
+}
+
 const CodeView: FC<any> = (props) => {
   const { style } = props
   const {
@@ -47,7 +64,6 @@ const CodeView: FC<any> = (props) => {
   const folderRefs = Array.from({ length: _repos?.length }).map((repo) =>
     createRef<HTMLLIElement>()
   )
-  const { closeModal } = useUI()
   const { user } = useSession()
 
   const onSearch = useCallback(
@@ -89,16 +105,7 @@ const CodeView: FC<any> = (props) => {
 
   return (
     <div className={s.root} style={style}>
-      <div className={s.header}>
-        <div className={s.group}>
-          <h2>MD</h2>
-        </div>
-        <div className={s.group}>
-          <button onClick={closeModal}>
-            <IoCloseOutline />
-          </button>
-        </div>
-      </div>
+      <RenderHeader />
       <main className={s.main}>
         <div className={cn(s.group, { [s.left]: true })}>
           <div className={s.inputs}>

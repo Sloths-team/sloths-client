@@ -63,7 +63,7 @@ const Calendar = () => {
             }}
           >
             {Array.from({ length: 11 }).map((_, i) => (
-              <option key={i} value={dt.getFullYear() - (10 - i)}>
+              <option key={`year.${i + 1}`} value={dt.getFullYear() - (10 - i)}>
                 {dt.getFullYear() - (10 - i)}
               </option>
             ))}
@@ -78,7 +78,9 @@ const Calendar = () => {
             }}
           >
             {Array.from({ length: 12 }).map((dt, i) => (
-              <option value={i + 1}>{i + 1}</option>
+              <option key={`month.${i + 1}`} value={i + 1}>
+                {i + 1}
+              </option>
             ))}
           </select>
         </label>
@@ -93,11 +95,14 @@ const Calendar = () => {
       <main className={s.calendar__main}>
         <ul className={s.dates}>
           {WEEKS.map((week) => (
-            <li className={s.week}>{week}</li>
+            <li key={`week.${week}`} className={s.week}>
+              {week}
+            </li>
           ))}
           {dates.prev?.map((date, i) => {
             return (
               <li
+                key={`prev.${date}`}
                 className={cn(s.date, {
                   [s.dim]: true,
                 })}
@@ -109,6 +114,7 @@ const Calendar = () => {
           {dates.current.map((date, i) => {
             return (
               <li
+                key={`dates.${date}`}
                 className={cn(s.date, {
                   [s.current]:
                     year === dt.getFullYear() &&
@@ -123,6 +129,7 @@ const Calendar = () => {
           {dates.next.map((date, i) => {
             return (
               <li
+                key={`next.${date}`}
                 className={cn(s.date, {
                   [s.dim]: true,
                 })}
