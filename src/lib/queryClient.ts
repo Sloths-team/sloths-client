@@ -27,16 +27,7 @@ type Options = RequestInit & {
   headers: HeadersInit & {
     Authorization?: string
   }
-  body?: (BodyInit | null | undefined) &
-    (
-      | string
-      | ReadableStream<any>
-      | Blob
-      | ArrayBufferView
-      | ArrayBuffer
-      | FormData
-      | URLSearchParams
-    )
+  body?: BodyInit & any
 }
 
 export type MultipartFormData = 'multipart/form-data'
@@ -48,31 +39,58 @@ export const fetcher = async ({
   body,
   params,
   token,
-  contentType = 'application/json',
 }: {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
   path?: string
-  body?: (BodyInit | null | undefined) &
-    (
-      | string
-      | ReadableStream<any>
-      | Blob
-      | ArrayBufferView
-      | ArrayBuffer
-      | FormData
-      | URLSearchParams
-    )
+  body?: AnyOBJ
   params?: AnyOBJ
   token?: string
-  contentType?: ContentType
 }) => {
   let url = `${BASE_API_URL}${path}`
 
   const options: Options = {
     method,
     headers: {
-      // 'Content-Type': contentType,
+      'Content-Type': 'application/json',
     },
+  }
+
+  if (token) options.headers.Authorization = `Bearer ${token}`
+
+  if (params) {
+    const searchParams = new URLSearchParams(params)
+    url += '?' + searchParams.toString()
+  }
+
+  if (body) options.body = body
+
+  try {
+    const res = await fetch(url, options)
+    const json = await res.json()
+    return json
+  } catch (error) {
+    console.error('🚨', error)
+  }
+}
+
+export const multerFetcher = async ({
+  method,
+  path,
+  body,
+  params,
+  token,
+}: {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+  path?: string
+  body?: AnyOBJ
+  params?: AnyOBJ
+  token?: string
+}) => {
+  let url = `${BASE_API_URL}${path}`
+
+  const options: Options = {
+    method,
+    headers: {},
   }
 
   if (token) options.headers.Authorization = `Bearer ${token}`

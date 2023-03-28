@@ -1,4 +1,4 @@
-import { fetcher } from '@lib/queryClient'
+import { fetcher, multerFetcher } from '@lib/queryClient'
 import { ID } from '@lib/types'
 
 export type ProjectBody = {
@@ -29,13 +29,12 @@ export const createProject = async (
   formData: FormData,
   token: string
 ) => {
-  return await fetcher({
+  return await multerFetcher({
     method: 'POST',
     path: `/api/projects`,
     params: { pfid: portfolioId },
     body: formData,
     token,
-    contentType: 'multipart/form-data',
   })
 }
 
@@ -44,7 +43,7 @@ export const updateProject = async (
   projectId: ID,
   body: ProjectBody
 ) => {
-  return await fetcher({
+  return await multerFetcher({
     method: 'POST',
     path: `/api/portfolios/${portfolioId}/projects/${projectId}`,
     body,
@@ -70,13 +69,12 @@ export const createSection = async (
   formData: FormData,
   token: string
 ) => {
-  return await fetcher({
+  return await multerFetcher({
     method: 'POST',
     path: `/api/sections`,
     params: { pjid: projectId },
     body: formData,
     token,
-    contentType: 'multipart/form-data',
   })
 }
 
@@ -85,13 +83,12 @@ export const updateSection = async (
   formData: FormData,
   token: string
 ) => {
-  return await fetcher({
+  return await multerFetcher({
     method: 'PUT',
     path: `/api/sections`,
     params: { pjid: projectId },
     body: formData,
     token,
-    contentType: 'multipart/form-data',
   })
 }
 
