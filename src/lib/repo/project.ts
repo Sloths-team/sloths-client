@@ -41,19 +41,28 @@ export const createProject = async (
 export const updateProject = async (
   portfolioId: ID,
   projectId: ID,
-  body: ProjectBody
+  formData: FormData,
+  token: string
 ) => {
   return await multerFetcher({
-    method: 'POST',
-    path: `/api/portfolios/${portfolioId}/projects/${projectId}`,
-    body,
+    method: 'PUT',
+    path: `/api/projects/${projectId}`,
+    params: { pfid: portfolioId },
+    body: formData,
+    token,
   })
 }
 
-export const deleteProject = async (portfolioId: ID, projectId: ID) => {
-  return await fetcher({
+export const deleteProject = async (
+  portfolioId: ID,
+  projectId: ID,
+  token: string
+) => {
+  return await multerFetcher({
     method: 'DELETE',
-    path: `/api/portfolios/${portfolioId}/projects/${projectId}`,
+    path: `/api/projects/${projectId}`,
+    params: { pfid: portfolioId },
+    token,
   })
 }
 
