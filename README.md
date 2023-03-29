@@ -7,7 +7,7 @@
 
 ## 스택
 
-- `Next.js`
+- `Next.js` + `typescript`
 
 ## 파일
 
