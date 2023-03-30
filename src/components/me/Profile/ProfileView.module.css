@@ -1,0 +1,35 @@
+.root {
+  max-width: 750px;
+  margin: auto;
+  padding: 0 10px;
+}
+
+.header {
+  padding: 25px 0 50px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.wrapper {
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eeeeee;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper .label {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.actions button:not(:last-child) {
+  margin-right: 10px;
+}

@@ -1,5 +1,7 @@
+import ProfileView from '@components/me/Profile/ProfileView'
+
 const Profile = () => {
-  return <Profile />
+  return <ProfileView />
 }
 
 export default Profile
