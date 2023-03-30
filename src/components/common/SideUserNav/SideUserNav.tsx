@@ -1,8 +1,11 @@
 import RoundButton from '@components/ui/RoundButton'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import s from './SideUserNav.module.css'
 
 const SideUserNav = () => {
+  const router = useRouter()
+
   return (
     <div className={s.root}>
       <div className={s.header}>
@@ -27,8 +30,12 @@ const SideUserNav = () => {
       </div>
       <div className={s.footer}>
         <div className={s.actions}>
-          <RoundButton onClick={() => {}}>설정</RoundButton>
-          <RoundButton onClick={() => {}}>로그아웃</RoundButton>
+          <RoundButton onClick={() => router.push('/me/settings')}>
+            설정
+          </RoundButton>
+          <RoundButton onClick={() => router.push('/me/logout')}>
+            로그아웃
+          </RoundButton>
         </div>
       </div>
     </div>
