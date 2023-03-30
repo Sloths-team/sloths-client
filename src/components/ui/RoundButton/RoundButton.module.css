@@ -1,0 +1,21 @@
+.root {
+  border: none;
+  border-radius: 20px;
+  border: 1px solid #bbbbbb;
+  color: #bbbbbb;
+  cursor: pointer;
+  background-color: #fff;
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.colored {
+  border: 1px solid #00c2bd;
+  color: #00c2bd;
+}
+
+.root:disabled {
+  background-color: #e4e6ea;
+  cursor: text;
+  color: #bcc0c6;
+}

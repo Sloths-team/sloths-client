@@ -180,7 +180,7 @@ const initialState = {
   displayDropdown: false,
   displayModal: false,
   modalView: 'USER_MENU_VIEW',
-  sidebarView: 'CART_VIEW',
+  sidebarView: 'SIDE_USER_NAV',
   userAvatar: '',
   props: {
     ...MODAL_STYLE['USER_MENU_VIEW'],
@@ -235,7 +235,7 @@ type MODAL_VIEWS =
   | 'IMAGE_ZOOM_VIEW'
   | 'CODE_VIEW'
 
-type SIDEBAR_VIEWS = 'CART_VIEW' | 'CHECKOUT_VIEW' | 'PAYMENT_METHOD_VIEW'
+type SIDEBAR_VIEWS = 'SIDE_USER_NAV'
 
 export const UIContext = createContext<State | any>(initialState)
 

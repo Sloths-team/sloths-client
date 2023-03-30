@@ -18,6 +18,7 @@ import DragDropSectionView from '@components/section/DragDropSectionView'
 import ImageZoomView from '@components/section/ImageZoomView'
 import DragDropImageView from '@components/section/DragDropImageView'
 import CodeView from '@components/section/CodeView'
+import SideUserNav from '../SideUserNav'
 
 const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
   modalView,
@@ -43,7 +44,7 @@ const ModalView: FC<{ modalView: string; onCloseModal: () => void }> = ({
     DRAG_DROP_IMAGE_VIEW: DragDropImageView,
     IMAGE_ZOOM_VIEW: ImageZoomView,
     CODE_VIEW: CodeView,
-  }
+  } as const
 
   const SelectedModalView = kindsOfModal[modalView]
 
@@ -67,13 +68,9 @@ const SidebarView: FC<{
   sidebarView: string
   onCloseSidebar: () => void
 }> = ({ sidebarView, onCloseSidebar }) => {
-  const kindsOfView: { [key: string]: FC } = {}
-
-  const SelectedSidebarView = kindsOfView[sidebarView]
-
   return (
     <Sidebar onClose={onCloseSidebar}>
-      <SelectedSidebarView />
+      {sidebarView === 'SIDE_USER_NAV' && <SideUserNav />}
     </Sidebar>
   )
 }

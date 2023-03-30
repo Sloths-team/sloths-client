@@ -1,0 +1,74 @@
+.root {
+  width: 250px;
+  background-color: #fff;
+  height: 100vh;
+  border-right: 1px solid #dfdfdf;
+  position: relative;
+}
+
+.alarm {
+  display: flex;
+  flex-direction: row-reverse;
+  background-color: #f6f6f6;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f6f6f6;
+  border-bottom: 1px solid #dfdfdf;
+  padding: 30px 40px;
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user .user__profile {
+  width: 60px;
+  height: 60px;
+  background-color: yellowgreen;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.user .user__nickname {
+  margin-bottom: 10px;
+}
+
+.user .user__portfolio_url {
+  font-size: 13px;
+  color: gray;
+}
+
+.actions {
+  display: flex;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 40px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 30px 40px;
+}
+
+.footer .actions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
