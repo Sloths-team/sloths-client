@@ -1,4 +1,4 @@
-# 개발 포트폴리오 프론트
+# FE
 
 ```bash
 > yarn
@@ -21,7 +21,8 @@
 - `/signup`: 회원가입
 - `/forgot_password`: 비밀번호 찾기
 
-- `/profile`: 프로필
+- `/me/setting`: 설정
+- `/me/profile`: 프로필
 
 - `/portfolios`: 포트폴리오 전체 보기
 - `/portfolios/:id`: 포트폴리오 상세 보기
