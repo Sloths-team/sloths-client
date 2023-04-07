@@ -21,7 +21,7 @@
 - `/signup`: 회원가입
 - `/forgot_password`: 비밀번호 찾기
 
-- `/me/setting`: 설정
+- `/me/settings`: 설정
 - `/me/profile`: 프로필
 
 - `/portfolios`: 포트폴리오 전체 보기

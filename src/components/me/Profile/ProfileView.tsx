@@ -1,9 +1,7 @@
 import RoundButton from '@components/ui/RoundButton'
 import { useRouter } from 'next/router'
-import { ChangeEvent, FC, useEffect, useReducer, useRef, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import s from './ProfileView.module.css'
-import { BsGithub } from 'react-icons/bs'
-import cn from 'clsx'
 
 const useInput = (
   defaultValue: string
